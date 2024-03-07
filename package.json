@@ -1,5 +1,5 @@
 {
-  "name": "request-with-middleware",
+  "name": "request-crypto",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.cjs.js",
