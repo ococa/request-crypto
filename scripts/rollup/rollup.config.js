@@ -1,5 +1,13 @@
 // 多文件
-import { getBaseRollupPlugins, getDistPath, getEntryPath, isDev } from './utils'
+import {
+  cjsInputFile,
+  esmInputFile,
+  getBaseRollupPlugins,
+  getDistPath,
+  getEntryPath,
+  isDev,
+} from './utils'
+import terser from '@rollup/plugin-terser'
 
 const inputPath = getEntryPath('index.ts')
 const outputPath = getDistPath()
@@ -8,18 +16,15 @@ export default async () => ({
   input: inputPath,
   output: [
     {
-      file: `${outputPath}/index.cjs.js`,
-      name: 'index.js',
+      file: `${outputPath}/${cjsInputFile}`,
+      name: cjsInputFile,
       format: 'cjs',
     },
     {
-      file: `${outputPath}/index.esm.js`,
-      name: 'index.esm.js',
+      file: `${outputPath}/${esmInputFile}`,
+      name: esmInputFile,
       format: 'es',
     },
   ],
-  plugins: [
-    ...getBaseRollupPlugins(),
-    !isDev && (await import('@rollup/plugin-terser')).default(),
-  ],
+  plugins: [...getBaseRollupPlugins(), !isDev && terser()],
 })

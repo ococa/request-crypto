@@ -3,6 +3,9 @@ import ts from 'rollup-plugin-typescript2'
 import cjs from '@rollup/plugin-commonjs'
 import replace from '@rollup/plugin-replace'
 import generatePackageJson from 'rollup-plugin-generate-package-json'
+import resolve from '@rollup/plugin-node-resolve'
+import json from '@rollup/plugin-json'
+import eslint from '@rollup/plugin-eslint'
 
 export const cjsInputFile = 'index.cjs.js'
 export const esmInputFile = 'index.esm.js'
@@ -26,11 +29,14 @@ function getBaseRollupPlugins({
   alias = { __DEV__: isDev },
 } = {}) {
   return [
+    json(),
+    resolve(),
     replace({
       preventAssignment: true,
       ...alias,
     }),
     cjs(),
+    eslint(),
     ts(tsConfig),
     generatePackageJson({
       inputFolder: projectRootPath,

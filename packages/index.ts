@@ -1,18 +1,5 @@
-import { HH } from './test'
+import axios from 'axios'
 
-const hh = new HH()
-console.log('hh', hh)
+const instance = axios.create()
 
-function hhh(x: string) {
-  console.log('xx', x)
-}
-
-console.log(__DEV__)
-
-if (!__DEV__) {
-  console.log('test dead conde')
-}
-
-hhh('asdf')
-
-export { hhh, hh }
+export { axios, instance }
