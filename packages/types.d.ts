@@ -18,3 +18,7 @@ export interface createRequestInstanceType {
     cryptoFns?: cryptoFnsType,
   ): AxiosInstance
 }
+
+export interface randomPassType {
+  (length: number, mode?: 'low' | 'medium' | 'high'): string
+}
