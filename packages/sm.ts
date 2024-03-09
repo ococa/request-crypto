@@ -5,7 +5,7 @@ import { getCryptoInfoType, getSm4EncryptConfigType } from './types'
 const getCryptoInfo: getCryptoInfoType = <T>(algorithm?: T) => {
   const psd = randomPassword(16, 'high')
   const info = {
-    randomPassword: psd,
+    key: psd,
     algorithm: algorithm || 'SM4',
   }
 

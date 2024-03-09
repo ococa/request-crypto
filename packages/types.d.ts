@@ -31,7 +31,7 @@ export interface getCryptoInfoType {
   <T = string>(
     algorithm?: T,
   ): {
-    randomPassword: string
+    key: string
     algorithm: T | string
   }
 }
