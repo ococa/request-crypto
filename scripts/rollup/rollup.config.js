@@ -26,5 +26,6 @@ export default async () => ({
       format: 'es',
     },
   ],
+  external: ['axios'],
   plugins: [...getBaseRollupPlugins(), !isDev && terser()],
 })

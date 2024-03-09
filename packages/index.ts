@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, CreateAxiosDefaults } from 'axios'
-import { createRequestInstance, cryptoFnsType } from './types'
+import { createRequestInstanceType, cryptoFnsType } from './types'
 
-const createRequestInstance: createRequestInstance = <T>(
+const createRequestInstance: createRequestInstanceType = <T>(
   options: CreateAxiosDefaults<T> | undefined,
   cryptoFns: cryptoFnsType = {},
 ) => {

@@ -12,7 +12,7 @@ export interface cryptoFnsType {
   decryptFn?: AxiosResponseTransformer
 }
 
-export interface createRequestInstance {
+export interface createRequestInstanceType {
   <T>(
     options: CreateAxiosDefaults<T> | undefined,
     cryptoFns?: cryptoFnsType,
