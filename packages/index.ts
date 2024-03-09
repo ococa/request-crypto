@@ -1,10 +1,10 @@
 import axios, { AxiosInstance, CreateAxiosDefaults } from 'axios'
-import { cryptoFnsType } from './types'
+import { createRequestInstance, cryptoFnsType } from './types'
 
-function createRequestInstance<T>(
+const createRequestInstance: createRequestInstance = <T>(
   options: CreateAxiosDefaults<T> | undefined,
   cryptoFns: cryptoFnsType = {},
-) {
+) => {
   const instance = axios.create(options)
 
   addEncryptFnToTransformRequest(instance, cryptoFns)
