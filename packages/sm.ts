@@ -4,15 +4,13 @@ import { getCryptoInfoType, getSm4EncryptConfigType } from './types'
 
 const getCryptoInfo: getCryptoInfoType = <T>(algorithm?: T) => {
   const psd = randomPassword(16, 'high')
-  // const key = [...Buffer.from(psd)]
   const info = {
-    key: psd,
+    randomPassword: psd,
     algorithm: algorithm || 'SM4',
   }
 
   return {
-    info,
-    key: [Number(psd)],
+    ...info,
   }
 }
 

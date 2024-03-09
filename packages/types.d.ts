@@ -5,6 +5,10 @@ import {
   CreateAxiosDefaults,
 } from 'axios'
 
+export { createRequestInstance } from './instance'
+export { randomPassword } from './utils'
+export { getCryptoInfo, getSm4EncryptConfig } from './sm'
+
 export interface cryptoFnsType {
   // 加密
   encryptFn?: AxiosRequestTransformer
@@ -27,18 +31,16 @@ export interface getCryptoInfoType {
   <T = string>(
     algorithm?: T,
   ): {
-    info: {
-      key: string
-      algorithm: T | string
-    }
-    key: number[]
+    randomPassword: string
+    algorithm: T | string
   }
 }
 
 export interface getSm4EncryptConfigType {
   (): {
-    mode: string
-    padding: string
-    output: string
+    padding?: 'none' | 'pkcs#5' | 'pkcs#7'
+    mode?: 'cbc' | 'ecb'
+    iv?: any
+    output: 'string' | 'array'
   }
 }
