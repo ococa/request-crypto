@@ -22,3 +22,23 @@ export interface createRequestInstanceType {
 export interface randomPassType {
   (length: number, mode?: 'low' | 'medium' | 'high'): string
 }
+
+export interface getCryptoInfoType {
+  <T = string>(
+    algorithm?: T,
+  ): {
+    info: {
+      key: string
+      algorithm: T | string
+    }
+    key: number[]
+  }
+}
+
+export interface getSm4EncryptConfigType {
+  (): {
+    mode: string
+    padding: string
+    output: string
+  }
+}

@@ -1,17 +1,18 @@
 // 对称加密方法 information 生成
 import { randomPassword } from './utils'
+import { getCryptoInfoType, getSm4EncryptConfigType } from './types'
 
-const getCryptoInfo = (password: string) => {
-  const psd = password || randomPassword(16, 'high')
-  const key = [...Buffer.from(psd)]
+const getCryptoInfo: getCryptoInfoType = <T>(algorithm?: T) => {
+  const psd = randomPassword(16, 'high')
+  // const key = [...Buffer.from(psd)]
   const info = {
     key: psd,
-    algorithm: 'SM4',
+    algorithm: algorithm || 'SM4',
   }
 
   return {
     info,
-    key,
+    key: [Number(psd)],
   }
 }
 
@@ -27,8 +28,7 @@ const getCryptoInfo = (password: string) => {
 // }
 
 // 非对称加密解密方法
-
-const getSm4EncryptConfig = () => {
+const getSm4EncryptConfig: getSm4EncryptConfigType = () => {
   return {
     mode: 'ecb',
     padding: 'pkcs#7',
