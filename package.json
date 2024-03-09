@@ -1,10 +1,9 @@
 {
   "name": "request-crypto",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "dist/index.cjs.js",
-  "module": "packages/index.esm.js",
-  "types": "dist/index.d.ts",
+  "module": "packages/types.d.ts",
   "scripts": {
     "test": "node src/test/index.js",
     "lint": "eslint --ext .ts,.js,.tsx,.jsx ./packages",
@@ -13,6 +12,10 @@
     "build:dev": "npm run build -- --environment NODE_ENV:development",
     "prepare": "husky"
   },
+  "files": [
+    "package.json",
+    "packages/*"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
