@@ -14,3 +14,15 @@ export declare function ab2str(buf: ArrayBuffer, encoding?: string): string;
 export declare function transformResponseData(data: unknown): unknown;
 export declare function transformArrayBufferToJsonData(data: ArrayBuffer): any;
 export declare function transformStringToJsonData(data: string): any;
+/**
+ * 正则判断是否是下列字符串开头
+ *  /bi-api/api
+ *  /api/logmanage
+ *  /api/data-source
+ *  /api/enterpriseadmin
+ *  /api/componentmanager
+ *  /api/spacemanager
+ *  /api/filemanager
+ */
+export declare const isEncryptListApi: (url: string) => boolean;
+export declare const shouldEncrypt: (url: string) => boolean;

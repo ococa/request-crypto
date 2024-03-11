@@ -199,3 +199,35 @@ export function transformStringToJsonData(data: string) {
     throw e
   }
 }
+
+/**
+ * 正则判断是否是下列字符串开头
+ *  /bi-api/api
+ *  /api/logmanage
+ *  /api/data-source
+ *  /api/enterpriseadmin
+ *  /api/componentmanager
+ *  /api/spacemanager
+ *  /api/filemanager
+ */
+export const isEncryptListApi = (url: string) => {
+  const reg =
+    /^\/(bi-api\/api|api\/logmanage|api\/data-source|api\/enterpriseadmin|api\/componentmanager|api\/spacemanager|api\/filemanager)/
+  return reg.test(url)
+}
+
+//  接口加密规则
+export const shouldEncrypt = (url: string) => {
+  // 默认全部加密
+  let ret = true
+
+  // api 开头默认不加密
+  if (url.startsWith('api')) {
+    ret = false
+  }
+  // 如果在名单列表则加密
+  if (isEncryptListApi(url)) {
+    ret = true
+  }
+  return ret
+}

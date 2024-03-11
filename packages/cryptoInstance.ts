@@ -15,6 +15,7 @@ import {
 import {
   isEncryptResponse,
   setRequestCryptoHeader,
+  shouldEncrypt,
   transformArrayBufferToJsonData,
   transformResponseData,
   transformStringToJsonData,
@@ -88,6 +89,25 @@ function addEncryptFnToTransformRequest(
       `publicKey is required and must be a string ${asymmetricKey}`,
     )
   }
+
+  instance.interceptors.request.use((config) => {
+    const url = config.url
+    const headers = config.headers
+    if (!url) {
+      throw new Error('url is required')
+    }
+    if ({}.hasOwnProperty.call(headers, 'closeCrypto')) {
+      return config
+    }
+
+    const shouldCloseCrypto = shouldEncrypt(url)
+    console.log(`url: ${url} shouldCloseCrypto: ${shouldCloseCrypto}`)
+    if (!shouldCloseCrypto) {
+      headers.closeCrypto = true
+    }
+    return config
+  })
+
   instance.interceptors.request.use((config) => {
     const headers = config.headers as AxiosRequestHeaders
     if (!headers.closeCrypto) {
