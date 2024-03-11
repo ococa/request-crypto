@@ -160,3 +160,18 @@ export function ab2str(buf: ArrayBuffer, encoding = 'utf-8') {
 
   return enc.decode(buf)
 }
+
+export function transformResponseData(data: unknown) {
+  if (typeof data === 'string') {
+    try {
+      data = JSON.parse(data)
+    } catch (e) {
+      console.error('error', e)
+      throw e
+    }
+  }
+  if (data instanceof ArrayBuffer) {
+    return ab2str(data)
+  }
+  return data
+}

@@ -12,23 +12,16 @@ import {
   createEncryptFnType,
   storeType,
 } from './types'
-import { ab2str, isEncryptResponse, setRequestCryptoHeader } from './utils'
+import {
+  isEncryptResponse,
+  setRequestCryptoHeader,
+  transformResponseData,
+} from './utils'
 import { getCryptoInfo, getSm4EncryptConfig } from './sm'
 
 const Buffer = buffer.Buffer
 
 const sm4EncryptConfig = getSm4EncryptConfig()
-
-const createCryptoAxiosInstance: createCryptoAxiosInstanceType = <T>(
-  options: CreateAxiosDefaults<T> | undefined,
-  asymmetricKey: string,
-) => {
-  const instance = axios.create(options)
-
-  addEncryptFnToTransformRequest(instance, asymmetricKey)
-
-  return instance
-}
 
 const createEncryptFn: createEncryptFnType = function (__store, asymmetricKey) {
   return (data, headers) => {
@@ -64,6 +57,7 @@ const createEncryptFn: createEncryptFnType = function (__store, asymmetricKey) {
     }
   }
 }
+
 const createDecryptFn: createDecryptFnType = function (__store) {
   return (data, headers) => {
     try {
@@ -73,22 +67,16 @@ const createDecryptFn: createDecryptFnType = function (__store) {
           mode: 'ecb' as never,
           padding: 'pkcs#7',
         })
-        if (typeof decryptData == 'string') {
-          return JSON.parse(decryptData)
-        }
-
-        return decryptData
+        return transformResponseData(decryptData)
+      } else {
+        return transformResponseData(data)
       }
-
-      if (data instanceof ArrayBuffer) {
-        return ab2str(data)
-      }
-      return data
     } catch (e) {
       console.error('decrypt error', e, data, headers)
     }
   }
 }
+
 function addEncryptFnToTransformRequest(
   instance: AxiosInstance,
   asymmetricKey: string,
@@ -139,6 +127,28 @@ function addEncryptFnToTransformRequest(
     }
     return value
   })
+
+  instance.interceptors.response.use(
+    (data) => data,
+    (error) => {
+      const response = error.response
+      if (response?.data) {
+        response.data = transformResponseData(response.data)
+      }
+      throw error
+    },
+  )
+}
+
+const createCryptoAxiosInstance: createCryptoAxiosInstanceType = <T>(
+  options: CreateAxiosDefaults<T> | undefined,
+  asymmetricKey: string,
+) => {
+  const instance = axios.create(options)
+
+  addEncryptFnToTransformRequest(instance, asymmetricKey)
+
+  return instance
 }
 
 export { createCryptoAxiosInstance }

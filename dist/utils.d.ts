@@ -11,3 +11,4 @@ export declare const HEADER_ENCRYPT_WITH = "X-Encrypt-With";
 export declare const setRequestCryptoHeader: (headers: AxiosRequestHeaders, encryptKey: string) => AxiosRequestHeaders;
 export declare const isEncryptResponse: (headers: AxiosResponseHeaders) => boolean | "" | 0 | null;
 export declare function ab2str(buf: ArrayBuffer, encoding?: string): string;
+export declare function transformResponseData(data: unknown): unknown;
