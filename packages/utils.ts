@@ -201,18 +201,27 @@ export function transformStringToJsonData(data: string) {
 }
 
 /**
- * 正则判断是否是下列字符串开头
- *  /bi-api/api
+ *  正则判断 排除下列字符串开头
  *  /api/logmanage
  *  /api/data-source
  *  /api/enterpriseadmin
  *  /api/componentmanager
  *  /api/spacemanager
  *  /api/filemanager
+ *
+ *  不加密
+ *  /bi-api/api
  */
 export const isEncryptListApi = (url: string) => {
   const reg =
-    /^\/(bi-api\/api|api\/logmanage|api\/data-source|api\/enterpriseadmin|api\/componentmanager|api\/spacemanager|api\/filemanager)/
+    /^\/(api\/logmanage|api\/data-source|api\/enterpriseadmin|api\/componentmanager|api\/spacemanager|api\/filemanager)/
+  return reg.test(url)
+}
+
+// 不加密名单
+// start with /bi-api/api
+export const encryptWhiteList = (url: string) => {
+  const reg = /^\/bi-api\/api/
   return reg.test(url)
 }
 
@@ -221,13 +230,17 @@ export const shouldEncrypt = (url: string) => {
   // 默认全部加密
   let ret = true
 
+  if (encryptWhiteList(url)) {
+    return false
+  }
+
   // api 开头默认不加密
   if (url.startsWith('/api')) {
     ret = false
-  }
-  // 如果在名单列表则加密
-  if (isEncryptListApi(url)) {
-    ret = true
+    // 如果在名单列表则加密
+    if (isEncryptListApi(url)) {
+      ret = true
+    }
   }
   return ret
 }

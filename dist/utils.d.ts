@@ -15,14 +15,17 @@ export declare function transformResponseData(data: unknown): unknown;
 export declare function transformArrayBufferToJsonData(data: ArrayBuffer): any;
 export declare function transformStringToJsonData(data: string): any;
 /**
- * 正则判断是否是下列字符串开头
- *  /bi-api/api
+ *  正则判断 排除下列字符串开头
  *  /api/logmanage
  *  /api/data-source
  *  /api/enterpriseadmin
  *  /api/componentmanager
  *  /api/spacemanager
  *  /api/filemanager
+ *
+ *  不加密
+ *  /bi-api/api
  */
 export declare const isEncryptListApi: (url: string) => boolean;
+export declare const encryptWhiteList: (url: string) => boolean;
 export declare const shouldEncrypt: (url: string) => boolean;
