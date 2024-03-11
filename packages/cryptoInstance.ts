@@ -74,13 +74,7 @@ const createDecryptFn: createDecryptFnType = function (__store) {
           padding: 'pkcs#7',
         })
         if (typeof decryptData == 'string') {
-          const rootData = JSON.parse(decryptData)
-          const currentPage = rootData?.data?.total
-          if (currentPage !== undefined) {
-            rootData.data.list = rootData.data.content
-            return rootData
-          }
-          return rootData
+          return JSON.parse(decryptData)
         }
 
         return decryptData
