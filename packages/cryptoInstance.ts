@@ -45,32 +45,16 @@ const createEncryptFn: createEncryptFnType = function (__store, asymmetricKey) {
       )
       setRequestCryptoHeader(headers, encryptInfo)
 
-      console.log('--- 1 before request', __store.info.key, data, headers)
       if (data) {
         if (typeof data !== 'string') {
           data = JSON.stringify(data)
         }
-        // __store.info = getCryptoInfo()
-        // __store.publicKey = [...Buffer.from(__store.info.key)]
-        console.log('=== body 加密原文 ===', data)
         const array = sm4.encrypt(
           data,
           __store.publicKey,
           sm4EncryptConfig as never,
         )
-        console.log('=== body 加密结果 ===', array)
         data = Buffer.from(array)
-
-        const decryptData = sm4.decrypt(array, __store.publicKey, {
-          mode: 'ecb' as never,
-          padding: 'pkcs#7',
-        })
-        console.log('=== 加密前 解密测试 encryptInfo ===', {
-          encryptInfo,
-          obj: JSON.stringify(__store.info),
-          decryptData,
-          asymmetricKey,
-        })
         return data
       } else {
         return data
@@ -103,9 +87,7 @@ const createDecryptFn: createDecryptFnType = function (__store) {
       }
 
       if (data instanceof ArrayBuffer) {
-        const ret = ab2str(data)
-        console.log('response data ===', ret)
-        return ret
+        return ab2str(data)
       }
       return data
     } catch (e) {
@@ -117,6 +99,11 @@ function addEncryptFnToTransformRequest(
   instance: AxiosInstance,
   asymmetricKey: string,
 ) {
+  if (!asymmetricKey || typeof asymmetricKey !== 'string') {
+    throw new Error(
+      `publicKey is required and must be a string ${asymmetricKey}`,
+    )
+  }
   instance.interceptors.request.use((config) => {
     const headers = config.headers as AxiosRequestHeaders
     if (!headers.closeCrypto) {
