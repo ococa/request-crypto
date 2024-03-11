@@ -12,5 +12,5 @@ export declare const setRequestCryptoHeader: (headers: AxiosRequestHeaders, encr
 export declare const isEncryptResponse: (headers: AxiosResponseHeaders) => boolean | "" | 0 | null;
 export declare function ab2str(buf: ArrayBuffer, encoding?: string): string;
 export declare function transformResponseData(data: unknown): unknown;
-export declare function transformArrayBufferToJsonData(data: ArrayBuffer): ArrayBuffer;
+export declare function transformArrayBufferToJsonData(data: ArrayBuffer): any;
 export declare function transformStringToJsonData(data: string): any;

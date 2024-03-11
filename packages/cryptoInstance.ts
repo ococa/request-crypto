@@ -132,6 +132,7 @@ function addEncryptFnToTransformRequest(
 
   instance.interceptors.response.use(
     (data) => {
+      data.data = transformArrayBufferToJsonData(data.data)
       data.data = transformStringToJsonData(data.data)
       return data
     },
