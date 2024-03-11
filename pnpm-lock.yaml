@@ -6,8 +6,11 @@ settings:
 
 dependencies:
   axios:
-    specifier: ^1.6.7
+    specifier: 1.6.7
     version: 1.6.7
+  sm-crypto:
+    specifier: ^0.3.13
+    version: 0.3.13
 
 devDependencies:
   '@commitlint/cli':
@@ -40,6 +43,9 @@ devDependencies:
   '@types/node':
     specifier: ^20.11.25
     version: 20.11.25
+  '@types/sm-crypto':
+    specifier: ^0.3.4
+    version: 0.3.4
   '@typescript-eslint/eslint-plugin':
     specifier: ^7.1.1
     version: 7.1.1(@typescript-eslint/parser@7.1.1)(eslint@8.57.0)(typescript@5.4.2)
@@ -647,6 +653,10 @@ packages:
     dev: true
     optional: true
 
+  /@types/bigi@1.4.5:
+    resolution: {integrity: sha512-fb5MUzazrD2GRnwlStm91HVu3cZbvolX9kJruqpUBdc24eHBWrLLfyt8XN1/C5JpI0stP/MbaFQp+cJh5WOFfw==}
+    dev: true
+
   /@types/conventional-commits-parser@5.0.0:
     resolution: {integrity: sha512-loB369iXNmAZglwWATL+WRe+CRMmmBPtpolYzIebFaX4YA3x+BEfLqhUAV9WanycKI3TG1IMr5bMJDajDKLlUQ==}
     dependencies:
@@ -677,6 +687,12 @@ packages:
 
   /@types/semver@7.5.8:
     resolution: {integrity: sha512-I8EUhyrgfLrcTkzV3TSsGyl1tSuPrEDzr0yd5m90UgNxQkyDXULk3b6MlQqTCpZpNtWe1K0hzclnZkTcLBe2UQ==}
+    dev: true
+
+  /@types/sm-crypto@0.3.4:
+    resolution: {integrity: sha512-tp+KWAawUkwUWSpA3sHymerfy9P0utSyfdh7D60FJ4Aj1rhBZ2Q/nDvARUmmfQeIZZD1FKg9oAcDqecCux0npw==}
+    dependencies:
+      '@types/bigi': 1.4.5
     dev: true
 
   /@typescript-eslint/eslint-plugin@7.1.1(@typescript-eslint/parser@7.1.1)(eslint@8.57.0)(typescript@5.4.2):
@@ -1758,6 +1774,10 @@ packages:
       argparse: 2.0.1
     dev: true
 
+  /jsbn@1.1.0:
+    resolution: {integrity: sha512-4bYVV3aAMtDTTu4+xsDYa6sy9GyJ69/amsu9sYF2zqjiEoZA5xJi3BrfX3uY+/IekIu7MwdObdbDWpoZdBv3/A==}
+    dev: false
+
   /json-buffer@3.0.1:
     resolution: {integrity: sha512-4bV5BfR2mqfQTJm+V5tPPdf+ZpuhiIvTuAB5g8kcrXOZpTT/QwwVRWBywX1ozr6lEuPdbHxwaJlm9G6mI2sfSQ==}
     dev: true
@@ -2344,6 +2364,12 @@ packages:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
     dev: true
+
+  /sm-crypto@0.3.13:
+    resolution: {integrity: sha512-ztNF+pZq6viCPMA1A6KKu3bgpkmYti5avykRHbcFIdSipFdkVmfUw2CnpM2kBJyppIalqvczLNM3wR8OQ0pT5w==}
+    dependencies:
+      jsbn: 1.1.0
+    dev: false
 
   /smob@1.4.1:
     resolution: {integrity: sha512-9LK+E7Hv5R9u4g4C3p+jjLstaLe11MDsL21UpYaCNmapvMkYhqCV4A/f/3gyH8QjMyh6l68q9xC85vihY9ahMQ==}

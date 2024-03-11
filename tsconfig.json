@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "declaration": true,
     "target": "ES2020",
     "useDefineForClassFields": true,
     "module": "ESNext",
@@ -24,6 +25,6 @@
   "include": ["./packages/**/*"],
   "exclude": [
     "node_modules",
-    "**/*.d.ts"
+//    "**/*.d.ts"
   ]
 }

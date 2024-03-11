@@ -1,6 +1,7 @@
 // 随机密钥生成，【用于对称加密】
 
 import { randomPassType } from './types'
+import { AxiosRequestHeaders, AxiosResponseHeaders } from 'axios'
 
 /**
  * 获取随机数
@@ -133,4 +134,29 @@ export const randomPassword: randomPassType = (
   }
 
   return password
+}
+
+export const HEADER_ENCRYPT_KEY = 'X-Encrypt-Key'
+export const HEADER_ENCRYPT_WITH = 'X-Encrypt-With'
+
+export const setRequestCryptoHeader = (
+  headers: AxiosRequestHeaders,
+  encryptKey: string,
+) => {
+  headers.set(HEADER_ENCRYPT_KEY, encryptKey)
+  return headers
+}
+export const isEncryptResponse = (headers: AxiosResponseHeaders) => {
+  const headerValue = headers.get(HEADER_ENCRYPT_WITH)
+  return (
+    headerValue &&
+    typeof headerValue === 'string' &&
+    headerValue.toLowerCase() === 'sm4'
+  )
+}
+
+export function ab2str(buf: ArrayBuffer, encoding = 'utf-8') {
+  const enc = new TextDecoder(encoding)
+
+  return enc.decode(buf)
 }
