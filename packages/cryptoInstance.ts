@@ -105,10 +105,8 @@ const createCryptoAxiosInstance: createCryptoAxiosInstanceType = (
 
   request.interceptors.request.use((config) => {
     const headers = config.headers as AxiosRequestHeaders
-    if (headers.closeCrypto) {
-      return config
-    } else {
-      headers.responseType = 'arraybuffer'
+    if (!headers.closeCrypto) {
+      config.responseType = 'arraybuffer'
     }
     return config
   })
