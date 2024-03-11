@@ -175,3 +175,27 @@ export function transformResponseData(data: unknown) {
   }
   return data
 }
+
+export function transformArrayBufferToJsonData(data: ArrayBuffer) {
+  try {
+    if (data instanceof ArrayBuffer) {
+      transformStringToJsonData(ab2str(data))
+    }
+    return data
+  } catch (e) {
+    console.error('error', e)
+    throw e
+  }
+}
+
+export function transformStringToJsonData(data: string) {
+  try {
+    if (typeof data === 'string') {
+      return JSON.parse(data)
+    }
+    return data
+  } catch (e) {
+    console.error('error', e)
+    throw e
+  }
+}

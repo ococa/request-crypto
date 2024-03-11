@@ -15,7 +15,9 @@ import {
 import {
   isEncryptResponse,
   setRequestCryptoHeader,
+  transformArrayBufferToJsonData,
   transformResponseData,
+  transformStringToJsonData,
 } from './utils'
 import { getCryptoInfo, getSm4EncryptConfig } from './sm'
 
@@ -67,9 +69,9 @@ const createDecryptFn: createDecryptFnType = function (__store) {
           mode: 'ecb' as never,
           padding: 'pkcs#7',
         })
-        return transformResponseData(decryptData)
+        return transformStringToJsonData(decryptData)
       } else {
-        return transformResponseData(data)
+        return transformArrayBufferToJsonData(data)
       }
     } catch (e) {
       console.error('decrypt error', e, data, headers)
@@ -129,7 +131,10 @@ function addEncryptFnToTransformRequest(
   })
 
   instance.interceptors.response.use(
-    (data) => data,
+    (data) => {
+      data.data = transformStringToJsonData(data.data)
+      return data
+    },
     (error) => {
       const response = error.response
       if (response?.data) {
