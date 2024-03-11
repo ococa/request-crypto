@@ -222,7 +222,7 @@ export const shouldEncrypt = (url: string) => {
   let ret = true
 
   // api 开头默认不加密
-  if (url.startsWith('api')) {
+  if (url.startsWith('/api')) {
     ret = false
   }
   // 如果在名单列表则加密

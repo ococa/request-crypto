@@ -100,9 +100,9 @@ function addEncryptFnToTransformRequest(
       return config
     }
 
-    const shouldCloseCrypto = shouldEncrypt(url)
-    console.log(`url: ${url} shouldCloseCrypto: ${shouldCloseCrypto}`)
-    if (!shouldCloseCrypto) {
+    const encrypt = shouldEncrypt(url)
+    console.log(`url: ${url} shouldCloseCrypto: ${encrypt}`)
+    if (!encrypt) {
       headers.closeCrypto = true
     }
     return config
