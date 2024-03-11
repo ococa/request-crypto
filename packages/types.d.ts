@@ -15,7 +15,7 @@ export interface cryptoFnsType {
 export interface createRequestInstanceType {
   <T>(
     options: CreateAxiosDefaults<T> | undefined,
-    cryptoFns?: cryptoFnsType,
+    cryptoFns?: () => cryptoFnsType,
   ): AxiosInstance
 }
 
@@ -46,4 +46,19 @@ export interface getSm4EncryptConfigType {
     iv?: any
     output: 'string' | 'array'
   }
+}
+
+export type createEncryptFnType = (
+  storeInfo: storeType,
+  asymmetricKey: string,
+) => AxiosRequestTransformer
+
+export type createDecryptFnType = (
+  storeInfo: storeType,
+  asymmetricKey?: string,
+) => AxiosResponseTransformer
+
+export type storeType = {
+  info: ReturnType<getCryptoInfoType> | null
+  publicKey: number[]
 }

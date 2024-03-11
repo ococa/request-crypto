@@ -3,7 +3,7 @@ import { createRequestInstanceType, cryptoFnsType } from './types'
 
 const createRequestInstance: createRequestInstanceType = <T>(
   options: CreateAxiosDefaults<T> | undefined,
-  cryptoFns: cryptoFnsType = {},
+  cryptoFns?: () => cryptoFnsType,
 ) => {
   const instance = axios.create(options)
 
@@ -14,9 +14,12 @@ const createRequestInstance: createRequestInstanceType = <T>(
 
 function addEncryptFnToTransformRequest(
   instance: AxiosInstance,
-  cryptoFns: cryptoFnsType = {},
+  cryptoFns?: () => cryptoFnsType,
 ) {
-  const { encryptFn, decryptFn } = cryptoFns
+  if (!cryptoFns) {
+    return instance
+  }
+  const { encryptFn, decryptFn } = cryptoFns()
 
   if (encryptFn) {
     instance.interceptors.request.use((value) => {
