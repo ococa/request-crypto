@@ -13,6 +13,7 @@ import {
   transformStringToJsonData,
 } from '../helpers/utils'
 import { createDecryptFn, createEncryptFn } from './cryptoFn'
+import { sm2 } from 'sm-crypto'
 
 const createMapStore: createMapStoreType<storeType> = function <T>() {
   // 基于axios请求，存储加密信息
@@ -36,12 +37,16 @@ const createMapStore: createMapStoreType<storeType> = function <T>() {
   function clear(key: string) {
     mapStore.delete(key)
   }
+  function sm() {
+    return sm2
+  }
 
   return {
     get,
     generateKey: randomKeyForMap,
     set,
     clear,
+    sm,
   }
 }
 
