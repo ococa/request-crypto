@@ -29,7 +29,7 @@ const getCryptoInfo: getCryptoInfoType = <T>(algorithm?: T) => {
 const getSm4EncryptConfig: getSm4EncryptConfigType = () => {
   return {
     mode: 'ecb',
-    padding: 'pkcs#7',
+    padding: 'pkcs#5',
     output: 'array',
   }
 }
