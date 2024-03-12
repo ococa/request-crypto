@@ -30,7 +30,10 @@ function getBaseRollupPlugins({
 } = {}) {
   return [
     json(),
-    resolve(),
+    resolve({
+      browser: true,
+      preferBuiltins: true,
+    }),
     replace({
       preventAssignment: true,
       ...alias,
