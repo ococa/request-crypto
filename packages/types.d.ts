@@ -51,12 +51,27 @@ export interface getSm4EncryptConfigType {
 export type createEncryptFnType = (
   storeInfo: storeType,
   asymmetricKey: string,
+  mapStore: mapStoreType,
+  requestKey: string,
 ) => AxiosRequestTransformer
 
 export type createDecryptFnType = (
   storeInfo: storeType,
-  asymmetricKey?: string,
+  options?: {
+    asymmetricKey?: string
+    mapStore: mapStoreType
+    requestKey: string
+  },
 ) => AxiosResponseTransformer
+
+type createMapStoreType<T> = () => {
+  generateKey: (url: string) => string
+  set: (key: string, value: T) => void
+  get: (key: string) => T | undefined
+  clear: (key: string) => void
+}
+
+type mapStoreType = ReturnType<createMapStoreType<storeType>>
 
 export type storeType = {
   info: ReturnType<getCryptoInfoType> | null

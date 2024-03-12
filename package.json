@@ -1,6 +1,6 @@
 {
   "name": "request-crypto",
-  "version": "1.4.9",
+  "version": "1.4.10",
   "description": "axios with crypto callback",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",

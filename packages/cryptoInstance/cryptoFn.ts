@@ -13,7 +13,12 @@ const sm4EncryptConfig = getSm4EncryptConfig()
 
 const Buffer = buffer.Buffer
 
-const createEncryptFn: createEncryptFnType = function (__store, asymmetricKey) {
+const createEncryptFn: createEncryptFnType = function (
+  __store,
+  asymmetricKey,
+  mapStore,
+  requestKey,
+) {
   return (data, headers) => {
     try {
       if (headers.closeCrypto) {
@@ -26,6 +31,7 @@ const createEncryptFn: createEncryptFnType = function (__store, asymmetricKey) {
         asymmetricKey,
         1,
       )
+      mapStore.set(requestKey, deepClone(encryptInfo))
       setRequestCryptoHeader(headers, encryptInfo)
 
       if (data) {
@@ -57,6 +63,7 @@ const createDecryptFn: createDecryptFnType = function (__store) {
           mode: 'ecb' as never,
           padding: 'pkcs#7',
         })
+
         return transformStringToJsonData(decryptData)
       } else {
         return transformArrayBufferToJsonData(data)
@@ -65,6 +72,22 @@ const createDecryptFn: createDecryptFnType = function (__store) {
       console.error('decrypt error', e, data, headers)
     }
   }
+}
+
+// function isSameObject(obj1: object | undefined, obj2: object) {
+//   if (obj1 === undefined) {
+//     return false
+//   }
+//   const ret = JSON.stringify(obj1) === JSON.stringify(obj2)
+//   console.log('is same object ', ret, { obj1, obj2 })
+//   return ret
+// }
+
+function deepClone(obj: object | string) {
+  if (typeof obj === 'string') {
+    return String(obj)
+  }
+  return JSON.parse(JSON.stringify(obj))
 }
 
 export { createDecryptFn, createEncryptFn }
