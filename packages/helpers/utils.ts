@@ -1,6 +1,6 @@
 // 随机密钥生成，【用于对称加密】
 
-import { randomPassType } from './types'
+import { randomPassType } from '../types'
 import { AxiosRequestHeaders, AxiosResponseHeaders } from 'axios'
 
 /**

@@ -1,4 +1,4 @@
-import { randomPassType } from './types';
+import { randomPassType } from '../types';
 import { AxiosRequestHeaders, AxiosResponseHeaders } from 'axios';
 /**
  * 获取随机数

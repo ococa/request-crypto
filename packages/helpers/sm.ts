@@ -1,6 +1,6 @@
 // 对称加密方法 information 生成
 import { randomPassword } from './utils'
-import { getCryptoInfoType, getSm4EncryptConfigType } from './types'
+import { getCryptoInfoType, getSm4EncryptConfigType } from '../types'
 
 const getCryptoInfo: getCryptoInfoType = <T>(algorithm?: T) => {
   const psd = randomPassword(16, 'high')

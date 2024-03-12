@@ -1,5 +1,5 @@
-export { createRequestInstance } from './instance';
-export { createCryptoAxiosInstance } from './cryptoInstance';
-export { randomPassword } from './utils';
-export { getCryptoInfo, getSm4EncryptConfig } from './sm';
-export { shouldEncrypt } from './utils';
+export { createRequestInstance } from './instance/instance';
+export { createCryptoAxiosInstance } from './cryptoInstance/cryptoInstance';
+export { randomPassword } from './helpers/utils';
+export { getCryptoInfo, getSm4EncryptConfig } from './helpers/sm';
+export { shouldEncrypt } from './helpers/utils';

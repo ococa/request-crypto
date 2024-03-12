@@ -1,4 +1,4 @@
-import { createRequestInstance } from './index'
+import { createRequestInstance } from '../index'
 
 const instance = createRequestInstance({})
 

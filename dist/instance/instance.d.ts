@@ -1,3 +1,3 @@
-import { createRequestInstanceType } from './types';
+import { createRequestInstanceType } from '../types';
 declare const createRequestInstance: createRequestInstanceType;
 export { createRequestInstance };
