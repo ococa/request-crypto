@@ -1,8 +1,4 @@
-import axios, {
-  AxiosInstance,
-  AxiosRequestHeaders,
-  CreateAxiosDefaults,
-} from 'axios'
+import axios, { AxiosInstance, CreateAxiosDefaults } from 'axios'
 import buffer from 'buffer'
 import { sm2, sm4 } from 'sm-crypto'
 
@@ -90,6 +86,7 @@ function addEncryptFnToTransformRequest(
     )
   }
 
+  // 通过url过滤
   instance.interceptors.request.use((config) => {
     const url = config.url
     const headers = config.headers
@@ -108,14 +105,27 @@ function addEncryptFnToTransformRequest(
     return config
   })
 
+  // 过滤formData类型数据
   instance.interceptors.request.use((config) => {
-    const headers = config.headers as AxiosRequestHeaders
+    const data = config.data
+    const headers = config.headers
+    if (data instanceof FormData) {
+      console.log(`body of request: ${config.url} is FormData: ${data}`)
+      headers.closeCrypto = true
+    }
+    return config
+  })
+
+  // 非过滤数据返回类型声明
+  instance.interceptors.request.use((config) => {
+    const headers = config.headers
     if (!headers.closeCrypto) {
       config.responseType = 'arraybuffer'
     }
     return config
   })
 
+  // 加密，解密添加 数据
   instance.interceptors.request.use((value) => {
     const transformRequest = value.transformRequest
     const __store: storeType = {
@@ -150,6 +160,7 @@ function addEncryptFnToTransformRequest(
     return value
   })
 
+  // 返回数据转换
   instance.interceptors.response.use(
     (data) => {
       data.data = transformArrayBufferToJsonData(data.data)
