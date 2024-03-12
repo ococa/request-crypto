@@ -109,6 +109,9 @@ function addEncryptFnToTransformRequest(
   instance.interceptors.request.use((config) => {
     const data = config.data
     const headers = config.headers
+    if (!data) {
+      return config
+    }
     if (data instanceof FormData) {
       console.log(`body of request: ${config.url} is FormData: ${data}`)
       headers.closeCrypto = true
