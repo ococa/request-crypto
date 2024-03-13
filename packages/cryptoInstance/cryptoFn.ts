@@ -61,9 +61,8 @@ const createDecryptFn: createDecryptFnType = function (__store) {
         const arrayData = Buffer.from(data)
         const decryptData = sm4.decrypt(arrayData as never, __store.publicKey, {
           mode: 'ecb' as never,
-          padding: 'pkcs#7',
+          padding: 'pkcs#5',
         })
-
         return transformStringToJsonData(decryptData)
       } else {
         return transformArrayBufferToJsonData(data)

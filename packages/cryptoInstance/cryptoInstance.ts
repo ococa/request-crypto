@@ -163,10 +163,12 @@ function addEncryptFnToTransformRequest(
     (data) => {
       data.data = transformArrayBufferToJsonData(data.data)
       data.data = transformStringToJsonData(data.data)
+      console.log('response data', data?.data)
       return data
     },
     (error) => {
       const response = error.response
+      console.log('response error', response)
       if (response?.data) {
         response.data = transformResponseData(response.data)
       }
