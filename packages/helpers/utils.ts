@@ -195,8 +195,11 @@ export function transformStringToJsonData(data: string) {
     }
     return data
   } catch (e) {
-    console.error('error', e)
-    throw e
+    console.error('transform string to JSON data', {
+      data,
+      e,
+    })
+    return data
   }
 }
 
