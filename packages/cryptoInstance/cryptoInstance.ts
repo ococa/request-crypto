@@ -132,7 +132,7 @@ function addEncryptFnToTransformRequest(
     if (!data) {
       return config
     }
-    if (data instanceof FormData) {
+    if (data instanceof FormData || data instanceof File) {
       headers.closeCrypto = true
     }
     return config
