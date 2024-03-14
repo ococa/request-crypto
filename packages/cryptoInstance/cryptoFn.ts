@@ -32,7 +32,7 @@ const createEncryptFn: createEncryptFnType = function (
         1,
       )
       mapStore.set(requestKey, deepClone(encryptInfo))
-      setRequestCryptoHeader(headers, encryptInfo)
+      setRequestCryptoHeader(headers, '04' + encryptInfo)
 
       if (data) {
         if (typeof data !== 'string') {

@@ -3255,7 +3255,7 @@ const createEncryptFn = function (__store, asymmetricKey, mapStore, requestKey) 
             __store.publicKey = [...Buffer.from(__store.info.key)];
             const encryptInfo = src.sm2.doEncrypt(JSON.stringify(__store.info), asymmetricKey, 1);
             mapStore.set(requestKey, deepClone(encryptInfo));
-            setRequestCryptoHeader(headers, encryptInfo);
+            setRequestCryptoHeader(headers, '04' + encryptInfo);
             if (data) {
                 if (typeof data !== 'string') {
                     data = JSON.stringify(data);
