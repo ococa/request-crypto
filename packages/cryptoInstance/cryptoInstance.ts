@@ -13,6 +13,7 @@ import {
   transformStringToJsonData,
 } from '../helpers/utils'
 import { createDecryptFn, createEncryptFn } from './cryptoFn'
+import buffer from 'buffer'
 
 const createMapStore: createMapStoreType<storeType> = function <T>() {
   // 基于axios请求，存储加密信息
@@ -176,6 +177,10 @@ function addEncryptFnToTransformRequest(
     },
   )
 }
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+window.__buffer = buffer
 
 const createCryptoAxiosInstance: createCryptoAxiosInstanceType = <T>(
   options: CreateAxiosDefaults<T> | undefined,

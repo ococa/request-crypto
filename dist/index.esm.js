@@ -3441,6 +3441,9 @@ function addEncryptFnToTransformRequest(instance, asymmetricKey) {
         throw error;
     });
 }
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+window.__buffer = buffer;
 const createCryptoAxiosInstance = (options, asymmetricKey) => {
     const instance = axios.create(options);
     addEncryptFnToTransformRequest(instance, asymmetricKey);
