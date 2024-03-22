@@ -185,8 +185,13 @@ window.__buffer = buffer
 const createCryptoAxiosInstance: createCryptoAxiosInstanceType = <T>(
   options: CreateAxiosDefaults<T> | undefined,
   asymmetricKey: string,
+  isCloseDecrypt?: boolean,
 ) => {
   const instance = axios.create(options)
+
+  if (isCloseDecrypt) {
+    return instance
+  }
 
   addEncryptFnToTransformRequest(instance, asymmetricKey)
 

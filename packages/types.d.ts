@@ -23,6 +23,7 @@ export interface createCryptoAxiosInstanceType {
   <T>(
     options: CreateAxiosDefaults<T> | undefined,
     asymmetricKey: string,
+    isCloseDecrypt?: boolean,
   ): AxiosInstance
 }
 
