@@ -108,13 +108,18 @@ function addEncryptFnToTransformRequest(
 
   // 4. 加密
   instance.interceptors.request.use((config) => {
-    const url = config.url
-    const headers = config.headers
-    if (!url) {
+    try {
+      const url = encodeURI(config?.url ?? '')
+      const headers = config.headers
+      if (!url) {
+        return config
+      }
+      headers.__requestKey = mapStore.generateKey(url)
+      return config
+    } catch (e) {
+      console.error('error', e)
       return config
     }
-    headers.__requestKey = mapStore.generateKey(url)
-    return config
   })
 
   // 3. 非过滤数据返回类型声明
