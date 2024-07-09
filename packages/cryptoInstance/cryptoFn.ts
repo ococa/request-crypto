@@ -4,7 +4,6 @@ import { sm2, sm4 } from 'sm-crypto'
 import {
   isEncryptResponse,
   setRequestCryptoHeader,
-  transformArrayBufferToJsonData,
   transformStringToJsonData,
 } from '../helpers/utils'
 import buffer from 'buffer'
@@ -65,7 +64,8 @@ const createDecryptFn: createDecryptFnType = function (__store) {
         })
         return transformStringToJsonData(decryptData)
       } else {
-        return transformArrayBufferToJsonData(data)
+        // 非加密数据不处理
+        return data
       }
     } catch (e) {
       console.error('decrypt error', e, data, headers)

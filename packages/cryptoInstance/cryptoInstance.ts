@@ -9,7 +9,6 @@ import {
   HEADER_ENCRYPT_WITH,
   randomPassword,
   shouldEncrypt,
-  transformArrayBufferToJsonData,
   transformResponseData,
   transformStringToJsonData,
 } from '../helpers/utils'
@@ -177,7 +176,8 @@ function addEncryptFnToTransformRequest(
         request?.responseType?.toLowerCase() === 'arraybuffer' ||
         request?.responseType?.toLowerCase() === 'blob'
       ) {
-        response.data = transformArrayBufferToJsonData(response.data)
+        // 特殊数据不处理，直接返回
+        // do nothing ->>
       } else {
         response.data = transformStringToJsonData(response.data)
       }
