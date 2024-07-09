@@ -178,10 +178,7 @@ export function transformResponseData(data: unknown) {
 
 export function transformArrayBufferToJsonData(data: ArrayBuffer) {
   try {
-    if (data instanceof ArrayBuffer) {
-      return transformStringToJsonData(ab2str(data))
-    }
-    return data
+    return transformStringToJsonData(ab2str(data))
   } catch (e) {
     console.error('error', e)
     throw e
