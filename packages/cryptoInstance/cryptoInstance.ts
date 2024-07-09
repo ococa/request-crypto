@@ -169,7 +169,7 @@ function addEncryptFnToTransformRequest(
     (response) => {
       const { request } = response
       if (
-        request?.reponseType?.toLowerCase() === 'arraybuffer' ||
+        request?.responseType?.toLowerCase() === 'arraybuffer' ||
         request?.responseType?.toLowerCase() === 'blob'
       ) {
         response.data = transformArrayBufferToJsonData(response.data)
