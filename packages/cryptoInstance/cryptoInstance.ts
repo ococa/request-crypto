@@ -166,10 +166,17 @@ function addEncryptFnToTransformRequest(
    * 返回数据处理
    */
   instance.interceptors.response.use(
-    (data) => {
-      data.data = transformArrayBufferToJsonData(data.data)
-      data.data = transformStringToJsonData(data.data)
-      return data
+    (response) => {
+      const { request } = response
+      if (
+        request?.reponseType?.toLowerCase() === 'arraybuffer' ||
+        request?.responseType?.toLowerCase() === 'blob'
+      ) {
+        response.data = transformArrayBufferToJsonData(response.data)
+      } else {
+        response.data = transformStringToJsonData(response.data)
+      }
+      return response
     },
     (error) => {
       const response = error.response
