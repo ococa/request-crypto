@@ -6,6 +6,7 @@ import {
   storeType,
 } from '../types'
 import {
+  HEADER_ENCRYPT_WITH,
   randomPassword,
   shouldEncrypt,
   transformArrayBufferToJsonData,
@@ -167,7 +168,11 @@ function addEncryptFnToTransformRequest(
    */
   instance.interceptors.response.use(
     (response) => {
-      const { request } = response
+      const { request, headers } = response
+      // 加密过的数据已经被处理了
+      if (headers && (headers as any).get(HEADER_ENCRYPT_WITH)) {
+        return response
+      }
       if (
         request?.responseType?.toLowerCase() === 'arraybuffer' ||
         request?.responseType?.toLowerCase() === 'blob'
