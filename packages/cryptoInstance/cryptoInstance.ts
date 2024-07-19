@@ -15,6 +15,8 @@ import {
 import { createDecryptFn, createEncryptFn } from './cryptoFn'
 import buffer from 'buffer'
 
+const storageLangKey = 'cps_lang'
+
 const createMapStore: createMapStoreType<storeType> = function <T>() {
   // 基于axios请求，存储加密信息
   const mapStore = new Map<string, T>()
@@ -203,6 +205,22 @@ const createCryptoAxiosInstance: createCryptoAxiosInstanceType = <T>(
   isCloseDecrypt?: boolean,
 ) => {
   const instance = axios.create(options)
+  instance.interceptors.request.use((config) => {
+    const langKey = localStorage.getItem(storageLangKey) as 'en' | 'ko' | 'zh'
+    const langMap = {
+      en: 'en-US',
+      ko: 'ko-KR',
+      zh: 'zh-CN',
+    }
+    if (langKey && Object.prototype.hasOwnProperty.call(langMap, langKey)) {
+      const langValue = langMap[langKey]
+      // "accept-language": "",
+      config.headers.set({
+        'Accept-Language': `${langValue},zh;q=0.9,en;q=0.8`,
+      })
+    }
+    return config
+  })
 
   if (isCloseDecrypt) {
     return instance
