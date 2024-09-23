@@ -171,7 +171,13 @@ export function transformResponseData(data: unknown) {
     }
   }
   if (data instanceof ArrayBuffer) {
-    return ab2str(data)
+    const ret = ab2str(data)
+    try {
+      return JSON.parse(ret)
+    } catch (e) {
+      console.error('尝试转换失败', e)
+      return ret
+    }
   }
   return data
 }

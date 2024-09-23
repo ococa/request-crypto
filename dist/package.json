@@ -1,11 +1,10 @@
 {
   "name": "request-crypto",
   "description": "axios with crypto callback",
-  "version": "1.7.1",
+  "version": "1.7.3",
   "main": "index.cjs.js",
   "module": "index.esm.js",
   "dependencies": {
-    "axios": "1.6.7",
     "buffer": "^6.0.3"
   }
 }
