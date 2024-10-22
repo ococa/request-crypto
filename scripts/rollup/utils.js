@@ -7,6 +7,7 @@ import resolve from '@rollup/plugin-node-resolve'
 import json from '@rollup/plugin-json'
 import eslint from '@rollup/plugin-eslint'
 
+export const typesInputFile = 'types.d.ts'
 export const cjsInputFile = 'index.cjs.js'
 export const esmInputFile = 'index.esm.js'
 

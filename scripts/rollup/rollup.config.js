@@ -5,14 +5,23 @@ import {
   getBaseRollupPlugins,
   getDistPath,
   getEntryPath,
-  isDev,
+  isDev, typesInputFile,
 } from './utils'
 import terser from '@rollup/plugin-terser'
+import { dts } from "rollup-plugin-dts";
+
 
 const inputPath = getEntryPath('index.ts')
+const interfaceFile = getEntryPath(typesInputFile)
 const outputPath = getDistPath()
 
-export default async () => ({
+console.log('interfaceFile', interfaceFile)
+
+export default async () => ([{
+    input: interfaceFile,
+    output: [{ file: `${outputPath}/${typesInputFile}`, format: "es" }],
+    plugins: [dts()],
+},{
   input: inputPath,
   output: [
     {
@@ -28,4 +37,4 @@ export default async () => ({
   ],
   external: ['axios'],
   plugins: [...getBaseRollupPlugins(), !isDev && terser()],
-})
+}])
