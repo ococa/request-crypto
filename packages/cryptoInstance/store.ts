@@ -12,7 +12,7 @@ const transformParamsToString = (
   for (const key in params) {
     _url.searchParams.append(key, params[key])
   }
-  return _url.toString().replace(origin, '')
+  return _url.toString()
 }
 
 export const createMapStore: createMapStoreType<storeType> = function <T>() {
@@ -31,7 +31,7 @@ export const createMapStore: createMapStoreType<storeType> = function <T>() {
     try {
       const SALT = 'e0c7ff'
       const fetchUrl = transformParamsToString(url, params ?? {})
-      const str = `${fetchUrl}-${SALT}-${token}`
+      const str = `${fetchUrl}-${SALT}-${token ?? ''}`
       const _key = md5(str)
       // console.log('_key', {
       //   fetchUrl,
@@ -40,9 +40,9 @@ export const createMapStore: createMapStoreType<storeType> = function <T>() {
       // })
       return `${_key}-/${url}`
     } catch (e) {
-      if (__DEV__) {
-        console.error('error', e)
-      }
+      // if (__DEV__) {
+      //   console.error('error', e)
+      // }
       const random = randomPassword(10)
       return `${random}-/${url}`
     }
