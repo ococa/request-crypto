@@ -12,12 +12,6 @@ const transformParamsToString = (
     _url.searchParams.append(key, params[key])
   }
   return _url.toString()
-  // params.append('param3', 'value3');
-  // console.log(url.toString());
-  // const keys = Object.keys(params).sort()
-  // return keys.reduce((acc, key) => {
-  //   return acc + key + params[key]
-  // }, '')
 }
 
 export const createMapStore: createMapStoreType<storeType> = function <T>() {
@@ -35,10 +29,14 @@ export const createMapStore: createMapStoreType<storeType> = function <T>() {
     try {
       const SALT = 'e0c7ff'
       const fetchUrl = transformParamsToString(url, params ?? {})
-      return md5(fetchUrl + SALT)
+      const _key = md5(fetchUrl + SALT)
+      return `${_key}-/${url}`
     } catch (e) {
-      console.error('error', e)
-      return randomPassword(10)
+      if (__DEV__) {
+        console.error('error', e)
+      }
+      const random = randomPassword(10)
+      return `${random}-/${url}`
     }
   }
 
