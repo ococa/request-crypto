@@ -81,7 +81,11 @@ function addEncryptFnToTransformRequest(
       if (!url) {
         return config
       }
-      headers.__requestKey = mapStore.generateKey(url, config?.params)
+      headers.__requestKey = mapStore.generateKey(
+        url,
+        config?.params,
+        headers?.get('Authorization') as string,
+      )
       return config
     } catch (e) {
       console.error('error', e)

@@ -69,6 +69,7 @@ type createMapStoreType<T> = () => {
   generateKey: (
     url: string,
     params: null | undefined | Record<string, string>,
+    token: number | string | undefined | null,
   ) => string
   set: (key: string, value: T) => void
   get: (key: string) => T | undefined

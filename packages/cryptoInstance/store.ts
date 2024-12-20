@@ -7,11 +7,12 @@ const transformParamsToString = (
   params: Record<string, string>,
 ) => {
   // params order -> string
-  const _url = new URL(window.location.origin + url)
+  const origin = window.location.origin
+  const _url = new URL(origin + url)
   for (const key in params) {
     _url.searchParams.append(key, params[key])
   }
-  return _url.toString()
+  return _url.toString().replace(origin, '')
 }
 
 export const createMapStore: createMapStoreType<storeType> = function <T>() {
@@ -25,11 +26,18 @@ export const createMapStore: createMapStoreType<storeType> = function <T>() {
   function hashUrlValue(
     url: string,
     params: null | undefined | Record<string, string>,
+    token: unknown,
   ) {
     try {
       const SALT = 'e0c7ff'
       const fetchUrl = transformParamsToString(url, params ?? {})
-      const _key = md5(fetchUrl + SALT)
+      const str = `${fetchUrl}-${SALT}-${token}`
+      const _key = md5(str)
+      // console.log('_key', {
+      //   fetchUrl,
+      //   str,
+      //   _key,
+      // })
       return `${_key}-/${url}`
     } catch (e) {
       if (__DEV__) {
