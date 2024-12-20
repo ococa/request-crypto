@@ -66,7 +66,10 @@ export type createDecryptFnType = (
 ) => AxiosResponseTransformer
 
 type createMapStoreType<T> = () => {
-  generateKey: (url: string) => string
+  generateKey: (
+    url: string,
+    params: null | undefined | Record<string, string>,
+  ) => string
   set: (key: string, value: T) => void
   get: (key: string) => T | undefined
   clear: (key: string) => void

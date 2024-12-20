@@ -1,52 +1,17 @@
 import axios, { AxiosInstance, CreateAxiosDefaults } from 'axios'
 
-import {
-  createCryptoAxiosInstanceType,
-  createMapStoreType,
-  storeType,
-} from '../types'
+import { createCryptoAxiosInstanceType, storeType } from '../types'
 import {
   HEADER_ENCRYPT_WITH,
-  randomPassword,
   shouldEncrypt,
   transformResponseData,
   transformStringToJsonData,
 } from '../helpers/utils'
 import { createDecryptFn, createEncryptFn } from './cryptoFn'
 import buffer from 'buffer'
+import { createMapStore } from './store'
 
 const storageLangKey = 'cps_lang'
-
-const createMapStore: createMapStoreType<storeType> = function <T>() {
-  // 基于axios请求，存储加密信息
-  const mapStore = new Map<string, T>()
-
-  function get(key: string) {
-    return mapStore.get(key)
-  }
-  function randomKeyForMap(url: string) {
-    const random = randomPassword(8, 'low')
-    const key = `${random}-/${url}`
-    if (mapStore.has(key)) {
-      return randomKeyForMap(url)
-    }
-    return key
-  }
-
-  function set(key: string, value: T) {
-    mapStore.set(key, value)
-  }
-  function clear(key: string) {
-    mapStore.delete(key)
-  }
-
-  return {
-    get,
-    generateKey: randomKeyForMap,
-    set,
-    clear,
-  }
-}
 
 const mapStore = createMapStore()
 
@@ -116,7 +81,7 @@ function addEncryptFnToTransformRequest(
       if (!url) {
         return config
       }
-      headers.__requestKey = mapStore.generateKey(url)
+      headers.__requestKey = mapStore.generateKey(url, config?.params)
       return config
     } catch (e) {
       console.error('error', e)
