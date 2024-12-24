@@ -11,7 +11,9 @@ const transformParamsToString = (
     const origin = window.location.origin
     const _url = new URL(origin + url)
     for (const key in params) {
-      _url.searchParams.append(key, params[key])
+      if (params[key] !== undefined && params[key] !== null) {
+        _url.searchParams.append(key, params[key])
+      }
     }
     return _url.toString()
   } catch (e) {
