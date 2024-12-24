@@ -1,1 +1,3847 @@
-import t from"axios";import r from"buffer";const e=(r,e)=>{const i=t.create(r);return function(t,r){if(!r)return t;const{encryptFn:e,decryptFn:i}=r();e&&t.interceptors.request.use((t=>{const r=t.transformRequest;if(!r)throw new Error(`request ${t} has no transformRequest`);if(!Array.isArray(r))throw new Error(`transformRequest ${r} is not an array`);if(r.push(e),!i)return t;const n=t.transformResponse;if(!n)throw new Error(`request ${t} has no transformResponse`);if("function"!=typeof i)throw new Error(`decryptFn ${i} is not a function`);if(!Array.isArray(n))throw new Error(`transformResponse ${n} is not an array`);return n.unshift(i),t}))}(i,e),i};const i=(t=16,r="high")=>{const e=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"],i=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],n=[0,1,2,3,4,5,6,7,8,9],o=["!","@","-","_","=","<",">","#","*","%","+","&","^","$"],s=[];let u="";const h=function(...t){let r="";return t.forEach((t=>{r+=t[Math.floor(Math.random()*t.length)]})),r};switch(r){case"high":u+=h(e,i,n,o),s.push(...e,...i,...n,...o);break;case"medium":u+=h(e,i,n),s.push(...e,...i,...n);break;default:u+=h(e,n),s.push(...e,...n)}const a=t-u.length;for(let t=0;t<a;t++)u+=h(s);return u},n="X-Encrypt-With";function o(t){if("string"==typeof t)try{t=JSON.parse(t)}catch(t){throw console.error("error",t),t}if(t instanceof ArrayBuffer){const r=function(t,r="utf-8"){return new TextDecoder(r).decode(t)}(t);try{return JSON.parse(r)}catch(t){return console.error("尝试转换失败",t),r}}return t}function s(t){try{return"string"==typeof t?JSON.parse(t):t}catch(r){return console.error("transform string to JSON data",{data:t,e:r}),t}}const u=t=>{let r=!0;return!(t=>/^\/bi-api\/api/.test(t))(t)&&(t.startsWith("/api")&&(r=!1,(t=>/^\/(api\/logmanage|api\/data-source|api\/enterpriseadmin|api\/componentmanager|api\/spacemanager|api\/filemanager)/.test(t))(t)&&(r=!0)),r)},h=t=>({...{key:i(16,"high"),algorithm:t||"SM4"}}),a=()=>({mode:"ecb",padding:"pkcs#5",output:"array"});var f="undefined"!=typeof globalThis?globalThis:"undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self?self:{};function c(t){return t&&t.__esModule&&Object.prototype.hasOwnProperty.call(t,"default")?t.default:t}var l,p={exports:{}};l=p,function(){var t;function r(t,r,e){null!=t&&("number"==typeof t?this.fromNumber(t,r,e):null==r&&"string"!=typeof t?this.fromString(t,256):this.fromString(t,r))}function e(){return new r(null)}var i="undefined"!=typeof navigator;i&&"Microsoft Internet Explorer"==navigator.appName?(r.prototype.am=function(t,r,e,i,n,o){for(var s=32767&r,u=r>>15;--o>=0;){var h=32767&this[t],a=this[t++]>>15,f=u*h+a*s;n=((h=s*h+((32767&f)<<15)+e[i]+(1073741823&n))>>>30)+(f>>>15)+u*a+(n>>>30),e[i++]=1073741823&h}return n},t=30):i&&"Netscape"!=navigator.appName?(r.prototype.am=function(t,r,e,i,n,o){for(;--o>=0;){var s=r*this[t++]+e[i]+n;n=Math.floor(s/67108864),e[i++]=67108863&s}return n},t=26):(r.prototype.am=function(t,r,e,i,n,o){for(var s=16383&r,u=r>>14;--o>=0;){var h=16383&this[t],a=this[t++]>>14,f=u*h+a*s;n=((h=s*h+((16383&f)<<14)+e[i]+n)>>28)+(f>>14)+u*a,e[i++]=268435455&h}return n},t=28),r.prototype.DB=t,r.prototype.DM=(1<<t)-1,r.prototype.DV=1<<t,r.prototype.FV=Math.pow(2,52),r.prototype.F1=52-t,r.prototype.F2=2*t-52;var n,o,s="0123456789abcdefghijklmnopqrstuvwxyz",u=new Array;for(n="0".charCodeAt(0),o=0;o<=9;++o)u[n++]=o;for(n="a".charCodeAt(0),o=10;o<36;++o)u[n++]=o;for(n="A".charCodeAt(0),o=10;o<36;++o)u[n++]=o;function h(t){return s.charAt(t)}function a(t,r){var e=u[t.charCodeAt(r)];return null==e?-1:e}function f(t){var r=e();return r.fromInt(t),r}function c(t){var r,e=1;return 0!=(r=t>>>16)&&(t=r,e+=16),0!=(r=t>>8)&&(t=r,e+=8),0!=(r=t>>4)&&(t=r,e+=4),0!=(r=t>>2)&&(t=r,e+=2),0!=(r=t>>1)&&(t=r,e+=1),e}function p(t){this.m=t}function y(t){this.m=t,this.mp=t.invDigit(),this.mpl=32767&this.mp,this.mph=this.mp>>15,this.um=(1<<t.DB-15)-1,this.mt2=2*t.t}function g(t,r){return t&r}function d(t,r){return t|r}function m(t,r){return t^r}function v(t,r){return t&~r}function T(t){if(0==t)return-1;var r=0;return 65535&t||(t>>=16,r+=16),255&t||(t>>=8,r+=8),15&t||(t>>=4,r+=4),3&t||(t>>=2,r+=2),1&t||++r,r}function w(t){for(var r=0;0!=t;)t&=t-1,++r;return r}function b(){}function F(t){return t}function B(t){this.r2=e(),this.q3=e(),r.ONE.dlShiftTo(2*t.t,this.r2),this.mu=this.r2.divide(t),this.m=t}p.prototype.convert=function(t){return t.s<0||t.compareTo(this.m)>=0?t.mod(this.m):t},p.prototype.revert=function(t){return t},p.prototype.reduce=function(t){t.divRemTo(this.m,null,t)},p.prototype.mulTo=function(t,r,e){t.multiplyTo(r,e),this.reduce(e)},p.prototype.sqrTo=function(t,r){t.squareTo(r),this.reduce(r)},y.prototype.convert=function(t){var i=e();return t.abs().dlShiftTo(this.m.t,i),i.divRemTo(this.m,null,i),t.s<0&&i.compareTo(r.ZERO)>0&&this.m.subTo(i,i),i},y.prototype.revert=function(t){var r=e();return t.copyTo(r),this.reduce(r),r},y.prototype.reduce=function(t){for(;t.t<=this.mt2;)t[t.t++]=0;for(var r=0;r<this.m.t;++r){var e=32767&t[r],i=e*this.mpl+((e*this.mph+(t[r]>>15)*this.mpl&this.um)<<15)&t.DM;for(t[e=r+this.m.t]+=this.m.am(0,i,t,r,0,this.m.t);t[e]>=t.DV;)t[e]-=t.DV,t[++e]++}t.clamp(),t.drShiftTo(this.m.t,t),t.compareTo(this.m)>=0&&t.subTo(this.m,t)},y.prototype.mulTo=function(t,r,e){t.multiplyTo(r,e),this.reduce(e)},y.prototype.sqrTo=function(t,r){t.squareTo(r),this.reduce(r)},r.prototype.copyTo=function(t){for(var r=this.t-1;r>=0;--r)t[r]=this[r];t.t=this.t,t.s=this.s},r.prototype.fromInt=function(t){this.t=1,this.s=t<0?-1:0,t>0?this[0]=t:t<-1?this[0]=t+this.DV:this.t=0},r.prototype.fromString=function(t,e){var i;if(16==e)i=4;else if(8==e)i=3;else if(256==e)i=8;else if(2==e)i=1;else if(32==e)i=5;else{if(4!=e)return void this.fromRadix(t,e);i=2}this.t=0,this.s=0;for(var n=t.length,o=!1,s=0;--n>=0;){var u=8==i?255&t[n]:a(t,n);u<0?"-"==t.charAt(n)&&(o=!0):(o=!1,0==s?this[this.t++]=u:s+i>this.DB?(this[this.t-1]|=(u&(1<<this.DB-s)-1)<<s,this[this.t++]=u>>this.DB-s):this[this.t-1]|=u<<s,(s+=i)>=this.DB&&(s-=this.DB))}8==i&&128&t[0]&&(this.s=-1,s>0&&(this[this.t-1]|=(1<<this.DB-s)-1<<s)),this.clamp(),o&&r.ZERO.subTo(this,this)},r.prototype.clamp=function(){for(var t=this.s&this.DM;this.t>0&&this[this.t-1]==t;)--this.t},r.prototype.dlShiftTo=function(t,r){var e;for(e=this.t-1;e>=0;--e)r[e+t]=this[e];for(e=t-1;e>=0;--e)r[e]=0;r.t=this.t+t,r.s=this.s},r.prototype.drShiftTo=function(t,r){for(var e=t;e<this.t;++e)r[e-t]=this[e];r.t=Math.max(this.t-t,0),r.s=this.s},r.prototype.lShiftTo=function(t,r){var e,i=t%this.DB,n=this.DB-i,o=(1<<n)-1,s=Math.floor(t/this.DB),u=this.s<<i&this.DM;for(e=this.t-1;e>=0;--e)r[e+s+1]=this[e]>>n|u,u=(this[e]&o)<<i;for(e=s-1;e>=0;--e)r[e]=0;r[s]=u,r.t=this.t+s+1,r.s=this.s,r.clamp()},r.prototype.rShiftTo=function(t,r){r.s=this.s;var e=Math.floor(t/this.DB);if(e>=this.t)r.t=0;else{var i=t%this.DB,n=this.DB-i,o=(1<<i)-1;r[0]=this[e]>>i;for(var s=e+1;s<this.t;++s)r[s-e-1]|=(this[s]&o)<<n,r[s-e]=this[s]>>i;i>0&&(r[this.t-e-1]|=(this.s&o)<<n),r.t=this.t-e,r.clamp()}},r.prototype.subTo=function(t,r){for(var e=0,i=0,n=Math.min(t.t,this.t);e<n;)i+=this[e]-t[e],r[e++]=i&this.DM,i>>=this.DB;if(t.t<this.t){for(i-=t.s;e<this.t;)i+=this[e],r[e++]=i&this.DM,i>>=this.DB;i+=this.s}else{for(i+=this.s;e<t.t;)i-=t[e],r[e++]=i&this.DM,i>>=this.DB;i-=t.s}r.s=i<0?-1:0,i<-1?r[e++]=this.DV+i:i>0&&(r[e++]=i),r.t=e,r.clamp()},r.prototype.multiplyTo=function(t,e){var i=this.abs(),n=t.abs(),o=i.t;for(e.t=o+n.t;--o>=0;)e[o]=0;for(o=0;o<n.t;++o)e[o+i.t]=i.am(0,n[o],e,o,0,i.t);e.s=0,e.clamp(),this.s!=t.s&&r.ZERO.subTo(e,e)},r.prototype.squareTo=function(t){for(var r=this.abs(),e=t.t=2*r.t;--e>=0;)t[e]=0;for(e=0;e<r.t-1;++e){var i=r.am(e,r[e],t,2*e,0,1);(t[e+r.t]+=r.am(e+1,2*r[e],t,2*e+1,i,r.t-e-1))>=r.DV&&(t[e+r.t]-=r.DV,t[e+r.t+1]=1)}t.t>0&&(t[t.t-1]+=r.am(e,r[e],t,2*e,0,1)),t.s=0,t.clamp()},r.prototype.divRemTo=function(t,i,n){var o=t.abs();if(!(o.t<=0)){var s=this.abs();if(s.t<o.t)return null!=i&&i.fromInt(0),void(null!=n&&this.copyTo(n));null==n&&(n=e());var u=e(),h=this.s,a=t.s,f=this.DB-c(o[o.t-1]);f>0?(o.lShiftTo(f,u),s.lShiftTo(f,n)):(o.copyTo(u),s.copyTo(n));var l=u.t,p=u[l-1];if(0!=p){var y=p*(1<<this.F1)+(l>1?u[l-2]>>this.F2:0),g=this.FV/y,d=(1<<this.F1)/y,m=1<<this.F2,v=n.t,T=v-l,w=null==i?e():i;for(u.dlShiftTo(T,w),n.compareTo(w)>=0&&(n[n.t++]=1,n.subTo(w,n)),r.ONE.dlShiftTo(l,w),w.subTo(u,u);u.t<l;)u[u.t++]=0;for(;--T>=0;){var b=n[--v]==p?this.DM:Math.floor(n[v]*g+(n[v-1]+m)*d);if((n[v]+=u.am(0,b,n,T,0,l))<b)for(u.dlShiftTo(T,w),n.subTo(w,n);n[v]<--b;)n.subTo(w,n)}null!=i&&(n.drShiftTo(l,i),h!=a&&r.ZERO.subTo(i,i)),n.t=l,n.clamp(),f>0&&n.rShiftTo(f,n),h<0&&r.ZERO.subTo(n,n)}}},r.prototype.invDigit=function(){if(this.t<1)return 0;var t=this[0];if(!(1&t))return 0;var r=3&t;return(r=(r=(r=(r=r*(2-(15&t)*r)&15)*(2-(255&t)*r)&255)*(2-((65535&t)*r&65535))&65535)*(2-t*r%this.DV)%this.DV)>0?this.DV-r:-r},r.prototype.isEven=function(){return 0==(this.t>0?1&this[0]:this.s)},r.prototype.exp=function(t,i){if(t>4294967295||t<1)return r.ONE;var n=e(),o=e(),s=i.convert(this),u=c(t)-1;for(s.copyTo(n);--u>=0;)if(i.sqrTo(n,o),(t&1<<u)>0)i.mulTo(o,s,n);else{var h=n;n=o,o=h}return i.revert(n)},r.prototype.toString=function(t){if(this.s<0)return"-"+this.negate().toString(t);var r;if(16==t)r=4;else if(8==t)r=3;else if(2==t)r=1;else if(32==t)r=5;else{if(4!=t)return this.toRadix(t);r=2}var e,i=(1<<r)-1,n=!1,o="",s=this.t,u=this.DB-s*this.DB%r;if(s-- >0)for(u<this.DB&&(e=this[s]>>u)>0&&(n=!0,o=h(e));s>=0;)u<r?(e=(this[s]&(1<<u)-1)<<r-u,e|=this[--s]>>(u+=this.DB-r)):(e=this[s]>>(u-=r)&i,u<=0&&(u+=this.DB,--s)),e>0&&(n=!0),n&&(o+=h(e));return n?o:"0"},r.prototype.negate=function(){var t=e();return r.ZERO.subTo(this,t),t},r.prototype.abs=function(){return this.s<0?this.negate():this},r.prototype.compareTo=function(t){var r=this.s-t.s;if(0!=r)return r;var e=this.t;if(0!=(r=e-t.t))return this.s<0?-r:r;for(;--e>=0;)if(0!=(r=this[e]-t[e]))return r;return 0},r.prototype.bitLength=function(){return this.t<=0?0:this.DB*(this.t-1)+c(this[this.t-1]^this.s&this.DM)},r.prototype.mod=function(t){var i=e();return this.abs().divRemTo(t,null,i),this.s<0&&i.compareTo(r.ZERO)>0&&t.subTo(i,i),i},r.prototype.modPowInt=function(t,r){var e;return e=t<256||r.isEven()?new p(r):new y(r),this.exp(t,e)},r.ZERO=f(0),r.ONE=f(1),b.prototype.convert=F,b.prototype.revert=F,b.prototype.mulTo=function(t,r,e){t.multiplyTo(r,e)},b.prototype.sqrTo=function(t,r){t.squareTo(r)},B.prototype.convert=function(t){if(t.s<0||t.t>2*this.m.t)return t.mod(this.m);if(t.compareTo(this.m)<0)return t;var r=e();return t.copyTo(r),this.reduce(r),r},B.prototype.revert=function(t){return t},B.prototype.reduce=function(t){for(t.drShiftTo(this.m.t-1,this.r2),t.t>this.m.t+1&&(t.t=this.m.t+1,t.clamp()),this.mu.multiplyUpperTo(this.r2,this.m.t+1,this.q3),this.m.multiplyLowerTo(this.q3,this.m.t+1,this.r2);t.compareTo(this.r2)<0;)t.dAddOffset(1,this.m.t+1);for(t.subTo(this.r2,t);t.compareTo(this.m)>=0;)t.subTo(this.m,t)},B.prototype.mulTo=function(t,r,e){t.multiplyTo(r,e),this.reduce(e)},B.prototype.sqrTo=function(t,r){t.squareTo(r),this.reduce(r)};var x,S,q,E=[2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,179,181,191,193,197,199,211,223,227,229,233,239,241,251,257,263,269,271,277,281,283,293,307,311,313,317,331,337,347,349,353,359,367,373,379,383,389,397,401,409,419,421,431,433,439,443,449,457,461,463,467,479,487,491,499,503,509,521,523,541,547,557,563,569,571,577,587,593,599,601,607,613,617,619,631,641,643,647,653,659,661,673,677,683,691,701,709,719,727,733,739,743,751,757,761,769,773,787,797,809,811,821,823,827,829,839,853,857,859,863,877,881,883,887,907,911,919,929,937,941,947,953,967,971,977,983,991,997],I=(1<<26)/E[E.length-1];function D(){var t;t=(new Date).getTime(),S[q++]^=255&t,S[q++]^=t>>8&255,S[q++]^=t>>16&255,S[q++]^=t>>24&255,q>=H&&(q-=H)}if(r.prototype.chunkSize=function(t){return Math.floor(Math.LN2*this.DB/Math.log(t))},r.prototype.toRadix=function(t){if(null==t&&(t=10),0==this.signum()||t<2||t>36)return"0";var r=this.chunkSize(t),i=Math.pow(t,r),n=f(i),o=e(),s=e(),u="";for(this.divRemTo(n,o,s);o.signum()>0;)u=(i+s.intValue()).toString(t).substr(1)+u,o.divRemTo(n,o,s);return s.intValue().toString(t)+u},r.prototype.fromRadix=function(t,e){this.fromInt(0),null==e&&(e=10);for(var i=this.chunkSize(e),n=Math.pow(e,i),o=!1,s=0,u=0,h=0;h<t.length;++h){var f=a(t,h);f<0?"-"==t.charAt(h)&&0==this.signum()&&(o=!0):(u=e*u+f,++s>=i&&(this.dMultiply(n),this.dAddOffset(u,0),s=0,u=0))}s>0&&(this.dMultiply(Math.pow(e,s)),this.dAddOffset(u,0)),o&&r.ZERO.subTo(this,this)},r.prototype.fromNumber=function(t,e,i){if("number"==typeof e)if(t<2)this.fromInt(1);else for(this.fromNumber(t,i),this.testBit(t-1)||this.bitwiseTo(r.ONE.shiftLeft(t-1),d,this),this.isEven()&&this.dAddOffset(1,0);!this.isProbablePrime(e);)this.dAddOffset(2,0),this.bitLength()>t&&this.subTo(r.ONE.shiftLeft(t-1),this);else{var n=new Array,o=7&t;n.length=1+(t>>3),e.nextBytes(n),o>0?n[0]&=(1<<o)-1:n[0]=0,this.fromString(n,256)}},r.prototype.bitwiseTo=function(t,r,e){var i,n,o=Math.min(t.t,this.t);for(i=0;i<o;++i)e[i]=r(this[i],t[i]);if(t.t<this.t){for(n=t.s&this.DM,i=o;i<this.t;++i)e[i]=r(this[i],n);e.t=this.t}else{for(n=this.s&this.DM,i=o;i<t.t;++i)e[i]=r(n,t[i]);e.t=t.t}e.s=r(this.s,t.s),e.clamp()},r.prototype.changeBit=function(t,e){var i=r.ONE.shiftLeft(t);return this.bitwiseTo(i,e,i),i},r.prototype.addTo=function(t,r){for(var e=0,i=0,n=Math.min(t.t,this.t);e<n;)i+=this[e]+t[e],r[e++]=i&this.DM,i>>=this.DB;if(t.t<this.t){for(i+=t.s;e<this.t;)i+=this[e],r[e++]=i&this.DM,i>>=this.DB;i+=this.s}else{for(i+=this.s;e<t.t;)i+=t[e],r[e++]=i&this.DM,i>>=this.DB;i+=t.s}r.s=i<0?-1:0,i>0?r[e++]=i:i<-1&&(r[e++]=this.DV+i),r.t=e,r.clamp()},r.prototype.dMultiply=function(t){this[this.t]=this.am(0,t-1,this,0,0,this.t),++this.t,this.clamp()},r.prototype.dAddOffset=function(t,r){if(0!=t){for(;this.t<=r;)this[this.t++]=0;for(this[r]+=t;this[r]>=this.DV;)this[r]-=this.DV,++r>=this.t&&(this[this.t++]=0),++this[r]}},r.prototype.multiplyLowerTo=function(t,r,e){var i,n=Math.min(this.t+t.t,r);for(e.s=0,e.t=n;n>0;)e[--n]=0;for(i=e.t-this.t;n<i;++n)e[n+this.t]=this.am(0,t[n],e,n,0,this.t);for(i=Math.min(t.t,r);n<i;++n)this.am(0,t[n],e,n,0,r-n);e.clamp()},r.prototype.multiplyUpperTo=function(t,r,e){--r;var i=e.t=this.t+t.t-r;for(e.s=0;--i>=0;)e[i]=0;for(i=Math.max(r-this.t,0);i<t.t;++i)e[this.t+i-r]=this.am(r-i,t[i],e,0,0,this.t+i-r);e.clamp(),e.drShiftTo(1,e)},r.prototype.modInt=function(t){if(t<=0)return 0;var r=this.DV%t,e=this.s<0?t-1:0;if(this.t>0)if(0==r)e=this[0]%t;else for(var i=this.t-1;i>=0;--i)e=(r*e+this[i])%t;return e},r.prototype.millerRabin=function(t){var i=this.subtract(r.ONE),n=i.getLowestSetBit();if(n<=0)return!1;var o=i.shiftRight(n);(t=t+1>>1)>E.length&&(t=E.length);for(var s=e(),u=0;u<t;++u){s.fromInt(E[Math.floor(Math.random()*E.length)]);var h=s.modPow(o,this);if(0!=h.compareTo(r.ONE)&&0!=h.compareTo(i)){for(var a=1;a++<n&&0!=h.compareTo(i);)if(0==(h=h.modPowInt(2,this)).compareTo(r.ONE))return!1;if(0!=h.compareTo(i))return!1}}return!0},r.prototype.clone=function(){var t=e();return this.copyTo(t),t},r.prototype.intValue=function(){if(this.s<0){if(1==this.t)return this[0]-this.DV;if(0==this.t)return-1}else{if(1==this.t)return this[0];if(0==this.t)return 0}return(this[1]&(1<<32-this.DB)-1)<<this.DB|this[0]},r.prototype.byteValue=function(){return 0==this.t?this.s:this[0]<<24>>24},r.prototype.shortValue=function(){return 0==this.t?this.s:this[0]<<16>>16},r.prototype.signum=function(){return this.s<0?-1:this.t<=0||1==this.t&&this[0]<=0?0:1},r.prototype.toByteArray=function(){var t=this.t,r=new Array;r[0]=this.s;var e,i=this.DB-t*this.DB%8,n=0;if(t-- >0)for(i<this.DB&&(e=this[t]>>i)!=(this.s&this.DM)>>i&&(r[n++]=e|this.s<<this.DB-i);t>=0;)i<8?(e=(this[t]&(1<<i)-1)<<8-i,e|=this[--t]>>(i+=this.DB-8)):(e=this[t]>>(i-=8)&255,i<=0&&(i+=this.DB,--t)),128&e&&(e|=-256),0==n&&(128&this.s)!=(128&e)&&++n,(n>0||e!=this.s)&&(r[n++]=e);return r},r.prototype.equals=function(t){return 0==this.compareTo(t)},r.prototype.min=function(t){return this.compareTo(t)<0?this:t},r.prototype.max=function(t){return this.compareTo(t)>0?this:t},r.prototype.and=function(t){var r=e();return this.bitwiseTo(t,g,r),r},r.prototype.or=function(t){var r=e();return this.bitwiseTo(t,d,r),r},r.prototype.xor=function(t){var r=e();return this.bitwiseTo(t,m,r),r},r.prototype.andNot=function(t){var r=e();return this.bitwiseTo(t,v,r),r},r.prototype.not=function(){for(var t=e(),r=0;r<this.t;++r)t[r]=this.DM&~this[r];return t.t=this.t,t.s=~this.s,t},r.prototype.shiftLeft=function(t){var r=e();return t<0?this.rShiftTo(-t,r):this.lShiftTo(t,r),r},r.prototype.shiftRight=function(t){var r=e();return t<0?this.lShiftTo(-t,r):this.rShiftTo(t,r),r},r.prototype.getLowestSetBit=function(){for(var t=0;t<this.t;++t)if(0!=this[t])return t*this.DB+T(this[t]);return this.s<0?this.t*this.DB:-1},r.prototype.bitCount=function(){for(var t=0,r=this.s&this.DM,e=0;e<this.t;++e)t+=w(this[e]^r);return t},r.prototype.testBit=function(t){var r=Math.floor(t/this.DB);return r>=this.t?0!=this.s:!!(this[r]&1<<t%this.DB)},r.prototype.setBit=function(t){return this.changeBit(t,d)},r.prototype.clearBit=function(t){return this.changeBit(t,v)},r.prototype.flipBit=function(t){return this.changeBit(t,m)},r.prototype.add=function(t){var r=e();return this.addTo(t,r),r},r.prototype.subtract=function(t){var r=e();return this.subTo(t,r),r},r.prototype.multiply=function(t){var r=e();return this.multiplyTo(t,r),r},r.prototype.divide=function(t){var r=e();return this.divRemTo(t,r,null),r},r.prototype.remainder=function(t){var r=e();return this.divRemTo(t,null,r),r},r.prototype.divideAndRemainder=function(t){var r=e(),i=e();return this.divRemTo(t,r,i),new Array(r,i)},r.prototype.modPow=function(t,r){var i,n,o=t.bitLength(),s=f(1);if(o<=0)return s;i=o<18?1:o<48?3:o<144?4:o<768?5:6,n=o<8?new p(r):r.isEven()?new B(r):new y(r);var u=new Array,h=3,a=i-1,l=(1<<i)-1;if(u[1]=n.convert(this),i>1){var g=e();for(n.sqrTo(u[1],g);h<=l;)u[h]=e(),n.mulTo(g,u[h-2],u[h]),h+=2}var d,m,v=t.t-1,T=!0,w=e();for(o=c(t[v])-1;v>=0;){for(o>=a?d=t[v]>>o-a&l:(d=(t[v]&(1<<o+1)-1)<<a-o,v>0&&(d|=t[v-1]>>this.DB+o-a)),h=i;!(1&d);)d>>=1,--h;if((o-=h)<0&&(o+=this.DB,--v),T)u[d].copyTo(s),T=!1;else{for(;h>1;)n.sqrTo(s,w),n.sqrTo(w,s),h-=2;h>0?n.sqrTo(s,w):(m=s,s=w,w=m),n.mulTo(w,u[d],s)}for(;v>=0&&!(t[v]&1<<o);)n.sqrTo(s,w),m=s,s=w,w=m,--o<0&&(o=this.DB-1,--v)}return n.revert(s)},r.prototype.modInverse=function(t){var e=t.isEven();if(this.isEven()&&e||0==t.signum())return r.ZERO;for(var i=t.clone(),n=this.clone(),o=f(1),s=f(0),u=f(0),h=f(1);0!=i.signum();){for(;i.isEven();)i.rShiftTo(1,i),e?(o.isEven()&&s.isEven()||(o.addTo(this,o),s.subTo(t,s)),o.rShiftTo(1,o)):s.isEven()||s.subTo(t,s),s.rShiftTo(1,s);for(;n.isEven();)n.rShiftTo(1,n),e?(u.isEven()&&h.isEven()||(u.addTo(this,u),h.subTo(t,h)),u.rShiftTo(1,u)):h.isEven()||h.subTo(t,h),h.rShiftTo(1,h);i.compareTo(n)>=0?(i.subTo(n,i),e&&o.subTo(u,o),s.subTo(h,s)):(n.subTo(i,n),e&&u.subTo(o,u),h.subTo(s,h))}return 0!=n.compareTo(r.ONE)?r.ZERO:h.compareTo(t)>=0?h.subtract(t):h.signum()<0?(h.addTo(t,h),h.signum()<0?h.add(t):h):h},r.prototype.pow=function(t){return this.exp(t,new b)},r.prototype.gcd=function(t){var r=this.s<0?this.negate():this.clone(),e=t.s<0?t.negate():t.clone();if(r.compareTo(e)<0){var i=r;r=e,e=i}var n=r.getLowestSetBit(),o=e.getLowestSetBit();if(o<0)return r;for(n<o&&(o=n),o>0&&(r.rShiftTo(o,r),e.rShiftTo(o,e));r.signum()>0;)(n=r.getLowestSetBit())>0&&r.rShiftTo(n,r),(n=e.getLowestSetBit())>0&&e.rShiftTo(n,e),r.compareTo(e)>=0?(r.subTo(e,r),r.rShiftTo(1,r)):(e.subTo(r,e),e.rShiftTo(1,e));return o>0&&e.lShiftTo(o,e),e},r.prototype.isProbablePrime=function(t){var r,e=this.abs();if(1==e.t&&e[0]<=E[E.length-1]){for(r=0;r<E.length;++r)if(e[0]==E[r])return!0;return!1}if(e.isEven())return!1;for(r=1;r<E.length;){for(var i=E[r],n=r+1;n<E.length&&i<I;)i*=E[n++];for(i=e.modInt(i);r<n;)if(i%E[r++]==0)return!1}return e.millerRabin(t)},r.prototype.square=function(){var t=e();return this.squareTo(t),t},r.prototype.Barrett=B,null==S){var A;if(S=new Array,q=0,"undefined"!=typeof window&&window.crypto)if(window.crypto.getRandomValues){var R=new Uint8Array(32);for(window.crypto.getRandomValues(R),A=0;A<32;++A)S[q++]=R[A]}else if("Netscape"==navigator.appName&&navigator.appVersion<"5"){var P=window.crypto.random(32);for(A=0;A<P.length;++A)S[q++]=255&P.charCodeAt(A)}for(;q<H;)A=Math.floor(65536*Math.random()),S[q++]=A>>>8,S[q++]=255&A;q=0,D()}function O(){if(null==x){for(D(),(x=new C).init(S),q=0;q<S.length;++q)S[q]=0;q=0}return x.next()}function M(){}function C(){this.i=0,this.j=0,this.S=new Array}M.prototype.nextBytes=function(t){var r;for(r=0;r<t.length;++r)t[r]=O()},C.prototype.init=function(t){var r,e,i;for(r=0;r<256;++r)this.S[r]=r;for(e=0,r=0;r<256;++r)e=e+this.S[r]+t[r%t.length]&255,i=this.S[r],this.S[r]=this.S[e],this.S[e]=i;this.i=0,this.j=0},C.prototype.next=function(){var t;return this.i=this.i+1&255,this.j=this.j+this.S[this.i]&255,t=this.S[this.i],this.S[this.i]=this.S[this.j],this.S[this.j]=t,this.S[t+this.S[this.i]&255]};var H=256;l.exports={default:r,BigInteger:r,SecureRandom:M}}.call(f);var y=p.exports;const{BigInteger:g}=y;class d{constructor(){this.tlv=null,this.t="00",this.l="00",this.v=""}getEncodedHex(){return this.tlv||(this.v=this.getValue(),this.l=this.getLength(),this.tlv=this.t+this.l+this.v),this.tlv}getLength(){const t=this.v.length/2;let r=t.toString(16);if(r.length%2==1&&(r="0"+r),t<128)return r;return(128+r.length/2).toString(16)+r}getValue(){return""}}class m extends d{constructor(t){super(),this.t="02",t&&(this.v=function(t){let r=t.toString(16);if("-"!==r[0])r.length%2==1?r="0"+r:r.match(/^[0-7]/)||(r="00"+r);else{r=r.substr(1);let e=r.length;e%2==1?e+=1:r.match(/^[0-7]/)||(e+=2);let i="";for(let t=0;t<e;t++)i+="f";i=new g(i,16),r=i.xor(t).add(g.ONE),r=r.toString(16).replace(/^-/,"")}return r}(t))}getValue(){return this.v}}class v extends d{constructor(t){super(),this.t="30",this.asn1Array=t}getValue(){return this.v=this.asn1Array.map((t=>t.getEncodedHex())).join(""),this.v}}function T(t,r){return+t[r+2]<8?1:128&+t.substr(r+2,2)}function w(t,r){const e=T(t,r),i=t.substr(r+2,2*e);if(!i)return-1;return(+i[0]<8?new g(i,16):new g(i.substr(2),16)).intValue()}function b(t,r){return r+2*(T(t,r)+1)}var F={encodeDer(t,r){const e=new m(t),i=new m(r);return new v([e,i]).getEncodedHex()},decodeDer(t){const r=b(t,0),e=b(t,r),i=w(t,r),n=t.substr(e,2*i),o=e+n.length,s=b(t,o),u=w(t,o),h=t.substr(s,2*u);return{r:new g(n,16),s:new g(h,16)}}};const{BigInteger:B}=y,x=new B("2"),S=new B("3");class q{constructor(t,r){this.x=r,this.q=t}equals(t){return t===this||this.q.equals(t.q)&&this.x.equals(t.x)}toBigInteger(){return this.x}negate(){return new q(this.q,this.x.negate().mod(this.q))}add(t){return new q(this.q,this.x.add(t.toBigInteger()).mod(this.q))}subtract(t){return new q(this.q,this.x.subtract(t.toBigInteger()).mod(this.q))}multiply(t){return new q(this.q,this.x.multiply(t.toBigInteger()).mod(this.q))}divide(t){return new q(this.q,this.x.multiply(t.toBigInteger().modInverse(this.q)).mod(this.q))}square(){return new q(this.q,this.x.square().mod(this.q))}}class E{constructor(t,r,e,i){this.curve=t,this.x=r,this.y=e,this.z=null==i?B.ONE:i,this.zinv=null}getX(){return null===this.zinv&&(this.zinv=this.z.modInverse(this.curve.q)),this.curve.fromBigInteger(this.x.toBigInteger().multiply(this.zinv).mod(this.curve.q))}getY(){return null===this.zinv&&(this.zinv=this.z.modInverse(this.curve.q)),this.curve.fromBigInteger(this.y.toBigInteger().multiply(this.zinv).mod(this.curve.q))}equals(t){if(t===this)return!0;if(this.isInfinity())return t.isInfinity();if(t.isInfinity())return this.isInfinity();if(!t.y.toBigInteger().multiply(this.z).subtract(this.y.toBigInteger().multiply(t.z)).mod(this.curve.q).equals(B.ZERO))return!1;return t.x.toBigInteger().multiply(this.z).subtract(this.x.toBigInteger().multiply(t.z)).mod(this.curve.q).equals(B.ZERO)}isInfinity(){return null===this.x&&null===this.y||this.z.equals(B.ZERO)&&!this.y.toBigInteger().equals(B.ZERO)}negate(){return new E(this.curve,this.x,this.y.negate(),this.z)}add(t){if(this.isInfinity())return t;if(t.isInfinity())return this;const r=this.x.toBigInteger(),e=this.y.toBigInteger(),i=this.z,n=t.x.toBigInteger(),o=t.y.toBigInteger(),s=t.z,u=this.curve.q,h=r.multiply(s).mod(u),a=n.multiply(i).mod(u),f=h.subtract(a),c=e.multiply(s).mod(u),l=o.multiply(i).mod(u),p=c.subtract(l);if(B.ZERO.equals(f))return B.ZERO.equals(p)?this.twice():this.curve.infinity;const y=h.add(a),g=i.multiply(s).mod(u),d=f.square().mod(u),m=f.multiply(d).mod(u),v=g.multiply(p.square()).subtract(y.multiply(d)).mod(u),T=f.multiply(v).mod(u),w=p.multiply(d.multiply(h).subtract(v)).subtract(c.multiply(m)).mod(u),b=m.multiply(g).mod(u);return new E(this.curve,this.curve.fromBigInteger(T),this.curve.fromBigInteger(w),b)}twice(){if(this.isInfinity())return this;if(!this.y.toBigInteger().signum())return this.curve.infinity;const t=this.x.toBigInteger(),r=this.y.toBigInteger(),e=this.z,i=this.curve.q,n=this.curve.a.toBigInteger(),o=t.square().multiply(S).add(n.multiply(e.square())).mod(i),s=r.shiftLeft(1).multiply(e).mod(i),u=r.square().mod(i),h=u.multiply(t).multiply(e).mod(i),a=s.square().mod(i),f=o.square().subtract(h.shiftLeft(3)).mod(i),c=s.multiply(f).mod(i),l=o.multiply(h.shiftLeft(2).subtract(f)).subtract(a.shiftLeft(1).multiply(u)).mod(i),p=s.multiply(a).mod(i);return new E(this.curve,this.curve.fromBigInteger(c),this.curve.fromBigInteger(l),p)}multiply(t){if(this.isInfinity())return this;if(!t.signum())return this.curve.infinity;const r=t.multiply(S),e=this.negate();let i=this;for(let n=r.bitLength()-2;n>0;n--){i=i.twice();const o=r.testBit(n);o!==t.testBit(n)&&(i=i.add(o?this:e))}return i}}var I={ECPointFp:E,ECCurveFp:class{constructor(t,r,e){this.q=t,this.a=this.fromBigInteger(r),this.b=this.fromBigInteger(e),this.infinity=new E(this,null,null)}equals(t){return t===this||this.q.equals(t.q)&&this.a.equals(t.a)&&this.b.equals(t.b)}fromBigInteger(t){return new q(this.q,t)}decodePointHex(t){switch(parseInt(t.substr(0,2),16)){case 0:return this.infinity;case 2:case 3:const r=this.fromBigInteger(new B(t.substr(2),16));let e=this.fromBigInteger(r.multiply(r.square()).add(r.multiply(this.a)).add(this.b).toBigInteger().modPow(this.q.divide(new B("4")).add(B.ONE),this.q));return e.toBigInteger().mod(x).equals(new B(t.substr(0,2),16).subtract(x))||(e=e.negate()),new E(this,r,e);case 4:case 6:case 7:const i=(t.length-2)/2,n=t.substr(2,i),o=t.substr(i+2,i);return new E(this,this.fromBigInteger(new B(n,16)),this.fromBigInteger(new B(o,16)));default:return null}}}};const{BigInteger:D,SecureRandom:A}=y,{ECCurveFp:R}=I,P=new A,{curve:O,G:M,n:C}=H();function H(){const t=new D("FFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000FFFFFFFFFFFFFFFF",16),r=new D("FFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000FFFFFFFFFFFFFFFC",16),e=new D("28E9FA9E9D9F5E344D5A9E4BCF6509A7F39789F515AB8F92DDBCBD414D940E93",16),i=new R(t,r,e),n=i.decodePointHex("0432C4AE2C1F1981195F9904466A39C9948FE30BBFF2660BE1715A4589334C74C7BC3736A2F4F6779C59BDCEE36B692153D0A9877CC62A474002DF32E52139F0A0");return{curve:i,G:n,n:new D("FFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFF7203DF6B21C6052B53BBF40939D54123",16)}}function N(t,r){return t.length>=r?t:new Array(r-t.length+1).join("0")+t}var K={getGlobalCurve:function(){return O},generateEcparam:H,generateKeyPairHex:function(t,r,e){const i=(t?new D(t,r,e):new D(C.bitLength(),P)).mod(C.subtract(D.ONE)).add(D.ONE),n=N(i.toString(16),64),o=M.multiply(i);return{privateKey:n,publicKey:"04"+N(o.getX().toBigInteger().toString(16),64)+N(o.getY().toBigInteger().toString(16),64)}},compressPublicKeyHex:function(t){if(130!==t.length)throw new Error("Invalid public key to compress");const r=(t.length-2)/2,e=t.substr(2,r);let i="03";return new D(t.substr(r+2,r),16).mod(new D("2")).equals(D.ZERO)&&(i="02"),i+e},utf8ToHex:function(t){const r=(t=unescape(encodeURIComponent(t))).length,e=[];for(let i=0;i<r;i++)e[i>>>2]|=(255&t.charCodeAt(i))<<24-i%4*8;const i=[];for(let t=0;t<r;t++){const r=e[t>>>2]>>>24-t%4*8&255;i.push((r>>>4).toString(16)),i.push((15&r).toString(16))}return i.join("")},leftPad:N,arrayToHex:function(t){return t.map((t=>1===(t=t.toString(16)).length?"0"+t:t)).join("")},arrayToUtf8:function(t){const r=[];let e=0;for(let i=0;i<2*t.length;i+=2)r[i>>>3]|=parseInt(t[e],10)<<24-i%8*4,e++;try{const e=[];for(let i=0;i<t.length;i++){const t=r[i>>>2]>>>24-i%4*8&255;e.push(String.fromCharCode(t))}return decodeURIComponent(escape(e.join("")))}catch(t){throw new Error("Malformed UTF-8 data")}},hexToArray:function(t){const r=[];let e=t.length;e%2!=0&&(t=N(t,e+1)),e=t.length;for(let i=0;i<e;i+=2)r.push(parseInt(t.substr(i,2),16));return r},verifyPublicKey:function(t){const r=O.decodePointHex(t);if(!r)return!1;const e=r.getX();return r.getY().square().equals(e.multiply(e.square()).add(e.multiply(O.a)).add(O.b))},comparePublicKeyHex:function(t,r){const e=O.decodePointHex(t);if(!e)return!1;const i=O.decodePointHex(r);return!!i&&e.equals(i)}};const V=new Uint32Array(68),L=new Uint32Array(64);function z(t,r){const e=31&r;return t<<e|t>>>32-e}function k(t,r){const e=[];for(let i=t.length-1;i>=0;i--)e[i]=255&(t[i]^r[i]);return e}function Z(t){return t^z(t,9)^z(t,17)}function j(t){let r=8*t.length,e=r%512;e=e>=448?512-e%448-1:448-e-1;const i=new Array((e-7)/8),n=new Array(8);for(let t=0,r=i.length;t<r;t++)i[t]=0;for(let t=0,r=n.length;t<r;t++)n[t]=0;r=r.toString(2);for(let t=7;t>=0;t--)if(r.length>8){const e=r.length-8;n[t]=parseInt(r.substr(e),2),r=r.substr(0,e)}else r.length>0&&(n[t]=parseInt(r,2),r="");const o=new Uint8Array([...t,128,...i,...n]),s=new DataView(o.buffer,0),u=o.length/64,h=new Uint32Array([1937774191,1226093241,388252375,3666478592,2842636476,372324522,3817729613,2969243214]);for(let t=0;t<u;t++){V.fill(0),L.fill(0);const r=16*t;for(let t=0;t<16;t++)V[t]=s.getUint32(4*(r+t),!1);for(let t=16;t<68;t++)V[t]=(a=V[t-16]^V[t-9]^z(V[t-3],15))^z(a,15)^z(a,23)^z(V[t-13],7)^V[t-6];for(let t=0;t<64;t++)L[t]=V[t]^V[t+4];const e=2043430169,i=2055708042;let n,o,u,f,c,l=h[0],p=h[1],y=h[2],g=h[3],d=h[4],m=h[5],v=h[6],T=h[7];for(let t=0;t<64;t++)c=t>=0&&t<=15?e:i,n=z(z(l,12)+d+z(c,t),7),o=n^z(l,12),u=(t>=0&&t<=15?l^p^y:l&p|l&y|p&y)+g+o+L[t],f=(t>=0&&t<=15?d^m^v:d&m|~d&v)+T+n+V[t],g=y,y=z(p,9),p=l,l=u,T=v,v=z(m,19),m=d,d=Z(f);h[0]^=l,h[1]^=p,h[2]^=y,h[3]^=g,h[4]^=d,h[5]^=m,h[6]^=v,h[7]^=T}var a;const f=[];for(let t=0,r=h.length;t<r;t++){const r=h[t];f.push((4278190080&r)>>>24,(16711680&r)>>>16,(65280&r)>>>8,255&r)}return f}const U=new Uint8Array(64),_=new Uint8Array(64);for(let t=0;t<64;t++)U[t]=54,_[t]=92;var $={sm3:j,hmac:function(t,r){for(r.length>64&&(r=j(r));r.length<64;)r.push(0);const e=k(r,U),i=k(r,_),n=j([...e,...t]);return j([...i,...n])}};const{BigInteger:X}=y,{encodeDer:J,decodeDer:Y}=F,G=K,W=$.sm3,{G:Q,curve:tt,n:rt}=G.generateEcparam();function et(t,r,e="1234567812345678"){e=G.utf8ToHex(e);const i=G.leftPad(Q.curve.a.toBigInteger().toRadix(16),64),n=G.leftPad(Q.curve.b.toBigInteger().toRadix(16),64),o=G.leftPad(Q.getX().toBigInteger().toRadix(16),64),s=G.leftPad(Q.getY().toBigInteger().toRadix(16),64);let u,h;if(128===r.length)u=r.substr(0,64),h=r.substr(64,64);else{const t=Q.curve.decodePointHex(r);u=G.leftPad(t.getX().toBigInteger().toRadix(16),64),h=G.leftPad(t.getY().toBigInteger().toRadix(16),64)}const a=G.hexToArray(e+i+n+o+s+u+h),f=4*e.length;a.unshift(255&f),a.unshift(f>>8&255);const c=W(a);return G.arrayToHex(W(c.concat(G.hexToArray(t))))}function it(t){const r=Q.multiply(new X(t,16));return"04"+G.leftPad(r.getX().toBigInteger().toString(16),64)+G.leftPad(r.getY().toBigInteger().toString(16),64)}function nt(){const t=G.generateKeyPairHex(),r=tt.decodePointHex(t.publicKey);return t.k=new X(t.privateKey,16),t.x1=r.getX().toBigInteger(),t}var ot={generateKeyPairHex:G.generateKeyPairHex,compressPublicKeyHex:G.compressPublicKeyHex,comparePublicKeyHex:G.comparePublicKeyHex,doEncrypt:function(t,r,e=1){t="string"==typeof t?G.hexToArray(G.utf8ToHex(t)):Array.prototype.slice.call(t),r=G.getGlobalCurve().decodePointHex(r);const i=G.generateKeyPairHex(),n=new X(i.privateKey,16);let o=i.publicKey;o.length>128&&(o=o.substr(o.length-128));const s=r.multiply(n),u=G.hexToArray(G.leftPad(s.getX().toBigInteger().toRadix(16),64)),h=G.hexToArray(G.leftPad(s.getY().toBigInteger().toRadix(16),64)),a=G.arrayToHex(W([].concat(u,t,h)));let f=1,c=0,l=[];const p=[].concat(u,h),y=()=>{l=W([...p,f>>24&255,f>>16&255,f>>8&255,255&f]),f++,c=0};y();for(let r=0,e=t.length;r<e;r++)c===l.length&&y(),t[r]^=255&l[c++];const g=G.arrayToHex(t);return 0===e?o+g+a:o+a+g},doDecrypt:function(t,r,e=1,{output:i="string"}={}){r=new X(r,16);let n=t.substr(128,64),o=t.substr(192);0===e&&(n=t.substr(t.length-64),o=t.substr(128,t.length-128-64));const s=G.hexToArray(o),u=G.getGlobalCurve().decodePointHex("04"+t.substr(0,128)).multiply(r),h=G.hexToArray(G.leftPad(u.getX().toBigInteger().toRadix(16),64)),a=G.hexToArray(G.leftPad(u.getY().toBigInteger().toRadix(16),64));let f=1,c=0,l=[];const p=[].concat(h,a),y=()=>{l=W([...p,f>>24&255,f>>16&255,f>>8&255,255&f]),f++,c=0};y();for(let t=0,r=s.length;t<r;t++)c===l.length&&y(),s[t]^=255&l[c++];return G.arrayToHex(W([].concat(h,s,a)))===n.toLowerCase()?"array"===i?s:G.arrayToUtf8(s):"array"===i?[]:""},doSignature:function(t,r,{pointPool:e,der:i,hash:n,publicKey:o,userId:s}={}){let u="string"==typeof t?G.utf8ToHex(t):G.arrayToHex(t);n&&(u=et(u,o=o||it(r),s));const h=new X(r,16),a=new X(u,16);let f=null,c=null,l=null;do{do{let t;t=e&&e.length?e.pop():nt(),f=t.k,c=a.add(t.x1).mod(rt)}while(c.equals(X.ZERO)||c.add(f).equals(rt));l=h.add(X.ONE).modInverse(rt).multiply(f.subtract(c.multiply(h))).mod(rt)}while(l.equals(X.ZERO));return i?J(c,l):G.leftPad(c.toString(16),64)+G.leftPad(l.toString(16),64)},doVerifySignature:function(t,r,e,{der:i,hash:n,userId:o}={}){let s,u,h="string"==typeof t?G.utf8ToHex(t):G.arrayToHex(t);if(n&&(h=et(h,e,o)),i){const t=Y(r);s=t.r,u=t.s}else s=new X(r.substring(0,64),16),u=new X(r.substring(64),16);const a=tt.decodePointHex(e),f=new X(h,16),c=s.add(u).mod(rt);if(c.equals(X.ZERO))return!1;const l=Q.multiply(u).add(a.multiply(c)),p=f.add(l.getX().toBigInteger()).mod(rt);return s.equals(p)},getPublicKeyFromPrivateKey:it,getPoint:nt,verifyPublicKey:G.verifyPublicKey};const{sm3:st,hmac:ut}=$;function ht(t){return t.map((t=>1===(t=t.toString(16)).length?"0"+t:t)).join("")}function at(t){const r=[];let e=t.length;var i,n;e%2!=0&&(n=e+1,t=(i=t).length>=n?i:new Array(n-i.length+1).join("0")+i),e=t.length;for(let i=0;i<e;i+=2)r.push(parseInt(t.substr(i,2),16));return r}const ft=0,ct=16,lt=[214,144,233,254,204,225,61,183,22,182,20,194,40,251,44,5,43,103,154,118,42,190,4,195,170,68,19,38,73,134,6,153,156,66,80,244,145,239,152,122,51,84,11,67,237,207,172,98,228,179,28,169,201,8,232,149,128,223,148,250,117,143,63,166,71,7,167,252,243,115,23,186,131,89,60,25,230,133,79,168,104,107,129,178,113,100,218,139,248,235,15,75,112,86,157,53,30,36,14,94,99,88,209,162,37,34,124,59,1,33,120,135,212,0,70,87,159,211,39,82,76,54,2,231,160,196,200,158,234,191,138,210,64,199,56,181,163,247,242,206,249,97,21,161,224,174,93,164,155,52,26,85,173,147,50,48,245,140,177,227,29,246,226,46,130,102,202,96,192,41,35,171,13,83,78,111,213,219,55,69,222,253,142,47,3,255,106,114,109,108,91,81,141,27,175,146,187,221,188,127,17,217,92,65,31,16,90,216,10,193,49,136,165,205,123,189,45,116,208,18,184,229,180,176,137,105,151,74,12,150,119,126,101,185,241,9,197,110,198,132,24,240,125,236,58,220,77,32,121,238,95,62,215,203,57,72],pt=[462357,472066609,943670861,1415275113,1886879365,2358483617,2830087869,3301692121,3773296373,4228057617,404694573,876298825,1347903077,1819507329,2291111581,2762715833,3234320085,3705924337,4177462797,337322537,808926789,1280531041,1752135293,2223739545,2695343797,3166948049,3638552301,4110090761,269950501,741554753,1213159005,1684763257];function yt(t){const r=[];for(let e=0,i=t.length;e<i;e+=2)r.push(parseInt(t.substr(e,2),16));return r}function gt(t,r){const e=31&r;return t<<e|t>>>32-e}function dt(t){return(255&lt[t>>>24&255])<<24|(255&lt[t>>>16&255])<<16|(255&lt[t>>>8&255])<<8|255&lt[255&t]}function mt(t){return t^gt(t,2)^gt(t,10)^gt(t,18)^gt(t,24)}function vt(t){return t^gt(t,13)^gt(t,23)}function Tt(t,r,e){const i=new Array(4),n=new Array(4);for(let r=0;r<4;r++)n[0]=255&t[4*r],n[1]=255&t[4*r+1],n[2]=255&t[4*r+2],n[3]=255&t[4*r+3],i[r]=n[0]<<24|n[1]<<16|n[2]<<8|n[3];for(let t,r=0;r<32;r+=4)t=i[1]^i[2]^i[3]^e[r+0],i[0]^=mt(dt(t)),t=i[2]^i[3]^i[0]^e[r+1],i[1]^=mt(dt(t)),t=i[3]^i[0]^i[1]^e[r+2],i[2]^=mt(dt(t)),t=i[0]^i[1]^i[2]^e[r+3],i[3]^=mt(dt(t));for(let t=0;t<16;t+=4)r[t]=i[3-t/4]>>>24&255,r[t+1]=i[3-t/4]>>>16&255,r[t+2]=i[3-t/4]>>>8&255,r[t+3]=255&i[3-t/4]}function wt(t,r,e,{padding:i="pkcs#7",mode:n,iv:o=[],output:s="string"}={}){if("cbc"===n&&("string"==typeof o&&(o=yt(o)),16!==o.length))throw new Error("iv is invalid");if("string"==typeof r&&(r=yt(r)),16!==r.length)throw new Error("key is invalid");if(t="string"==typeof t?e!==ft?function(t){const r=[];for(let e=0,i=t.length;e<i;e++){const i=t.codePointAt(e);if(i<=127)r.push(i);else if(i<=2047)r.push(192|i>>>6),r.push(128|63&i);else if(i<=55295||i>=57344&&i<=65535)r.push(224|i>>>12),r.push(128|i>>>6&63),r.push(128|63&i);else{if(!(i>=65536&&i<=1114111))throw r.push(i),new Error("input is not supported");e++,r.push(240|i>>>18&28),r.push(128|i>>>12&63),r.push(128|i>>>6&63),r.push(128|63&i)}}return r}(t):yt(t):[...t],("pkcs#5"===i||"pkcs#7"===i)&&e!==ft){const r=ct-t.length%ct;for(let e=0;e<r;e++)t.push(r)}const u=new Array(32);!function(t,r,e){const i=new Array(4),n=new Array(4);for(let r=0;r<4;r++)n[0]=255&t[0+4*r],n[1]=255&t[1+4*r],n[2]=255&t[2+4*r],n[3]=255&t[3+4*r],i[r]=n[0]<<24|n[1]<<16|n[2]<<8|n[3];i[0]^=2746333894,i[1]^=1453994832,i[2]^=1736282519,i[3]^=2993693404;for(let t,e=0;e<32;e+=4)t=i[1]^i[2]^i[3]^pt[e+0],r[e+0]=i[0]^=vt(dt(t)),t=i[2]^i[3]^i[0]^pt[e+1],r[e+1]=i[1]^=vt(dt(t)),t=i[3]^i[0]^i[1]^pt[e+2],r[e+2]=i[2]^=vt(dt(t)),t=i[0]^i[1]^i[2]^pt[e+3],r[e+3]=i[3]^=vt(dt(t));if(e===ft)for(let t,e=0;e<16;e++)t=r[e],r[e]=r[31-e],r[31-e]=t}(r,u,e);const h=[];let a=o,f=t.length,c=0;for(;f>=ct;){const r=t.slice(c,c+16),i=new Array(16);if("cbc"===n)for(let t=0;t<ct;t++)e!==ft&&(r[t]^=a[t]);Tt(r,i,u);for(let t=0;t<ct;t++)"cbc"===n&&e===ft&&(i[t]^=a[t]),h[c+t]=i[t];"cbc"===n&&(a=e!==ft?i:r),f-=ct,c+=ct}if(("pkcs#5"===i||"pkcs#7"===i)&&e===ft){const t=h.length,r=h[t-1];for(let e=1;e<=r;e++)if(h[t-e]!==r)throw new Error("padding is invalid");h.splice(t-r,r)}return"array"!==s?e!==ft?h.map((t=>1===(t=t.toString(16)).length?"0"+t:t)).join(""):function(t){const r=[];for(let e=0,i=t.length;e<i;e++)t[e]>=240&&t[e]<=247?(r.push(String.fromCodePoint(((7&t[e])<<18)+((63&t[e+1])<<12)+((63&t[e+2])<<6)+(63&t[e+3]))),e+=3):t[e]>=224&&t[e]<=239?(r.push(String.fromCodePoint(((15&t[e])<<12)+((63&t[e+1])<<6)+(63&t[e+2]))),e+=2):t[e]>=192&&t[e]<=223?(r.push(String.fromCodePoint(((31&t[e])<<6)+(63&t[e+1]))),e++):r.push(String.fromCodePoint(t[e]));return r.join("")}(h):h}var bt={sm2:ot,sm3:function(t,r){if(t="string"==typeof t?function(t){const r=[];for(let e=0,i=t.length;e<i;e++){const i=t.codePointAt(e);if(i<=127)r.push(i);else if(i<=2047)r.push(192|i>>>6),r.push(128|63&i);else if(i<=55295||i>=57344&&i<=65535)r.push(224|i>>>12),r.push(128|i>>>6&63),r.push(128|63&i);else{if(!(i>=65536&&i<=1114111))throw r.push(i),new Error("input is not supported");e++,r.push(240|i>>>18&28),r.push(128|i>>>12&63),r.push(128|i>>>6&63),r.push(128|63&i)}}return r}(t):Array.prototype.slice.call(t),r){if("hmac"!==(r.mode||"hmac"))throw new Error("invalid mode");let e=r.key;if(!e)throw new Error("invalid key");return e="string"==typeof e?at(e):Array.prototype.slice.call(e),ht(ut(t,e))}return ht(st(t))},sm4:{encrypt:(t,r,e)=>wt(t,r,1,e),decrypt:(t,r,e)=>wt(t,r,0,e)}};const Ft={mode:"ecb",padding:"pkcs#5",output:"array"},Bt=r.Buffer,xt=function(t,r,e,i){return(n,o)=>{try{if(o.closeCrypto)return n;t.info=h(),t.publicKey=[...Bt.from(t.info.key)];const s=bt.sm2.doEncrypt(JSON.stringify(t.info),r,1);if(e.set(i,function(t){if("string"==typeof t)return String(t);return JSON.parse(JSON.stringify(t))}(s)),((t,r)=>{t.set("X-Encrypt-Key",r)})(o,"04"+s),n){"string"!=typeof n&&(n=JSON.stringify(n));const r=bt.sm4.encrypt(n,t.publicKey,Ft);return n=Bt.from(r)}return n}catch(t){console.error("encrypt error",t,n,o)}}},St=function(t){return(r,e)=>{try{if((t=>{const r=t.get(n);return r&&"string"==typeof r&&"sm4"===r.toLowerCase()})(e)){const e=Bt.from(r);return s(bt.sm4.decrypt(e,t.publicKey,{mode:"ecb",padding:"pkcs#5"}))}return r}catch(t){console.error("decrypt error",t,r,e)}}};var qt,Et,It={exports:{}},Dt={exports:{}};qt="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",Et={rotl:function(t,r){return t<<r|t>>>32-r},rotr:function(t,r){return t<<32-r|t>>>r},endian:function(t){if(t.constructor==Number)return 16711935&Et.rotl(t,8)|4278255360&Et.rotl(t,24);for(var r=0;r<t.length;r++)t[r]=Et.endian(t[r]);return t},randomBytes:function(t){for(var r=[];t>0;t--)r.push(Math.floor(256*Math.random()));return r},bytesToWords:function(t){for(var r=[],e=0,i=0;e<t.length;e++,i+=8)r[i>>>5]|=t[e]<<24-i%32;return r},wordsToBytes:function(t){for(var r=[],e=0;e<32*t.length;e+=8)r.push(t[e>>>5]>>>24-e%32&255);return r},bytesToHex:function(t){for(var r=[],e=0;e<t.length;e++)r.push((t[e]>>>4).toString(16)),r.push((15&t[e]).toString(16));return r.join("")},hexToBytes:function(t){for(var r=[],e=0;e<t.length;e+=2)r.push(parseInt(t.substr(e,2),16));return r},bytesToBase64:function(t){for(var r=[],e=0;e<t.length;e+=3)for(var i=t[e]<<16|t[e+1]<<8|t[e+2],n=0;n<4;n++)8*e+6*n<=8*t.length?r.push(qt.charAt(i>>>6*(3-n)&63)):r.push("=");return r.join("")},base64ToBytes:function(t){t=t.replace(/[^A-Z0-9+\/]/gi,"");for(var r=[],e=0,i=0;e<t.length;i=++e%4)0!=i&&r.push((qt.indexOf(t.charAt(e-1))&Math.pow(2,-2*i+8)-1)<<2*i|qt.indexOf(t.charAt(e))>>>6-2*i);return r}},Dt.exports=Et;var At=Dt.exports,Rt={utf8:{stringToBytes:function(t){return Rt.bin.stringToBytes(unescape(encodeURIComponent(t)))},bytesToString:function(t){return decodeURIComponent(escape(Rt.bin.bytesToString(t)))}},bin:{stringToBytes:function(t){for(var r=[],e=0;e<t.length;e++)r.push(255&t.charCodeAt(e));return r},bytesToString:function(t){for(var r=[],e=0;e<t.length;e++)r.push(String.fromCharCode(t[e]));return r.join("")}}},Pt=Rt,Ot=function(t){return null!=t&&(Mt(t)||function(t){return"function"==typeof t.readFloatLE&&"function"==typeof t.slice&&Mt(t.slice(0,0))}(t)||!!t._isBuffer)};function Mt(t){return!!t.constructor&&"function"==typeof t.constructor.isBuffer&&t.constructor.isBuffer(t)}!function(){var t=At,r=Pt.utf8,e=Ot,i=Pt.bin,n=function(o,s){o.constructor==String?o=s&&"binary"===s.encoding?i.stringToBytes(o):r.stringToBytes(o):e(o)?o=Array.prototype.slice.call(o,0):Array.isArray(o)||o.constructor===Uint8Array||(o=o.toString());for(var u=t.bytesToWords(o),h=8*o.length,a=1732584193,f=-271733879,c=-1732584194,l=271733878,p=0;p<u.length;p++)u[p]=16711935&(u[p]<<8|u[p]>>>24)|4278255360&(u[p]<<24|u[p]>>>8);u[h>>>5]|=128<<h%32,u[14+(h+64>>>9<<4)]=h;var y=n._ff,g=n._gg,d=n._hh,m=n._ii;for(p=0;p<u.length;p+=16){var v=a,T=f,w=c,b=l;a=y(a,f,c,l,u[p+0],7,-680876936),l=y(l,a,f,c,u[p+1],12,-389564586),c=y(c,l,a,f,u[p+2],17,606105819),f=y(f,c,l,a,u[p+3],22,-1044525330),a=y(a,f,c,l,u[p+4],7,-176418897),l=y(l,a,f,c,u[p+5],12,1200080426),c=y(c,l,a,f,u[p+6],17,-1473231341),f=y(f,c,l,a,u[p+7],22,-45705983),a=y(a,f,c,l,u[p+8],7,1770035416),l=y(l,a,f,c,u[p+9],12,-1958414417),c=y(c,l,a,f,u[p+10],17,-42063),f=y(f,c,l,a,u[p+11],22,-1990404162),a=y(a,f,c,l,u[p+12],7,1804603682),l=y(l,a,f,c,u[p+13],12,-40341101),c=y(c,l,a,f,u[p+14],17,-1502002290),a=g(a,f=y(f,c,l,a,u[p+15],22,1236535329),c,l,u[p+1],5,-165796510),l=g(l,a,f,c,u[p+6],9,-1069501632),c=g(c,l,a,f,u[p+11],14,643717713),f=g(f,c,l,a,u[p+0],20,-373897302),a=g(a,f,c,l,u[p+5],5,-701558691),l=g(l,a,f,c,u[p+10],9,38016083),c=g(c,l,a,f,u[p+15],14,-660478335),f=g(f,c,l,a,u[p+4],20,-405537848),a=g(a,f,c,l,u[p+9],5,568446438),l=g(l,a,f,c,u[p+14],9,-1019803690),c=g(c,l,a,f,u[p+3],14,-187363961),f=g(f,c,l,a,u[p+8],20,1163531501),a=g(a,f,c,l,u[p+13],5,-1444681467),l=g(l,a,f,c,u[p+2],9,-51403784),c=g(c,l,a,f,u[p+7],14,1735328473),a=d(a,f=g(f,c,l,a,u[p+12],20,-1926607734),c,l,u[p+5],4,-378558),l=d(l,a,f,c,u[p+8],11,-2022574463),c=d(c,l,a,f,u[p+11],16,1839030562),f=d(f,c,l,a,u[p+14],23,-35309556),a=d(a,f,c,l,u[p+1],4,-1530992060),l=d(l,a,f,c,u[p+4],11,1272893353),c=d(c,l,a,f,u[p+7],16,-155497632),f=d(f,c,l,a,u[p+10],23,-1094730640),a=d(a,f,c,l,u[p+13],4,681279174),l=d(l,a,f,c,u[p+0],11,-358537222),c=d(c,l,a,f,u[p+3],16,-722521979),f=d(f,c,l,a,u[p+6],23,76029189),a=d(a,f,c,l,u[p+9],4,-640364487),l=d(l,a,f,c,u[p+12],11,-421815835),c=d(c,l,a,f,u[p+15],16,530742520),a=m(a,f=d(f,c,l,a,u[p+2],23,-995338651),c,l,u[p+0],6,-198630844),l=m(l,a,f,c,u[p+7],10,1126891415),c=m(c,l,a,f,u[p+14],15,-1416354905),f=m(f,c,l,a,u[p+5],21,-57434055),a=m(a,f,c,l,u[p+12],6,1700485571),l=m(l,a,f,c,u[p+3],10,-1894986606),c=m(c,l,a,f,u[p+10],15,-1051523),f=m(f,c,l,a,u[p+1],21,-2054922799),a=m(a,f,c,l,u[p+8],6,1873313359),l=m(l,a,f,c,u[p+15],10,-30611744),c=m(c,l,a,f,u[p+6],15,-1560198380),f=m(f,c,l,a,u[p+13],21,1309151649),a=m(a,f,c,l,u[p+4],6,-145523070),l=m(l,a,f,c,u[p+11],10,-1120210379),c=m(c,l,a,f,u[p+2],15,718787259),f=m(f,c,l,a,u[p+9],21,-343485551),a=a+v>>>0,f=f+T>>>0,c=c+w>>>0,l=l+b>>>0}return t.endian([a,f,c,l])};n._ff=function(t,r,e,i,n,o,s){var u=t+(r&e|~r&i)+(n>>>0)+s;return(u<<o|u>>>32-o)+r},n._gg=function(t,r,e,i,n,o,s){var u=t+(r&i|e&~i)+(n>>>0)+s;return(u<<o|u>>>32-o)+r},n._hh=function(t,r,e,i,n,o,s){var u=t+(r^e^i)+(n>>>0)+s;return(u<<o|u>>>32-o)+r},n._ii=function(t,r,e,i,n,o,s){var u=t+(e^(r|~i))+(n>>>0)+s;return(u<<o|u>>>32-o)+r},n._blocksize=16,n._digestsize=16,It.exports=function(r,e){if(null==r)throw new Error("Illegal argument "+r);var o=t.wordsToBytes(n(r,e));return e&&e.asBytes?o:e&&e.asString?i.bytesToString(o):t.bytesToHex(o)}}();var Ct=c(It.exports);const Ht=function(){const t=new Map;return{get:function(r){return t.get(r)},generateKey:function(t,r,e){try{const i="e0c7ff",n=((t,r)=>{try{const r=window.location.origin;return new URL(r+t).toString()}catch(t){console.log("url",r)}})(t,r??{}),o=`${n}-${i}-${e??""}`;return`${Ct(o)}`}catch(t){return`${i(10)}`}},set:function(r,e){t.set(r,e)},clear:function(r){t.delete(r)}}}();window.__buffer=r;const Nt=(r,e,i)=>{const h=t.create(r);return h.interceptors.request.use((t=>{const r=localStorage.getItem("cps_lang"),e={en:"en-US",ko:"ko-KR",zh:"zh-CN"};if(r&&Object.prototype.hasOwnProperty.call(e,r)){const i=e[r];t.headers.set({"Accept-Language":`${i},zh;q=0.9,en;q=0.8`})}return t})),i||function(t,r){if(!r||"string"!=typeof r)throw new Error(`publicKey is required and must be a string ${r}`);t.interceptors.request.use((t=>{const e=t.transformRequest,i=t?.headers?.__requestKey,n={info:null,publicKey:[]};if(!e)throw new Error(`request ${t} has no transformRequest`);if(!Array.isArray(e))throw new Error(`transformRequest ${e} is not an array`);e.push(xt(n,r,Ht,i));const o=St(n);if(!o)return t;const s=t.transformResponse;if(!s)throw new Error(`request ${t} has no transformResponse`);if("function"!=typeof o)throw new Error(`decryptFn ${o} is not a function`);if(!Array.isArray(s))throw new Error(`transformResponse ${s} is not an array`);return s.unshift(o),t})),t.interceptors.request.use((t=>{try{const r=encodeURI(t?.url??""),e=t.headers;return r?(e.__requestKey=Ht.generateKey(r,t?.params,e?.get("Authorization")),t):t}catch(r){return console.error("error",r),t}})),t.interceptors.request.use((t=>(t.headers.closeCrypto||(t.responseType="arraybuffer"),t))),t.interceptors.request.use((t=>{const r=t.data,e=t.headers;return r?((r instanceof FormData||r instanceof File)&&(e.closeCrypto=!0),t):t})),t.interceptors.request.use((t=>{const r=t.url,e=t.headers;if(!r)throw new Error("url is required");return{}.hasOwnProperty.call(e,"closeCrypto")||u(r)||(e.closeCrypto=!0),t})),t.interceptors.response.use((t=>{const{request:r,headers:e}=t;return e&&e.get(n)||"arraybuffer"===r?.responseType?.toLowerCase()||"blob"===r?.responseType?.toLowerCase()||(t.data=s(t.data)),t}),(t=>{const r=t.response;throw r?.data&&(r.data=o(r.data)),t}))}(h,e),h},Kt=bt.sm2.doDecrypt;export{Nt as createCryptoAxiosInstance,e as createRequestInstance,Kt as decryptHeadersInfo,h as getCryptoInfo,a as getSm4EncryptConfig,i as randomPassword,u as shouldEncrypt};
+import axios from 'axios';
+import buffer from 'buffer';
+
+const createRequestInstance = (options, cryptoFns) => {
+    const instance = axios.create(options);
+    addEncryptFnToTransformRequest$1(instance, cryptoFns);
+    return instance;
+};
+function addEncryptFnToTransformRequest$1(instance, cryptoFns) {
+    if (!cryptoFns) {
+        return instance;
+    }
+    const { encryptFn, decryptFn } = cryptoFns();
+    if (encryptFn) {
+        instance.interceptors.request.use((value) => {
+            const transformRequest = value.transformRequest;
+            if (!transformRequest) {
+                throw new Error(`request ${value} has no transformRequest`);
+            }
+            if (Array.isArray(transformRequest)) {
+                transformRequest.push(encryptFn);
+            }
+            else {
+                throw new Error(`transformRequest ${transformRequest} is not an array`);
+            }
+            if (!decryptFn) {
+                return value;
+            }
+            const transformResponse = value.transformResponse;
+            if (!transformResponse) {
+                throw new Error(`request ${value} has no transformResponse`);
+            }
+            if (typeof decryptFn !== 'function') {
+                throw new Error(`decryptFn ${decryptFn} is not a function`);
+            }
+            if (Array.isArray(transformResponse)) {
+                transformResponse.unshift(decryptFn);
+            }
+            else {
+                throw new Error(`transformResponse ${transformResponse} is not an array`);
+            }
+            return value;
+        });
+    }
+}
+
+// 随机密钥生成，【用于对称加密】
+/**
+ * 获取随机数
+ * @param {number} len 随机数长度
+ * @param {string} mode 随机数模式 high:高级 medium:中等 low:低等
+ */
+const randomPassword = (len = 16, mode = 'high') => {
+    const lowerCaseArr = [
+        'a',
+        'b',
+        'c',
+        'd',
+        'e',
+        'f',
+        'g',
+        'h',
+        'i',
+        'j',
+        'k',
+        'l',
+        'm',
+        'n',
+        'o',
+        'p',
+        'q',
+        'r',
+        's',
+        't',
+        'u',
+        'v',
+        'w',
+        'x',
+        'y',
+        'z',
+    ];
+    const blockLetterArr = [
+        'A',
+        'B',
+        'C',
+        'D',
+        'E',
+        'F',
+        'G',
+        'H',
+        'I',
+        'J',
+        'K',
+        'L',
+        'M',
+        'N',
+        'O',
+        'P',
+        'Q',
+        'R',
+        'S',
+        'T',
+        'U',
+        'V',
+        'W',
+        'X',
+        'Y',
+        'Z',
+    ];
+    const numberArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const specialArr = [
+        '!',
+        '@',
+        '-',
+        '_',
+        '=',
+        '<',
+        '>',
+        '#',
+        '*',
+        '%',
+        '+',
+        '&',
+        '^',
+        '$',
+    ];
+    const passArr = [];
+    let password = '';
+    //指定参数随机获取一个字符
+    const specifyRandom = function (...arr) {
+        let str = '';
+        arr.forEach((item) => {
+            str += item[Math.floor(Math.random() * item.length)];
+        });
+        return str;
+    };
+    switch (mode) {
+        case 'high':
+            //安全最高的
+            password += specifyRandom(lowerCaseArr, blockLetterArr, numberArr, specialArr);
+            passArr.push(...lowerCaseArr, ...blockLetterArr, ...numberArr, ...specialArr);
+            break;
+        case 'medium':
+            //中等的
+            password += specifyRandom(lowerCaseArr, blockLetterArr, numberArr);
+            passArr.push(...lowerCaseArr, ...blockLetterArr, ...numberArr);
+            break;
+        //低等的
+        case 'low':
+            password += specifyRandom(lowerCaseArr, numberArr);
+            passArr.push(...lowerCaseArr, ...numberArr);
+            break;
+        default:
+            password += specifyRandom(lowerCaseArr, numberArr);
+            passArr.push(...lowerCaseArr, ...numberArr);
+    }
+    const forLen = len - password.length;
+    for (let i = 0; i < forLen; i++) {
+        password += specifyRandom(passArr);
+    }
+    return password;
+};
+const HEADER_ENCRYPT_KEY = 'X-Encrypt-Key';
+const HEADER_ENCRYPT_WITH = 'X-Encrypt-With';
+const setRequestCryptoHeader = (headers, encryptKey) => {
+    headers.set(HEADER_ENCRYPT_KEY, encryptKey);
+    return headers;
+};
+const isEncryptResponse = (headers) => {
+    const headerValue = headers.get(HEADER_ENCRYPT_WITH);
+    return (headerValue &&
+        typeof headerValue === 'string' &&
+        headerValue.toLowerCase() === 'sm4');
+};
+function ab2str(buf, encoding = 'utf-8') {
+    const enc = new TextDecoder(encoding);
+    return enc.decode(buf);
+}
+function transformResponseData(data) {
+    if (typeof data === 'string') {
+        try {
+            data = JSON.parse(data);
+        }
+        catch (e) {
+            console.error('error', e);
+            throw e;
+        }
+    }
+    if (data instanceof ArrayBuffer) {
+        const ret = ab2str(data);
+        try {
+            return JSON.parse(ret);
+        }
+        catch (e) {
+            console.error('尝试转换失败', e);
+            return ret;
+        }
+    }
+    return data;
+}
+function transformStringToJsonData(data) {
+    try {
+        if (typeof data === 'string') {
+            return JSON.parse(data);
+        }
+        return data;
+    }
+    catch (e) {
+        console.error('transform string to JSON data', {
+            data,
+            e,
+        });
+        return data;
+    }
+}
+/**
+ *  正则判断 排除下列字符串开头
+ *  /api/logmanage
+ *  /api/data-source
+ *  /api/enterpriseadmin
+ *  /api/componentmanager
+ *  /api/spacemanager
+ *  /api/filemanager
+ *
+ *  不加密
+ *  /bi-api/api
+ */
+const isEncryptListApi = (url) => {
+    const reg = /^\/(api\/logmanage|api\/data-source|api\/enterpriseadmin|api\/componentmanager|api\/spacemanager|api\/filemanager)/;
+    return reg.test(url);
+};
+// 不加密名单
+// start with /bi-api/api
+const encryptWhiteList = (url) => {
+    const reg = /^\/bi-api\/api/;
+    return reg.test(url);
+};
+//  接口加密规则
+const shouldEncrypt = (url) => {
+    // 默认全部加密
+    let ret = true;
+    if (encryptWhiteList(url)) {
+        return false;
+    }
+    // api 开头默认不加密
+    if (url.startsWith('/api')) {
+        ret = false;
+        // 如果在名单列表则加密
+        if (isEncryptListApi(url)) {
+            ret = true;
+        }
+    }
+    return ret;
+};
+
+// 对称加密方法 information 生成
+const getCryptoInfo = (algorithm) => {
+    const psd = randomPassword(16, 'high');
+    const info = {
+        key: psd,
+        algorithm: algorithm || 'SM4',
+    };
+    return {
+        ...info,
+    };
+};
+// 对称加密解密方法
+// 非对称加密加密方法
+// function asymmetricEncrypt(
+//   data: string,
+//   publicKey: string,
+//   fn: (...args: any) => any,
+// ) {
+//
+// }
+// 非对称加密解密方法
+const getSm4EncryptConfig = () => {
+    return {
+        mode: 'ecb',
+        padding: 'pkcs#5',
+        output: 'array',
+    };
+};
+
+var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+function getDefaultExportFromCjs (x) {
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+}
+
+var jsbn = {exports: {}};
+
+(function (module, exports) {
+	(function(){
+
+	    // Copyright (c) 2005  Tom Wu
+	    // All Rights Reserved.
+	    // See "LICENSE" for details.
+
+	    // Basic JavaScript BN library - subset useful for RSA encryption.
+
+	    // Bits per digit
+	    var dbits;
+
+	    // JavaScript engine analysis
+	    var canary = 0xdeadbeefcafe;
+	    var j_lm = ((canary&0xffffff)==0xefcafe);
+
+	    // (public) Constructor
+	    function BigInteger(a,b,c) {
+	      if(a != null)
+	        if("number" == typeof a) this.fromNumber(a,b,c);
+	        else if(b == null && "string" != typeof a) this.fromString(a,256);
+	        else this.fromString(a,b);
+	    }
+
+	    // return new, unset BigInteger
+	    function nbi() { return new BigInteger(null); }
+
+	    // am: Compute w_j += (x*this_i), propagate carries,
+	    // c is initial carry, returns final carry.
+	    // c < 3*dvalue, x < 2*dvalue, this_i < dvalue
+	    // We need to select the fastest one that works in this environment.
+
+	    // am1: use a single mult and divide to get the high bits,
+	    // max digit bits should be 26 because
+	    // max internal value = 2*dvalue^2-2*dvalue (< 2^53)
+	    function am1(i,x,w,j,c,n) {
+	      while(--n >= 0) {
+	        var v = x*this[i++]+w[j]+c;
+	        c = Math.floor(v/0x4000000);
+	        w[j++] = v&0x3ffffff;
+	      }
+	      return c;
+	    }
+	    // am2 avoids a big mult-and-extract completely.
+	    // Max digit bits should be <= 30 because we do bitwise ops
+	    // on values up to 2*hdvalue^2-hdvalue-1 (< 2^31)
+	    function am2(i,x,w,j,c,n) {
+	      var xl = x&0x7fff, xh = x>>15;
+	      while(--n >= 0) {
+	        var l = this[i]&0x7fff;
+	        var h = this[i++]>>15;
+	        var m = xh*l+h*xl;
+	        l = xl*l+((m&0x7fff)<<15)+w[j]+(c&0x3fffffff);
+	        c = (l>>>30)+(m>>>15)+xh*h+(c>>>30);
+	        w[j++] = l&0x3fffffff;
+	      }
+	      return c;
+	    }
+	    // Alternately, set max digit bits to 28 since some
+	    // browsers slow down when dealing with 32-bit numbers.
+	    function am3(i,x,w,j,c,n) {
+	      var xl = x&0x3fff, xh = x>>14;
+	      while(--n >= 0) {
+	        var l = this[i]&0x3fff;
+	        var h = this[i++]>>14;
+	        var m = xh*l+h*xl;
+	        l = xl*l+((m&0x3fff)<<14)+w[j]+c;
+	        c = (l>>28)+(m>>14)+xh*h;
+	        w[j++] = l&0xfffffff;
+	      }
+	      return c;
+	    }
+	    var inBrowser = typeof navigator !== "undefined";
+	    if(inBrowser && j_lm && (navigator.appName == "Microsoft Internet Explorer")) {
+	      BigInteger.prototype.am = am2;
+	      dbits = 30;
+	    }
+	    else if(inBrowser && j_lm && (navigator.appName != "Netscape")) {
+	      BigInteger.prototype.am = am1;
+	      dbits = 26;
+	    }
+	    else { // Mozilla/Netscape seems to prefer am3
+	      BigInteger.prototype.am = am3;
+	      dbits = 28;
+	    }
+
+	    BigInteger.prototype.DB = dbits;
+	    BigInteger.prototype.DM = ((1<<dbits)-1);
+	    BigInteger.prototype.DV = (1<<dbits);
+
+	    var BI_FP = 52;
+	    BigInteger.prototype.FV = Math.pow(2,BI_FP);
+	    BigInteger.prototype.F1 = BI_FP-dbits;
+	    BigInteger.prototype.F2 = 2*dbits-BI_FP;
+
+	    // Digit conversions
+	    var BI_RM = "0123456789abcdefghijklmnopqrstuvwxyz";
+	    var BI_RC = new Array();
+	    var rr,vv;
+	    rr = "0".charCodeAt(0);
+	    for(vv = 0; vv <= 9; ++vv) BI_RC[rr++] = vv;
+	    rr = "a".charCodeAt(0);
+	    for(vv = 10; vv < 36; ++vv) BI_RC[rr++] = vv;
+	    rr = "A".charCodeAt(0);
+	    for(vv = 10; vv < 36; ++vv) BI_RC[rr++] = vv;
+
+	    function int2char(n) { return BI_RM.charAt(n); }
+	    function intAt(s,i) {
+	      var c = BI_RC[s.charCodeAt(i)];
+	      return (c==null)?-1:c;
+	    }
+
+	    // (protected) copy this to r
+	    function bnpCopyTo(r) {
+	      for(var i = this.t-1; i >= 0; --i) r[i] = this[i];
+	      r.t = this.t;
+	      r.s = this.s;
+	    }
+
+	    // (protected) set from integer value x, -DV <= x < DV
+	    function bnpFromInt(x) {
+	      this.t = 1;
+	      this.s = (x<0)?-1:0;
+	      if(x > 0) this[0] = x;
+	      else if(x < -1) this[0] = x+this.DV;
+	      else this.t = 0;
+	    }
+
+	    // return bigint initialized to value
+	    function nbv(i) { var r = nbi(); r.fromInt(i); return r; }
+
+	    // (protected) set from string and radix
+	    function bnpFromString(s,b) {
+	      var k;
+	      if(b == 16) k = 4;
+	      else if(b == 8) k = 3;
+	      else if(b == 256) k = 8; // byte array
+	      else if(b == 2) k = 1;
+	      else if(b == 32) k = 5;
+	      else if(b == 4) k = 2;
+	      else { this.fromRadix(s,b); return; }
+	      this.t = 0;
+	      this.s = 0;
+	      var i = s.length, mi = false, sh = 0;
+	      while(--i >= 0) {
+	        var x = (k==8)?s[i]&0xff:intAt(s,i);
+	        if(x < 0) {
+	          if(s.charAt(i) == "-") mi = true;
+	          continue;
+	        }
+	        mi = false;
+	        if(sh == 0)
+	          this[this.t++] = x;
+	        else if(sh+k > this.DB) {
+	          this[this.t-1] |= (x&((1<<(this.DB-sh))-1))<<sh;
+	          this[this.t++] = (x>>(this.DB-sh));
+	        }
+	        else
+	          this[this.t-1] |= x<<sh;
+	        sh += k;
+	        if(sh >= this.DB) sh -= this.DB;
+	      }
+	      if(k == 8 && (s[0]&0x80) != 0) {
+	        this.s = -1;
+	        if(sh > 0) this[this.t-1] |= ((1<<(this.DB-sh))-1)<<sh;
+	      }
+	      this.clamp();
+	      if(mi) BigInteger.ZERO.subTo(this,this);
+	    }
+
+	    // (protected) clamp off excess high words
+	    function bnpClamp() {
+	      var c = this.s&this.DM;
+	      while(this.t > 0 && this[this.t-1] == c) --this.t;
+	    }
+
+	    // (public) return string representation in given radix
+	    function bnToString(b) {
+	      if(this.s < 0) return "-"+this.negate().toString(b);
+	      var k;
+	      if(b == 16) k = 4;
+	      else if(b == 8) k = 3;
+	      else if(b == 2) k = 1;
+	      else if(b == 32) k = 5;
+	      else if(b == 4) k = 2;
+	      else return this.toRadix(b);
+	      var km = (1<<k)-1, d, m = false, r = "", i = this.t;
+	      var p = this.DB-(i*this.DB)%k;
+	      if(i-- > 0) {
+	        if(p < this.DB && (d = this[i]>>p) > 0) { m = true; r = int2char(d); }
+	        while(i >= 0) {
+	          if(p < k) {
+	            d = (this[i]&((1<<p)-1))<<(k-p);
+	            d |= this[--i]>>(p+=this.DB-k);
+	          }
+	          else {
+	            d = (this[i]>>(p-=k))&km;
+	            if(p <= 0) { p += this.DB; --i; }
+	          }
+	          if(d > 0) m = true;
+	          if(m) r += int2char(d);
+	        }
+	      }
+	      return m?r:"0";
+	    }
+
+	    // (public) -this
+	    function bnNegate() { var r = nbi(); BigInteger.ZERO.subTo(this,r); return r; }
+
+	    // (public) |this|
+	    function bnAbs() { return (this.s<0)?this.negate():this; }
+
+	    // (public) return + if this > a, - if this < a, 0 if equal
+	    function bnCompareTo(a) {
+	      var r = this.s-a.s;
+	      if(r != 0) return r;
+	      var i = this.t;
+	      r = i-a.t;
+	      if(r != 0) return (this.s<0)?-r:r;
+	      while(--i >= 0) if((r=this[i]-a[i]) != 0) return r;
+	      return 0;
+	    }
+
+	    // returns bit length of the integer x
+	    function nbits(x) {
+	      var r = 1, t;
+	      if((t=x>>>16) != 0) { x = t; r += 16; }
+	      if((t=x>>8) != 0) { x = t; r += 8; }
+	      if((t=x>>4) != 0) { x = t; r += 4; }
+	      if((t=x>>2) != 0) { x = t; r += 2; }
+	      if((t=x>>1) != 0) { x = t; r += 1; }
+	      return r;
+	    }
+
+	    // (public) return the number of bits in "this"
+	    function bnBitLength() {
+	      if(this.t <= 0) return 0;
+	      return this.DB*(this.t-1)+nbits(this[this.t-1]^(this.s&this.DM));
+	    }
+
+	    // (protected) r = this << n*DB
+	    function bnpDLShiftTo(n,r) {
+	      var i;
+	      for(i = this.t-1; i >= 0; --i) r[i+n] = this[i];
+	      for(i = n-1; i >= 0; --i) r[i] = 0;
+	      r.t = this.t+n;
+	      r.s = this.s;
+	    }
+
+	    // (protected) r = this >> n*DB
+	    function bnpDRShiftTo(n,r) {
+	      for(var i = n; i < this.t; ++i) r[i-n] = this[i];
+	      r.t = Math.max(this.t-n,0);
+	      r.s = this.s;
+	    }
+
+	    // (protected) r = this << n
+	    function bnpLShiftTo(n,r) {
+	      var bs = n%this.DB;
+	      var cbs = this.DB-bs;
+	      var bm = (1<<cbs)-1;
+	      var ds = Math.floor(n/this.DB), c = (this.s<<bs)&this.DM, i;
+	      for(i = this.t-1; i >= 0; --i) {
+	        r[i+ds+1] = (this[i]>>cbs)|c;
+	        c = (this[i]&bm)<<bs;
+	      }
+	      for(i = ds-1; i >= 0; --i) r[i] = 0;
+	      r[ds] = c;
+	      r.t = this.t+ds+1;
+	      r.s = this.s;
+	      r.clamp();
+	    }
+
+	    // (protected) r = this >> n
+	    function bnpRShiftTo(n,r) {
+	      r.s = this.s;
+	      var ds = Math.floor(n/this.DB);
+	      if(ds >= this.t) { r.t = 0; return; }
+	      var bs = n%this.DB;
+	      var cbs = this.DB-bs;
+	      var bm = (1<<bs)-1;
+	      r[0] = this[ds]>>bs;
+	      for(var i = ds+1; i < this.t; ++i) {
+	        r[i-ds-1] |= (this[i]&bm)<<cbs;
+	        r[i-ds] = this[i]>>bs;
+	      }
+	      if(bs > 0) r[this.t-ds-1] |= (this.s&bm)<<cbs;
+	      r.t = this.t-ds;
+	      r.clamp();
+	    }
+
+	    // (protected) r = this - a
+	    function bnpSubTo(a,r) {
+	      var i = 0, c = 0, m = Math.min(a.t,this.t);
+	      while(i < m) {
+	        c += this[i]-a[i];
+	        r[i++] = c&this.DM;
+	        c >>= this.DB;
+	      }
+	      if(a.t < this.t) {
+	        c -= a.s;
+	        while(i < this.t) {
+	          c += this[i];
+	          r[i++] = c&this.DM;
+	          c >>= this.DB;
+	        }
+	        c += this.s;
+	      }
+	      else {
+	        c += this.s;
+	        while(i < a.t) {
+	          c -= a[i];
+	          r[i++] = c&this.DM;
+	          c >>= this.DB;
+	        }
+	        c -= a.s;
+	      }
+	      r.s = (c<0)?-1:0;
+	      if(c < -1) r[i++] = this.DV+c;
+	      else if(c > 0) r[i++] = c;
+	      r.t = i;
+	      r.clamp();
+	    }
+
+	    // (protected) r = this * a, r != this,a (HAC 14.12)
+	    // "this" should be the larger one if appropriate.
+	    function bnpMultiplyTo(a,r) {
+	      var x = this.abs(), y = a.abs();
+	      var i = x.t;
+	      r.t = i+y.t;
+	      while(--i >= 0) r[i] = 0;
+	      for(i = 0; i < y.t; ++i) r[i+x.t] = x.am(0,y[i],r,i,0,x.t);
+	      r.s = 0;
+	      r.clamp();
+	      if(this.s != a.s) BigInteger.ZERO.subTo(r,r);
+	    }
+
+	    // (protected) r = this^2, r != this (HAC 14.16)
+	    function bnpSquareTo(r) {
+	      var x = this.abs();
+	      var i = r.t = 2*x.t;
+	      while(--i >= 0) r[i] = 0;
+	      for(i = 0; i < x.t-1; ++i) {
+	        var c = x.am(i,x[i],r,2*i,0,1);
+	        if((r[i+x.t]+=x.am(i+1,2*x[i],r,2*i+1,c,x.t-i-1)) >= x.DV) {
+	          r[i+x.t] -= x.DV;
+	          r[i+x.t+1] = 1;
+	        }
+	      }
+	      if(r.t > 0) r[r.t-1] += x.am(i,x[i],r,2*i,0,1);
+	      r.s = 0;
+	      r.clamp();
+	    }
+
+	    // (protected) divide this by m, quotient and remainder to q, r (HAC 14.20)
+	    // r != q, this != m.  q or r may be null.
+	    function bnpDivRemTo(m,q,r) {
+	      var pm = m.abs();
+	      if(pm.t <= 0) return;
+	      var pt = this.abs();
+	      if(pt.t < pm.t) {
+	        if(q != null) q.fromInt(0);
+	        if(r != null) this.copyTo(r);
+	        return;
+	      }
+	      if(r == null) r = nbi();
+	      var y = nbi(), ts = this.s, ms = m.s;
+	      var nsh = this.DB-nbits(pm[pm.t-1]);   // normalize modulus
+	      if(nsh > 0) { pm.lShiftTo(nsh,y); pt.lShiftTo(nsh,r); }
+	      else { pm.copyTo(y); pt.copyTo(r); }
+	      var ys = y.t;
+	      var y0 = y[ys-1];
+	      if(y0 == 0) return;
+	      var yt = y0*(1<<this.F1)+((ys>1)?y[ys-2]>>this.F2:0);
+	      var d1 = this.FV/yt, d2 = (1<<this.F1)/yt, e = 1<<this.F2;
+	      var i = r.t, j = i-ys, t = (q==null)?nbi():q;
+	      y.dlShiftTo(j,t);
+	      if(r.compareTo(t) >= 0) {
+	        r[r.t++] = 1;
+	        r.subTo(t,r);
+	      }
+	      BigInteger.ONE.dlShiftTo(ys,t);
+	      t.subTo(y,y);  // "negative" y so we can replace sub with am later
+	      while(y.t < ys) y[y.t++] = 0;
+	      while(--j >= 0) {
+	        // Estimate quotient digit
+	        var qd = (r[--i]==y0)?this.DM:Math.floor(r[i]*d1+(r[i-1]+e)*d2);
+	        if((r[i]+=y.am(0,qd,r,j,0,ys)) < qd) {   // Try it out
+	          y.dlShiftTo(j,t);
+	          r.subTo(t,r);
+	          while(r[i] < --qd) r.subTo(t,r);
+	        }
+	      }
+	      if(q != null) {
+	        r.drShiftTo(ys,q);
+	        if(ts != ms) BigInteger.ZERO.subTo(q,q);
+	      }
+	      r.t = ys;
+	      r.clamp();
+	      if(nsh > 0) r.rShiftTo(nsh,r); // Denormalize remainder
+	      if(ts < 0) BigInteger.ZERO.subTo(r,r);
+	    }
+
+	    // (public) this mod a
+	    function bnMod(a) {
+	      var r = nbi();
+	      this.abs().divRemTo(a,null,r);
+	      if(this.s < 0 && r.compareTo(BigInteger.ZERO) > 0) a.subTo(r,r);
+	      return r;
+	    }
+
+	    // Modular reduction using "classic" algorithm
+	    function Classic(m) { this.m = m; }
+	    function cConvert(x) {
+	      if(x.s < 0 || x.compareTo(this.m) >= 0) return x.mod(this.m);
+	      else return x;
+	    }
+	    function cRevert(x) { return x; }
+	    function cReduce(x) { x.divRemTo(this.m,null,x); }
+	    function cMulTo(x,y,r) { x.multiplyTo(y,r); this.reduce(r); }
+	    function cSqrTo(x,r) { x.squareTo(r); this.reduce(r); }
+
+	    Classic.prototype.convert = cConvert;
+	    Classic.prototype.revert = cRevert;
+	    Classic.prototype.reduce = cReduce;
+	    Classic.prototype.mulTo = cMulTo;
+	    Classic.prototype.sqrTo = cSqrTo;
+
+	    // (protected) return "-1/this % 2^DB"; useful for Mont. reduction
+	    // justification:
+	    //         xy == 1 (mod m)
+	    //         xy =  1+km
+	    //   xy(2-xy) = (1+km)(1-km)
+	    // x[y(2-xy)] = 1-k^2m^2
+	    // x[y(2-xy)] == 1 (mod m^2)
+	    // if y is 1/x mod m, then y(2-xy) is 1/x mod m^2
+	    // should reduce x and y(2-xy) by m^2 at each step to keep size bounded.
+	    // JS multiply "overflows" differently from C/C++, so care is needed here.
+	    function bnpInvDigit() {
+	      if(this.t < 1) return 0;
+	      var x = this[0];
+	      if((x&1) == 0) return 0;
+	      var y = x&3;       // y == 1/x mod 2^2
+	      y = (y*(2-(x&0xf)*y))&0xf; // y == 1/x mod 2^4
+	      y = (y*(2-(x&0xff)*y))&0xff;   // y == 1/x mod 2^8
+	      y = (y*(2-(((x&0xffff)*y)&0xffff)))&0xffff;    // y == 1/x mod 2^16
+	      // last step - calculate inverse mod DV directly;
+	      // assumes 16 < DB <= 32 and assumes ability to handle 48-bit ints
+	      y = (y*(2-x*y%this.DV))%this.DV;       // y == 1/x mod 2^dbits
+	      // we really want the negative inverse, and -DV < y < DV
+	      return (y>0)?this.DV-y:-y;
+	    }
+
+	    // Montgomery reduction
+	    function Montgomery(m) {
+	      this.m = m;
+	      this.mp = m.invDigit();
+	      this.mpl = this.mp&0x7fff;
+	      this.mph = this.mp>>15;
+	      this.um = (1<<(m.DB-15))-1;
+	      this.mt2 = 2*m.t;
+	    }
+
+	    // xR mod m
+	    function montConvert(x) {
+	      var r = nbi();
+	      x.abs().dlShiftTo(this.m.t,r);
+	      r.divRemTo(this.m,null,r);
+	      if(x.s < 0 && r.compareTo(BigInteger.ZERO) > 0) this.m.subTo(r,r);
+	      return r;
+	    }
+
+	    // x/R mod m
+	    function montRevert(x) {
+	      var r = nbi();
+	      x.copyTo(r);
+	      this.reduce(r);
+	      return r;
+	    }
+
+	    // x = x/R mod m (HAC 14.32)
+	    function montReduce(x) {
+	      while(x.t <= this.mt2) // pad x so am has enough room later
+	        x[x.t++] = 0;
+	      for(var i = 0; i < this.m.t; ++i) {
+	        // faster way of calculating u0 = x[i]*mp mod DV
+	        var j = x[i]&0x7fff;
+	        var u0 = (j*this.mpl+(((j*this.mph+(x[i]>>15)*this.mpl)&this.um)<<15))&x.DM;
+	        // use am to combine the multiply-shift-add into one call
+	        j = i+this.m.t;
+	        x[j] += this.m.am(0,u0,x,i,0,this.m.t);
+	        // propagate carry
+	        while(x[j] >= x.DV) { x[j] -= x.DV; x[++j]++; }
+	      }
+	      x.clamp();
+	      x.drShiftTo(this.m.t,x);
+	      if(x.compareTo(this.m) >= 0) x.subTo(this.m,x);
+	    }
+
+	    // r = "x^2/R mod m"; x != r
+	    function montSqrTo(x,r) { x.squareTo(r); this.reduce(r); }
+
+	    // r = "xy/R mod m"; x,y != r
+	    function montMulTo(x,y,r) { x.multiplyTo(y,r); this.reduce(r); }
+
+	    Montgomery.prototype.convert = montConvert;
+	    Montgomery.prototype.revert = montRevert;
+	    Montgomery.prototype.reduce = montReduce;
+	    Montgomery.prototype.mulTo = montMulTo;
+	    Montgomery.prototype.sqrTo = montSqrTo;
+
+	    // (protected) true iff this is even
+	    function bnpIsEven() { return ((this.t>0)?(this[0]&1):this.s) == 0; }
+
+	    // (protected) this^e, e < 2^32, doing sqr and mul with "r" (HAC 14.79)
+	    function bnpExp(e,z) {
+	      if(e > 0xffffffff || e < 1) return BigInteger.ONE;
+	      var r = nbi(), r2 = nbi(), g = z.convert(this), i = nbits(e)-1;
+	      g.copyTo(r);
+	      while(--i >= 0) {
+	        z.sqrTo(r,r2);
+	        if((e&(1<<i)) > 0) z.mulTo(r2,g,r);
+	        else { var t = r; r = r2; r2 = t; }
+	      }
+	      return z.revert(r);
+	    }
+
+	    // (public) this^e % m, 0 <= e < 2^32
+	    function bnModPowInt(e,m) {
+	      var z;
+	      if(e < 256 || m.isEven()) z = new Classic(m); else z = new Montgomery(m);
+	      return this.exp(e,z);
+	    }
+
+	    // protected
+	    BigInteger.prototype.copyTo = bnpCopyTo;
+	    BigInteger.prototype.fromInt = bnpFromInt;
+	    BigInteger.prototype.fromString = bnpFromString;
+	    BigInteger.prototype.clamp = bnpClamp;
+	    BigInteger.prototype.dlShiftTo = bnpDLShiftTo;
+	    BigInteger.prototype.drShiftTo = bnpDRShiftTo;
+	    BigInteger.prototype.lShiftTo = bnpLShiftTo;
+	    BigInteger.prototype.rShiftTo = bnpRShiftTo;
+	    BigInteger.prototype.subTo = bnpSubTo;
+	    BigInteger.prototype.multiplyTo = bnpMultiplyTo;
+	    BigInteger.prototype.squareTo = bnpSquareTo;
+	    BigInteger.prototype.divRemTo = bnpDivRemTo;
+	    BigInteger.prototype.invDigit = bnpInvDigit;
+	    BigInteger.prototype.isEven = bnpIsEven;
+	    BigInteger.prototype.exp = bnpExp;
+
+	    // public
+	    BigInteger.prototype.toString = bnToString;
+	    BigInteger.prototype.negate = bnNegate;
+	    BigInteger.prototype.abs = bnAbs;
+	    BigInteger.prototype.compareTo = bnCompareTo;
+	    BigInteger.prototype.bitLength = bnBitLength;
+	    BigInteger.prototype.mod = bnMod;
+	    BigInteger.prototype.modPowInt = bnModPowInt;
+
+	    // "constants"
+	    BigInteger.ZERO = nbv(0);
+	    BigInteger.ONE = nbv(1);
+
+	    // Copyright (c) 2005-2009  Tom Wu
+	    // All Rights Reserved.
+	    // See "LICENSE" for details.
+
+	    // Extended JavaScript BN functions, required for RSA private ops.
+
+	    // Version 1.1: new BigInteger("0", 10) returns "proper" zero
+	    // Version 1.2: square() API, isProbablePrime fix
+
+	    // (public)
+	    function bnClone() { var r = nbi(); this.copyTo(r); return r; }
+
+	    // (public) return value as integer
+	    function bnIntValue() {
+	      if(this.s < 0) {
+	        if(this.t == 1) return this[0]-this.DV;
+	        else if(this.t == 0) return -1;
+	      }
+	      else if(this.t == 1) return this[0];
+	      else if(this.t == 0) return 0;
+	      // assumes 16 < DB < 32
+	      return ((this[1]&((1<<(32-this.DB))-1))<<this.DB)|this[0];
+	    }
+
+	    // (public) return value as byte
+	    function bnByteValue() { return (this.t==0)?this.s:(this[0]<<24)>>24; }
+
+	    // (public) return value as short (assumes DB>=16)
+	    function bnShortValue() { return (this.t==0)?this.s:(this[0]<<16)>>16; }
+
+	    // (protected) return x s.t. r^x < DV
+	    function bnpChunkSize(r) { return Math.floor(Math.LN2*this.DB/Math.log(r)); }
+
+	    // (public) 0 if this == 0, 1 if this > 0
+	    function bnSigNum() {
+	      if(this.s < 0) return -1;
+	      else if(this.t <= 0 || (this.t == 1 && this[0] <= 0)) return 0;
+	      else return 1;
+	    }
+
+	    // (protected) convert to radix string
+	    function bnpToRadix(b) {
+	      if(b == null) b = 10;
+	      if(this.signum() == 0 || b < 2 || b > 36) return "0";
+	      var cs = this.chunkSize(b);
+	      var a = Math.pow(b,cs);
+	      var d = nbv(a), y = nbi(), z = nbi(), r = "";
+	      this.divRemTo(d,y,z);
+	      while(y.signum() > 0) {
+	        r = (a+z.intValue()).toString(b).substr(1) + r;
+	        y.divRemTo(d,y,z);
+	      }
+	      return z.intValue().toString(b) + r;
+	    }
+
+	    // (protected) convert from radix string
+	    function bnpFromRadix(s,b) {
+	      this.fromInt(0);
+	      if(b == null) b = 10;
+	      var cs = this.chunkSize(b);
+	      var d = Math.pow(b,cs), mi = false, j = 0, w = 0;
+	      for(var i = 0; i < s.length; ++i) {
+	        var x = intAt(s,i);
+	        if(x < 0) {
+	          if(s.charAt(i) == "-" && this.signum() == 0) mi = true;
+	          continue;
+	        }
+	        w = b*w+x;
+	        if(++j >= cs) {
+	          this.dMultiply(d);
+	          this.dAddOffset(w,0);
+	          j = 0;
+	          w = 0;
+	        }
+	      }
+	      if(j > 0) {
+	        this.dMultiply(Math.pow(b,j));
+	        this.dAddOffset(w,0);
+	      }
+	      if(mi) BigInteger.ZERO.subTo(this,this);
+	    }
+
+	    // (protected) alternate constructor
+	    function bnpFromNumber(a,b,c) {
+	      if("number" == typeof b) {
+	        // new BigInteger(int,int,RNG)
+	        if(a < 2) this.fromInt(1);
+	        else {
+	          this.fromNumber(a,c);
+	          if(!this.testBit(a-1))    // force MSB set
+	            this.bitwiseTo(BigInteger.ONE.shiftLeft(a-1),op_or,this);
+	          if(this.isEven()) this.dAddOffset(1,0); // force odd
+	          while(!this.isProbablePrime(b)) {
+	            this.dAddOffset(2,0);
+	            if(this.bitLength() > a) this.subTo(BigInteger.ONE.shiftLeft(a-1),this);
+	          }
+	        }
+	      }
+	      else {
+	        // new BigInteger(int,RNG)
+	        var x = new Array(), t = a&7;
+	        x.length = (a>>3)+1;
+	        b.nextBytes(x);
+	        if(t > 0) x[0] &= ((1<<t)-1); else x[0] = 0;
+	        this.fromString(x,256);
+	      }
+	    }
+
+	    // (public) convert to bigendian byte array
+	    function bnToByteArray() {
+	      var i = this.t, r = new Array();
+	      r[0] = this.s;
+	      var p = this.DB-(i*this.DB)%8, d, k = 0;
+	      if(i-- > 0) {
+	        if(p < this.DB && (d = this[i]>>p) != (this.s&this.DM)>>p)
+	          r[k++] = d|(this.s<<(this.DB-p));
+	        while(i >= 0) {
+	          if(p < 8) {
+	            d = (this[i]&((1<<p)-1))<<(8-p);
+	            d |= this[--i]>>(p+=this.DB-8);
+	          }
+	          else {
+	            d = (this[i]>>(p-=8))&0xff;
+	            if(p <= 0) { p += this.DB; --i; }
+	          }
+	          if((d&0x80) != 0) d |= -256;
+	          if(k == 0 && (this.s&0x80) != (d&0x80)) ++k;
+	          if(k > 0 || d != this.s) r[k++] = d;
+	        }
+	      }
+	      return r;
+	    }
+
+	    function bnEquals(a) { return(this.compareTo(a)==0); }
+	    function bnMin(a) { return (this.compareTo(a)<0)?this:a; }
+	    function bnMax(a) { return (this.compareTo(a)>0)?this:a; }
+
+	    // (protected) r = this op a (bitwise)
+	    function bnpBitwiseTo(a,op,r) {
+	      var i, f, m = Math.min(a.t,this.t);
+	      for(i = 0; i < m; ++i) r[i] = op(this[i],a[i]);
+	      if(a.t < this.t) {
+	        f = a.s&this.DM;
+	        for(i = m; i < this.t; ++i) r[i] = op(this[i],f);
+	        r.t = this.t;
+	      }
+	      else {
+	        f = this.s&this.DM;
+	        for(i = m; i < a.t; ++i) r[i] = op(f,a[i]);
+	        r.t = a.t;
+	      }
+	      r.s = op(this.s,a.s);
+	      r.clamp();
+	    }
+
+	    // (public) this & a
+	    function op_and(x,y) { return x&y; }
+	    function bnAnd(a) { var r = nbi(); this.bitwiseTo(a,op_and,r); return r; }
+
+	    // (public) this | a
+	    function op_or(x,y) { return x|y; }
+	    function bnOr(a) { var r = nbi(); this.bitwiseTo(a,op_or,r); return r; }
+
+	    // (public) this ^ a
+	    function op_xor(x,y) { return x^y; }
+	    function bnXor(a) { var r = nbi(); this.bitwiseTo(a,op_xor,r); return r; }
+
+	    // (public) this & ~a
+	    function op_andnot(x,y) { return x&~y; }
+	    function bnAndNot(a) { var r = nbi(); this.bitwiseTo(a,op_andnot,r); return r; }
+
+	    // (public) ~this
+	    function bnNot() {
+	      var r = nbi();
+	      for(var i = 0; i < this.t; ++i) r[i] = this.DM&~this[i];
+	      r.t = this.t;
+	      r.s = ~this.s;
+	      return r;
+	    }
+
+	    // (public) this << n
+	    function bnShiftLeft(n) {
+	      var r = nbi();
+	      if(n < 0) this.rShiftTo(-n,r); else this.lShiftTo(n,r);
+	      return r;
+	    }
+
+	    // (public) this >> n
+	    function bnShiftRight(n) {
+	      var r = nbi();
+	      if(n < 0) this.lShiftTo(-n,r); else this.rShiftTo(n,r);
+	      return r;
+	    }
+
+	    // return index of lowest 1-bit in x, x < 2^31
+	    function lbit(x) {
+	      if(x == 0) return -1;
+	      var r = 0;
+	      if((x&0xffff) == 0) { x >>= 16; r += 16; }
+	      if((x&0xff) == 0) { x >>= 8; r += 8; }
+	      if((x&0xf) == 0) { x >>= 4; r += 4; }
+	      if((x&3) == 0) { x >>= 2; r += 2; }
+	      if((x&1) == 0) ++r;
+	      return r;
+	    }
+
+	    // (public) returns index of lowest 1-bit (or -1 if none)
+	    function bnGetLowestSetBit() {
+	      for(var i = 0; i < this.t; ++i)
+	        if(this[i] != 0) return i*this.DB+lbit(this[i]);
+	      if(this.s < 0) return this.t*this.DB;
+	      return -1;
+	    }
+
+	    // return number of 1 bits in x
+	    function cbit(x) {
+	      var r = 0;
+	      while(x != 0) { x &= x-1; ++r; }
+	      return r;
+	    }
+
+	    // (public) return number of set bits
+	    function bnBitCount() {
+	      var r = 0, x = this.s&this.DM;
+	      for(var i = 0; i < this.t; ++i) r += cbit(this[i]^x);
+	      return r;
+	    }
+
+	    // (public) true iff nth bit is set
+	    function bnTestBit(n) {
+	      var j = Math.floor(n/this.DB);
+	      if(j >= this.t) return(this.s!=0);
+	      return((this[j]&(1<<(n%this.DB)))!=0);
+	    }
+
+	    // (protected) this op (1<<n)
+	    function bnpChangeBit(n,op) {
+	      var r = BigInteger.ONE.shiftLeft(n);
+	      this.bitwiseTo(r,op,r);
+	      return r;
+	    }
+
+	    // (public) this | (1<<n)
+	    function bnSetBit(n) { return this.changeBit(n,op_or); }
+
+	    // (public) this & ~(1<<n)
+	    function bnClearBit(n) { return this.changeBit(n,op_andnot); }
+
+	    // (public) this ^ (1<<n)
+	    function bnFlipBit(n) { return this.changeBit(n,op_xor); }
+
+	    // (protected) r = this + a
+	    function bnpAddTo(a,r) {
+	      var i = 0, c = 0, m = Math.min(a.t,this.t);
+	      while(i < m) {
+	        c += this[i]+a[i];
+	        r[i++] = c&this.DM;
+	        c >>= this.DB;
+	      }
+	      if(a.t < this.t) {
+	        c += a.s;
+	        while(i < this.t) {
+	          c += this[i];
+	          r[i++] = c&this.DM;
+	          c >>= this.DB;
+	        }
+	        c += this.s;
+	      }
+	      else {
+	        c += this.s;
+	        while(i < a.t) {
+	          c += a[i];
+	          r[i++] = c&this.DM;
+	          c >>= this.DB;
+	        }
+	        c += a.s;
+	      }
+	      r.s = (c<0)?-1:0;
+	      if(c > 0) r[i++] = c;
+	      else if(c < -1) r[i++] = this.DV+c;
+	      r.t = i;
+	      r.clamp();
+	    }
+
+	    // (public) this + a
+	    function bnAdd(a) { var r = nbi(); this.addTo(a,r); return r; }
+
+	    // (public) this - a
+	    function bnSubtract(a) { var r = nbi(); this.subTo(a,r); return r; }
+
+	    // (public) this * a
+	    function bnMultiply(a) { var r = nbi(); this.multiplyTo(a,r); return r; }
+
+	    // (public) this^2
+	    function bnSquare() { var r = nbi(); this.squareTo(r); return r; }
+
+	    // (public) this / a
+	    function bnDivide(a) { var r = nbi(); this.divRemTo(a,r,null); return r; }
+
+	    // (public) this % a
+	    function bnRemainder(a) { var r = nbi(); this.divRemTo(a,null,r); return r; }
+
+	    // (public) [this/a,this%a]
+	    function bnDivideAndRemainder(a) {
+	      var q = nbi(), r = nbi();
+	      this.divRemTo(a,q,r);
+	      return new Array(q,r);
+	    }
+
+	    // (protected) this *= n, this >= 0, 1 < n < DV
+	    function bnpDMultiply(n) {
+	      this[this.t] = this.am(0,n-1,this,0,0,this.t);
+	      ++this.t;
+	      this.clamp();
+	    }
+
+	    // (protected) this += n << w words, this >= 0
+	    function bnpDAddOffset(n,w) {
+	      if(n == 0) return;
+	      while(this.t <= w) this[this.t++] = 0;
+	      this[w] += n;
+	      while(this[w] >= this.DV) {
+	        this[w] -= this.DV;
+	        if(++w >= this.t) this[this.t++] = 0;
+	        ++this[w];
+	      }
+	    }
+
+	    // A "null" reducer
+	    function NullExp() {}
+	    function nNop(x) { return x; }
+	    function nMulTo(x,y,r) { x.multiplyTo(y,r); }
+	    function nSqrTo(x,r) { x.squareTo(r); }
+
+	    NullExp.prototype.convert = nNop;
+	    NullExp.prototype.revert = nNop;
+	    NullExp.prototype.mulTo = nMulTo;
+	    NullExp.prototype.sqrTo = nSqrTo;
+
+	    // (public) this^e
+	    function bnPow(e) { return this.exp(e,new NullExp()); }
+
+	    // (protected) r = lower n words of "this * a", a.t <= n
+	    // "this" should be the larger one if appropriate.
+	    function bnpMultiplyLowerTo(a,n,r) {
+	      var i = Math.min(this.t+a.t,n);
+	      r.s = 0; // assumes a,this >= 0
+	      r.t = i;
+	      while(i > 0) r[--i] = 0;
+	      var j;
+	      for(j = r.t-this.t; i < j; ++i) r[i+this.t] = this.am(0,a[i],r,i,0,this.t);
+	      for(j = Math.min(a.t,n); i < j; ++i) this.am(0,a[i],r,i,0,n-i);
+	      r.clamp();
+	    }
+
+	    // (protected) r = "this * a" without lower n words, n > 0
+	    // "this" should be the larger one if appropriate.
+	    function bnpMultiplyUpperTo(a,n,r) {
+	      --n;
+	      var i = r.t = this.t+a.t-n;
+	      r.s = 0; // assumes a,this >= 0
+	      while(--i >= 0) r[i] = 0;
+	      for(i = Math.max(n-this.t,0); i < a.t; ++i)
+	        r[this.t+i-n] = this.am(n-i,a[i],r,0,0,this.t+i-n);
+	      r.clamp();
+	      r.drShiftTo(1,r);
+	    }
+
+	    // Barrett modular reduction
+	    function Barrett(m) {
+	      // setup Barrett
+	      this.r2 = nbi();
+	      this.q3 = nbi();
+	      BigInteger.ONE.dlShiftTo(2*m.t,this.r2);
+	      this.mu = this.r2.divide(m);
+	      this.m = m;
+	    }
+
+	    function barrettConvert(x) {
+	      if(x.s < 0 || x.t > 2*this.m.t) return x.mod(this.m);
+	      else if(x.compareTo(this.m) < 0) return x;
+	      else { var r = nbi(); x.copyTo(r); this.reduce(r); return r; }
+	    }
+
+	    function barrettRevert(x) { return x; }
+
+	    // x = x mod m (HAC 14.42)
+	    function barrettReduce(x) {
+	      x.drShiftTo(this.m.t-1,this.r2);
+	      if(x.t > this.m.t+1) { x.t = this.m.t+1; x.clamp(); }
+	      this.mu.multiplyUpperTo(this.r2,this.m.t+1,this.q3);
+	      this.m.multiplyLowerTo(this.q3,this.m.t+1,this.r2);
+	      while(x.compareTo(this.r2) < 0) x.dAddOffset(1,this.m.t+1);
+	      x.subTo(this.r2,x);
+	      while(x.compareTo(this.m) >= 0) x.subTo(this.m,x);
+	    }
+
+	    // r = x^2 mod m; x != r
+	    function barrettSqrTo(x,r) { x.squareTo(r); this.reduce(r); }
+
+	    // r = x*y mod m; x,y != r
+	    function barrettMulTo(x,y,r) { x.multiplyTo(y,r); this.reduce(r); }
+
+	    Barrett.prototype.convert = barrettConvert;
+	    Barrett.prototype.revert = barrettRevert;
+	    Barrett.prototype.reduce = barrettReduce;
+	    Barrett.prototype.mulTo = barrettMulTo;
+	    Barrett.prototype.sqrTo = barrettSqrTo;
+
+	    // (public) this^e % m (HAC 14.85)
+	    function bnModPow(e,m) {
+	      var i = e.bitLength(), k, r = nbv(1), z;
+	      if(i <= 0) return r;
+	      else if(i < 18) k = 1;
+	      else if(i < 48) k = 3;
+	      else if(i < 144) k = 4;
+	      else if(i < 768) k = 5;
+	      else k = 6;
+	      if(i < 8)
+	        z = new Classic(m);
+	      else if(m.isEven())
+	        z = new Barrett(m);
+	      else
+	        z = new Montgomery(m);
+
+	      // precomputation
+	      var g = new Array(), n = 3, k1 = k-1, km = (1<<k)-1;
+	      g[1] = z.convert(this);
+	      if(k > 1) {
+	        var g2 = nbi();
+	        z.sqrTo(g[1],g2);
+	        while(n <= km) {
+	          g[n] = nbi();
+	          z.mulTo(g2,g[n-2],g[n]);
+	          n += 2;
+	        }
+	      }
+
+	      var j = e.t-1, w, is1 = true, r2 = nbi(), t;
+	      i = nbits(e[j])-1;
+	      while(j >= 0) {
+	        if(i >= k1) w = (e[j]>>(i-k1))&km;
+	        else {
+	          w = (e[j]&((1<<(i+1))-1))<<(k1-i);
+	          if(j > 0) w |= e[j-1]>>(this.DB+i-k1);
+	        }
+
+	        n = k;
+	        while((w&1) == 0) { w >>= 1; --n; }
+	        if((i -= n) < 0) { i += this.DB; --j; }
+	        if(is1) {    // ret == 1, don't bother squaring or multiplying it
+	          g[w].copyTo(r);
+	          is1 = false;
+	        }
+	        else {
+	          while(n > 1) { z.sqrTo(r,r2); z.sqrTo(r2,r); n -= 2; }
+	          if(n > 0) z.sqrTo(r,r2); else { t = r; r = r2; r2 = t; }
+	          z.mulTo(r2,g[w],r);
+	        }
+
+	        while(j >= 0 && (e[j]&(1<<i)) == 0) {
+	          z.sqrTo(r,r2); t = r; r = r2; r2 = t;
+	          if(--i < 0) { i = this.DB-1; --j; }
+	        }
+	      }
+	      return z.revert(r);
+	    }
+
+	    // (public) gcd(this,a) (HAC 14.54)
+	    function bnGCD(a) {
+	      var x = (this.s<0)?this.negate():this.clone();
+	      var y = (a.s<0)?a.negate():a.clone();
+	      if(x.compareTo(y) < 0) { var t = x; x = y; y = t; }
+	      var i = x.getLowestSetBit(), g = y.getLowestSetBit();
+	      if(g < 0) return x;
+	      if(i < g) g = i;
+	      if(g > 0) {
+	        x.rShiftTo(g,x);
+	        y.rShiftTo(g,y);
+	      }
+	      while(x.signum() > 0) {
+	        if((i = x.getLowestSetBit()) > 0) x.rShiftTo(i,x);
+	        if((i = y.getLowestSetBit()) > 0) y.rShiftTo(i,y);
+	        if(x.compareTo(y) >= 0) {
+	          x.subTo(y,x);
+	          x.rShiftTo(1,x);
+	        }
+	        else {
+	          y.subTo(x,y);
+	          y.rShiftTo(1,y);
+	        }
+	      }
+	      if(g > 0) y.lShiftTo(g,y);
+	      return y;
+	    }
+
+	    // (protected) this % n, n < 2^26
+	    function bnpModInt(n) {
+	      if(n <= 0) return 0;
+	      var d = this.DV%n, r = (this.s<0)?n-1:0;
+	      if(this.t > 0)
+	        if(d == 0) r = this[0]%n;
+	        else for(var i = this.t-1; i >= 0; --i) r = (d*r+this[i])%n;
+	      return r;
+	    }
+
+	    // (public) 1/this % m (HAC 14.61)
+	    function bnModInverse(m) {
+	      var ac = m.isEven();
+	      if((this.isEven() && ac) || m.signum() == 0) return BigInteger.ZERO;
+	      var u = m.clone(), v = this.clone();
+	      var a = nbv(1), b = nbv(0), c = nbv(0), d = nbv(1);
+	      while(u.signum() != 0) {
+	        while(u.isEven()) {
+	          u.rShiftTo(1,u);
+	          if(ac) {
+	            if(!a.isEven() || !b.isEven()) { a.addTo(this,a); b.subTo(m,b); }
+	            a.rShiftTo(1,a);
+	          }
+	          else if(!b.isEven()) b.subTo(m,b);
+	          b.rShiftTo(1,b);
+	        }
+	        while(v.isEven()) {
+	          v.rShiftTo(1,v);
+	          if(ac) {
+	            if(!c.isEven() || !d.isEven()) { c.addTo(this,c); d.subTo(m,d); }
+	            c.rShiftTo(1,c);
+	          }
+	          else if(!d.isEven()) d.subTo(m,d);
+	          d.rShiftTo(1,d);
+	        }
+	        if(u.compareTo(v) >= 0) {
+	          u.subTo(v,u);
+	          if(ac) a.subTo(c,a);
+	          b.subTo(d,b);
+	        }
+	        else {
+	          v.subTo(u,v);
+	          if(ac) c.subTo(a,c);
+	          d.subTo(b,d);
+	        }
+	      }
+	      if(v.compareTo(BigInteger.ONE) != 0) return BigInteger.ZERO;
+	      if(d.compareTo(m) >= 0) return d.subtract(m);
+	      if(d.signum() < 0) d.addTo(m,d); else return d;
+	      if(d.signum() < 0) return d.add(m); else return d;
+	    }
+
+	    var lowprimes = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,179,181,191,193,197,199,211,223,227,229,233,239,241,251,257,263,269,271,277,281,283,293,307,311,313,317,331,337,347,349,353,359,367,373,379,383,389,397,401,409,419,421,431,433,439,443,449,457,461,463,467,479,487,491,499,503,509,521,523,541,547,557,563,569,571,577,587,593,599,601,607,613,617,619,631,641,643,647,653,659,661,673,677,683,691,701,709,719,727,733,739,743,751,757,761,769,773,787,797,809,811,821,823,827,829,839,853,857,859,863,877,881,883,887,907,911,919,929,937,941,947,953,967,971,977,983,991,997];
+	    var lplim = (1<<26)/lowprimes[lowprimes.length-1];
+
+	    // (public) test primality with certainty >= 1-.5^t
+	    function bnIsProbablePrime(t) {
+	      var i, x = this.abs();
+	      if(x.t == 1 && x[0] <= lowprimes[lowprimes.length-1]) {
+	        for(i = 0; i < lowprimes.length; ++i)
+	          if(x[0] == lowprimes[i]) return true;
+	        return false;
+	      }
+	      if(x.isEven()) return false;
+	      i = 1;
+	      while(i < lowprimes.length) {
+	        var m = lowprimes[i], j = i+1;
+	        while(j < lowprimes.length && m < lplim) m *= lowprimes[j++];
+	        m = x.modInt(m);
+	        while(i < j) if(m%lowprimes[i++] == 0) return false;
+	      }
+	      return x.millerRabin(t);
+	    }
+
+	    // (protected) true if probably prime (HAC 4.24, Miller-Rabin)
+	    function bnpMillerRabin(t) {
+	      var n1 = this.subtract(BigInteger.ONE);
+	      var k = n1.getLowestSetBit();
+	      if(k <= 0) return false;
+	      var r = n1.shiftRight(k);
+	      t = (t+1)>>1;
+	      if(t > lowprimes.length) t = lowprimes.length;
+	      var a = nbi();
+	      for(var i = 0; i < t; ++i) {
+	        //Pick bases at random, instead of starting at 2
+	        a.fromInt(lowprimes[Math.floor(Math.random()*lowprimes.length)]);
+	        var y = a.modPow(r,this);
+	        if(y.compareTo(BigInteger.ONE) != 0 && y.compareTo(n1) != 0) {
+	          var j = 1;
+	          while(j++ < k && y.compareTo(n1) != 0) {
+	            y = y.modPowInt(2,this);
+	            if(y.compareTo(BigInteger.ONE) == 0) return false;
+	          }
+	          if(y.compareTo(n1) != 0) return false;
+	        }
+	      }
+	      return true;
+	    }
+
+	    // protected
+	    BigInteger.prototype.chunkSize = bnpChunkSize;
+	    BigInteger.prototype.toRadix = bnpToRadix;
+	    BigInteger.prototype.fromRadix = bnpFromRadix;
+	    BigInteger.prototype.fromNumber = bnpFromNumber;
+	    BigInteger.prototype.bitwiseTo = bnpBitwiseTo;
+	    BigInteger.prototype.changeBit = bnpChangeBit;
+	    BigInteger.prototype.addTo = bnpAddTo;
+	    BigInteger.prototype.dMultiply = bnpDMultiply;
+	    BigInteger.prototype.dAddOffset = bnpDAddOffset;
+	    BigInteger.prototype.multiplyLowerTo = bnpMultiplyLowerTo;
+	    BigInteger.prototype.multiplyUpperTo = bnpMultiplyUpperTo;
+	    BigInteger.prototype.modInt = bnpModInt;
+	    BigInteger.prototype.millerRabin = bnpMillerRabin;
+
+	    // public
+	    BigInteger.prototype.clone = bnClone;
+	    BigInteger.prototype.intValue = bnIntValue;
+	    BigInteger.prototype.byteValue = bnByteValue;
+	    BigInteger.prototype.shortValue = bnShortValue;
+	    BigInteger.prototype.signum = bnSigNum;
+	    BigInteger.prototype.toByteArray = bnToByteArray;
+	    BigInteger.prototype.equals = bnEquals;
+	    BigInteger.prototype.min = bnMin;
+	    BigInteger.prototype.max = bnMax;
+	    BigInteger.prototype.and = bnAnd;
+	    BigInteger.prototype.or = bnOr;
+	    BigInteger.prototype.xor = bnXor;
+	    BigInteger.prototype.andNot = bnAndNot;
+	    BigInteger.prototype.not = bnNot;
+	    BigInteger.prototype.shiftLeft = bnShiftLeft;
+	    BigInteger.prototype.shiftRight = bnShiftRight;
+	    BigInteger.prototype.getLowestSetBit = bnGetLowestSetBit;
+	    BigInteger.prototype.bitCount = bnBitCount;
+	    BigInteger.prototype.testBit = bnTestBit;
+	    BigInteger.prototype.setBit = bnSetBit;
+	    BigInteger.prototype.clearBit = bnClearBit;
+	    BigInteger.prototype.flipBit = bnFlipBit;
+	    BigInteger.prototype.add = bnAdd;
+	    BigInteger.prototype.subtract = bnSubtract;
+	    BigInteger.prototype.multiply = bnMultiply;
+	    BigInteger.prototype.divide = bnDivide;
+	    BigInteger.prototype.remainder = bnRemainder;
+	    BigInteger.prototype.divideAndRemainder = bnDivideAndRemainder;
+	    BigInteger.prototype.modPow = bnModPow;
+	    BigInteger.prototype.modInverse = bnModInverse;
+	    BigInteger.prototype.pow = bnPow;
+	    BigInteger.prototype.gcd = bnGCD;
+	    BigInteger.prototype.isProbablePrime = bnIsProbablePrime;
+
+	    // JSBN-specific extension
+	    BigInteger.prototype.square = bnSquare;
+
+	    // Expose the Barrett function
+	    BigInteger.prototype.Barrett = Barrett;
+
+	    // BigInteger interfaces not implemented in jsbn:
+
+	    // BigInteger(int signum, byte[] magnitude)
+	    // double doubleValue()
+	    // float floatValue()
+	    // int hashCode()
+	    // long longValue()
+	    // static BigInteger valueOf(long val)
+
+	    // Random number generator - requires a PRNG backend, e.g. prng4.js
+
+	    // For best results, put code like
+	    // <body onClick='rng_seed_time();' onKeyPress='rng_seed_time();'>
+	    // in your main HTML document.
+
+	    var rng_state;
+	    var rng_pool;
+	    var rng_pptr;
+
+	    // Mix in a 32-bit integer into the pool
+	    function rng_seed_int(x) {
+	      rng_pool[rng_pptr++] ^= x & 255;
+	      rng_pool[rng_pptr++] ^= (x >> 8) & 255;
+	      rng_pool[rng_pptr++] ^= (x >> 16) & 255;
+	      rng_pool[rng_pptr++] ^= (x >> 24) & 255;
+	      if(rng_pptr >= rng_psize) rng_pptr -= rng_psize;
+	    }
+
+	    // Mix in the current time (w/milliseconds) into the pool
+	    function rng_seed_time() {
+	      rng_seed_int(new Date().getTime());
+	    }
+
+	    // Initialize the pool with junk if needed.
+	    if(rng_pool == null) {
+	      rng_pool = new Array();
+	      rng_pptr = 0;
+	      var t;
+	      if(typeof window !== "undefined" && window.crypto) {
+	        if (window.crypto.getRandomValues) {
+	          // Use webcrypto if available
+	          var ua = new Uint8Array(32);
+	          window.crypto.getRandomValues(ua);
+	          for(t = 0; t < 32; ++t)
+	            rng_pool[rng_pptr++] = ua[t];
+	        }
+	        else if(navigator.appName == "Netscape" && navigator.appVersion < "5") {
+	          // Extract entropy (256 bits) from NS4 RNG if available
+	          var z = window.crypto.random(32);
+	          for(t = 0; t < z.length; ++t)
+	            rng_pool[rng_pptr++] = z.charCodeAt(t) & 255;
+	        }
+	      }
+	      while(rng_pptr < rng_psize) {  // extract some randomness from Math.random()
+	        t = Math.floor(65536 * Math.random());
+	        rng_pool[rng_pptr++] = t >>> 8;
+	        rng_pool[rng_pptr++] = t & 255;
+	      }
+	      rng_pptr = 0;
+	      rng_seed_time();
+	      //rng_seed_int(window.screenX);
+	      //rng_seed_int(window.screenY);
+	    }
+
+	    function rng_get_byte() {
+	      if(rng_state == null) {
+	        rng_seed_time();
+	        rng_state = prng_newstate();
+	        rng_state.init(rng_pool);
+	        for(rng_pptr = 0; rng_pptr < rng_pool.length; ++rng_pptr)
+	          rng_pool[rng_pptr] = 0;
+	        rng_pptr = 0;
+	        //rng_pool = null;
+	      }
+	      // TODO: allow reseeding after first request
+	      return rng_state.next();
+	    }
+
+	    function rng_get_bytes(ba) {
+	      var i;
+	      for(i = 0; i < ba.length; ++i) ba[i] = rng_get_byte();
+	    }
+
+	    function SecureRandom() {}
+
+	    SecureRandom.prototype.nextBytes = rng_get_bytes;
+
+	    // prng4.js - uses Arcfour as a PRNG
+
+	    function Arcfour() {
+	      this.i = 0;
+	      this.j = 0;
+	      this.S = new Array();
+	    }
+
+	    // Initialize arcfour context from key, an array of ints, each from [0..255]
+	    function ARC4init(key) {
+	      var i, j, t;
+	      for(i = 0; i < 256; ++i)
+	        this.S[i] = i;
+	      j = 0;
+	      for(i = 0; i < 256; ++i) {
+	        j = (j + this.S[i] + key[i % key.length]) & 255;
+	        t = this.S[i];
+	        this.S[i] = this.S[j];
+	        this.S[j] = t;
+	      }
+	      this.i = 0;
+	      this.j = 0;
+	    }
+
+	    function ARC4next() {
+	      var t;
+	      this.i = (this.i + 1) & 255;
+	      this.j = (this.j + this.S[this.i]) & 255;
+	      t = this.S[this.i];
+	      this.S[this.i] = this.S[this.j];
+	      this.S[this.j] = t;
+	      return this.S[(t + this.S[this.i]) & 255];
+	    }
+
+	    Arcfour.prototype.init = ARC4init;
+	    Arcfour.prototype.next = ARC4next;
+
+	    // Plug in your RNG constructor here
+	    function prng_newstate() {
+	      return new Arcfour();
+	    }
+
+	    // Pool size must be a multiple of 4 and greater than 32.
+	    // An array of bytes the size of the pool will be passed to init()
+	    var rng_psize = 256;
+
+	    {
+	        module.exports = {
+	            default: BigInteger,
+	            BigInteger: BigInteger,
+	            SecureRandom: SecureRandom,
+	        };
+	    }
+
+	}).call(commonjsGlobal); 
+} (jsbn));
+
+var jsbnExports = jsbn.exports;
+
+/* eslint-disable class-methods-use-this */
+
+const {BigInteger: BigInteger$3} = jsbnExports;
+
+function bigintToValue(bigint) {
+  let h = bigint.toString(16);
+  if (h[0] !== '-') {
+    // 正数
+    if (h.length % 2 === 1) h = '0' + h; // 补齐到整字节
+    else if (!h.match(/^[0-7]/)) h = '00' + h; // 非0开头，则补一个全0字节
+  } else {
+    // 负数
+    h = h.substr(1);
+
+    let len = h.length;
+    if (len % 2 === 1) len += 1; // 补齐到整字节
+    else if (!h.match(/^[0-7]/)) len += 2; // 非0开头，则补一个全0字节
+
+    let mask = '';
+    for (let i = 0; i < len; i++) mask += 'f';
+    mask = new BigInteger$3(mask, 16);
+
+    // 对绝对值取反，加1
+    h = mask.xor(bigint).add(BigInteger$3.ONE);
+    h = h.toString(16).replace(/^-/, '');
+  }
+  return h
+}
+
+class ASN1Object {
+  constructor() {
+    this.tlv = null;
+    this.t = '00';
+    this.l = '00';
+    this.v = '';
+  }
+
+  /**
+   * 获取 der 编码比特流16进制串
+   */
+  getEncodedHex() {
+    if (!this.tlv) {
+      this.v = this.getValue();
+      this.l = this.getLength();
+      this.tlv = this.t + this.l + this.v;
+    }
+    return this.tlv
+  }
+
+  getLength() {
+    const n = this.v.length / 2; // 字节数
+    let nHex = n.toString(16);
+    if (nHex.length % 2 === 1) nHex = '0' + nHex; // 补齐到整字节
+
+    if (n < 128) {
+      // 短格式，以 0 开头
+      return nHex
+    } else {
+      // 长格式，以 1 开头
+      const head = 128 + nHex.length / 2; // 1(1位) + 真正的长度占用字节数(7位) + 真正的长度
+      return head.toString(16) + nHex
+    }
+  }
+
+  getValue() {
+    return ''
+  }
+}
+
+class DERInteger extends ASN1Object {
+  constructor(bigint) {
+    super();
+
+    this.t = '02'; // 整型标签说明
+    if (bigint) this.v = bigintToValue(bigint);
+  }
+
+  getValue() {
+    return this.v
+  }
+}
+
+class DERSequence extends ASN1Object {
+  constructor(asn1Array) {
+    super();
+
+    this.t = '30'; // 序列标签说明
+    this.asn1Array = asn1Array;
+  }
+
+  getValue() {
+    this.v = this.asn1Array.map(asn1Object => asn1Object.getEncodedHex()).join('');
+    return this.v
+  }
+}
+
+/**
+ * 获取 l 占用字节数
+ */
+function getLenOfL(str, start) {
+  if (+str[start + 2] < 8) return 1 // l 以0开头，则表示短格式，只占一个字节
+  return +str.substr(start + 2, 2) & 0x7f + 1 // 长格式，取第一个字节后7位作为长度真正占用字节数，再加上本身
+}
+
+/**
+ * 获取 l
+ */
+function getL(str, start) {
+  // 获取 l
+  const len = getLenOfL(str, start);
+  const l = str.substr(start + 2, len * 2);
+
+  if (!l) return -1
+  const bigint = +l[0] < 8 ? new BigInteger$3(l, 16) : new BigInteger$3(l.substr(2), 16);
+
+  return bigint.intValue()
+}
+
+/**
+ * 获取 v 的位置
+ */
+function getStartOfV(str, start) {
+  const len = getLenOfL(str, start);
+  return start + (len + 1) * 2
+}
+
+var asn1 = {
+  /**
+   * ASN.1 der 编码，针对 sm2 签名
+   */
+  encodeDer(r, s) {
+    const derR = new DERInteger(r);
+    const derS = new DERInteger(s);
+    const derSeq = new DERSequence([derR, derS]);
+
+    return derSeq.getEncodedHex()
+  },
+
+  /**
+   * 解析 ASN.1 der，针对 sm2 验签
+   */
+  decodeDer(input) {
+    // 结构：
+    // input = | tSeq | lSeq | vSeq |
+    // vSeq = | tR | lR | vR | tS | lS | vS |
+    const start = getStartOfV(input, 0);
+
+    const vIndexR = getStartOfV(input, start);
+    const lR = getL(input, start);
+    const vR = input.substr(vIndexR, lR * 2);
+
+    const nextStart = vIndexR + vR.length;
+    const vIndexS = getStartOfV(input, nextStart);
+    const lS = getL(input, nextStart);
+    const vS = input.substr(vIndexS, lS * 2);
+
+    const r = new BigInteger$3(vR, 16);
+    const s = new BigInteger$3(vS, 16);
+
+    return {r, s}
+  }
+};
+
+/* eslint-disable no-case-declarations, max-len */
+
+const {BigInteger: BigInteger$2} = jsbnExports;
+
+/**
+ * thanks for Tom Wu : http://www-cs-students.stanford.edu/~tjw/jsbn/
+ *
+ * Basic Javascript Elliptic Curve implementation
+ * Ported loosely from BouncyCastle's Java EC code
+ * Only Fp curves implemented for now
+ */
+
+const TWO = new BigInteger$2('2');
+const THREE = new BigInteger$2('3');
+
+/**
+ * 椭圆曲线域元素
+ */
+class ECFieldElementFp {
+  constructor(q, x) {
+    this.x = x;
+    this.q = q;
+    // TODO if (x.compareTo(q) >= 0) error
+  }
+
+  /**
+   * 判断相等
+   */
+  equals(other) {
+    if (other === this) return true
+    return (this.q.equals(other.q) && this.x.equals(other.x))
+  }
+
+  /**
+   * 返回具体数值
+   */
+  toBigInteger() {
+    return this.x
+  }
+
+  /**
+   * 取反
+   */
+  negate() {
+    return new ECFieldElementFp(this.q, this.x.negate().mod(this.q))
+  }
+
+  /**
+   * 相加
+   */
+  add(b) {
+    return new ECFieldElementFp(this.q, this.x.add(b.toBigInteger()).mod(this.q))
+  }
+
+  /**
+   * 相减
+   */
+  subtract(b) {
+    return new ECFieldElementFp(this.q, this.x.subtract(b.toBigInteger()).mod(this.q))
+  }
+
+  /**
+   * 相乘
+   */
+  multiply(b) {
+    return new ECFieldElementFp(this.q, this.x.multiply(b.toBigInteger()).mod(this.q))
+  }
+
+  /**
+   * 相除
+   */
+  divide(b) {
+    return new ECFieldElementFp(this.q, this.x.multiply(b.toBigInteger().modInverse(this.q)).mod(this.q))
+  }
+
+  /**
+   * 平方
+   */
+  square() {
+    return new ECFieldElementFp(this.q, this.x.square().mod(this.q))
+  }
+}
+
+class ECPointFp {
+  constructor(curve, x, y, z) {
+    this.curve = curve;
+    this.x = x;
+    this.y = y;
+    // 标准射影坐标系：zinv == null 或 z * zinv == 1
+    this.z = z == null ? BigInteger$2.ONE : z;
+    this.zinv = null;
+    // TODO: compression flag
+  }
+
+  getX() {
+    if (this.zinv === null) this.zinv = this.z.modInverse(this.curve.q);
+
+    return this.curve.fromBigInteger(this.x.toBigInteger().multiply(this.zinv).mod(this.curve.q))
+  }
+
+  getY() {
+    if (this.zinv === null) this.zinv = this.z.modInverse(this.curve.q);
+
+    return this.curve.fromBigInteger(this.y.toBigInteger().multiply(this.zinv).mod(this.curve.q))
+  }
+
+  /**
+   * 判断相等
+   */
+  equals(other) {
+    if (other === this) return true
+    if (this.isInfinity()) return other.isInfinity()
+    if (other.isInfinity()) return this.isInfinity()
+
+    // u = y2 * z1 - y1 * z2
+    const u = other.y.toBigInteger().multiply(this.z).subtract(this.y.toBigInteger().multiply(other.z)).mod(this.curve.q);
+    if (!u.equals(BigInteger$2.ZERO)) return false
+
+    // v = x2 * z1 - x1 * z2
+    const v = other.x.toBigInteger().multiply(this.z).subtract(this.x.toBigInteger().multiply(other.z)).mod(this.curve.q);
+    return v.equals(BigInteger$2.ZERO)
+  }
+
+  /**
+   * 是否是无穷远点
+   */
+  isInfinity() {
+    if ((this.x === null) && (this.y === null)) return true
+    return this.z.equals(BigInteger$2.ZERO) && !this.y.toBigInteger().equals(BigInteger$2.ZERO)
+  }
+
+  /**
+   * 取反，x 轴对称点
+   */
+  negate() {
+    return new ECPointFp(this.curve, this.x, this.y.negate(), this.z)
+  }
+
+  /**
+   * 相加
+   *
+   * 标准射影坐标系：
+   *
+   * λ1 = x1 * z2
+   * λ2 = x2 * z1
+   * λ3 = λ1 − λ2
+   * λ4 = y1 * z2
+   * λ5 = y2 * z1
+   * λ6 = λ4 − λ5
+   * λ7 = λ1 + λ2
+   * λ8 = z1 * z2
+   * λ9 = λ3^2
+   * λ10 = λ3 * λ9
+   * λ11 = λ8 * λ6^2 − λ7 * λ9
+   * x3 = λ3 * λ11
+   * y3 = λ6 * (λ9 * λ1 − λ11) − λ4 * λ10
+   * z3 = λ10 * λ8
+   */
+  add(b) {
+    if (this.isInfinity()) return b
+    if (b.isInfinity()) return this
+
+    const x1 = this.x.toBigInteger();
+    const y1 = this.y.toBigInteger();
+    const z1 = this.z;
+    const x2 = b.x.toBigInteger();
+    const y2 = b.y.toBigInteger();
+    const z2 = b.z;
+    const q = this.curve.q;
+
+    const w1 = x1.multiply(z2).mod(q);
+    const w2 = x2.multiply(z1).mod(q);
+    const w3 = w1.subtract(w2);
+    const w4 = y1.multiply(z2).mod(q);
+    const w5 = y2.multiply(z1).mod(q);
+    const w6 = w4.subtract(w5);
+
+    if (BigInteger$2.ZERO.equals(w3)) {
+      if (BigInteger$2.ZERO.equals(w6)) {
+        return this.twice() // this == b，计算自加
+      }
+      return this.curve.infinity // this == -b，则返回无穷远点
+    }
+
+    const w7 = w1.add(w2);
+    const w8 = z1.multiply(z2).mod(q);
+    const w9 = w3.square().mod(q);
+    const w10 = w3.multiply(w9).mod(q);
+    const w11 = w8.multiply(w6.square()).subtract(w7.multiply(w9)).mod(q);
+
+    const x3 = w3.multiply(w11).mod(q);
+    const y3 = w6.multiply(w9.multiply(w1).subtract(w11)).subtract(w4.multiply(w10)).mod(q);
+    const z3 = w10.multiply(w8).mod(q);
+
+    return new ECPointFp(this.curve, this.curve.fromBigInteger(x3), this.curve.fromBigInteger(y3), z3)
+  }
+
+  /**
+   * 自加
+   *
+   * 标准射影坐标系：
+   *
+   * λ1 = 3 * x1^2 + a * z1^2
+   * λ2 = 2 * y1 * z1
+   * λ3 = y1^2
+   * λ4 = λ3 * x1 * z1
+   * λ5 = λ2^2
+   * λ6 = λ1^2 − 8 * λ4
+   * x3 = λ2 * λ6
+   * y3 = λ1 * (4 * λ4 − λ6) − 2 * λ5 * λ3
+   * z3 = λ2 * λ5
+   */
+  twice() {
+    if (this.isInfinity()) return this
+    if (!this.y.toBigInteger().signum()) return this.curve.infinity
+
+    const x1 = this.x.toBigInteger();
+    const y1 = this.y.toBigInteger();
+    const z1 = this.z;
+    const q = this.curve.q;
+    const a = this.curve.a.toBigInteger();
+
+    const w1 = x1.square().multiply(THREE).add(a.multiply(z1.square())).mod(q);
+    const w2 = y1.shiftLeft(1).multiply(z1).mod(q);
+    const w3 = y1.square().mod(q);
+    const w4 = w3.multiply(x1).multiply(z1).mod(q);
+    const w5 = w2.square().mod(q);
+    const w6 = w1.square().subtract(w4.shiftLeft(3)).mod(q);
+
+    const x3 = w2.multiply(w6).mod(q);
+    const y3 = w1.multiply(w4.shiftLeft(2).subtract(w6)).subtract(w5.shiftLeft(1).multiply(w3)).mod(q);
+    const z3 = w2.multiply(w5).mod(q);
+
+    return new ECPointFp(this.curve, this.curve.fromBigInteger(x3), this.curve.fromBigInteger(y3), z3)
+  }
+
+  /**
+   * 倍点计算
+   */
+  multiply(k) {
+    if (this.isInfinity()) return this
+    if (!k.signum()) return this.curve.infinity
+
+    // 使用加减法
+    const k3 = k.multiply(THREE);
+    const neg = this.negate();
+    let Q = this;
+
+    for (let i = k3.bitLength() - 2; i > 0; i--) {
+      Q = Q.twice();
+
+      const k3Bit = k3.testBit(i);
+      const kBit = k.testBit(i);
+
+      if (k3Bit !== kBit) {
+        Q = Q.add(k3Bit ? this : neg);
+      }
+    }
+
+    return Q
+  }
+}
+
+/**
+ * 椭圆曲线 y^2 = x^3 + ax + b
+ */
+let ECCurveFp$1 = class ECCurveFp {
+  constructor(q, a, b) {
+    this.q = q;
+    this.a = this.fromBigInteger(a);
+    this.b = this.fromBigInteger(b);
+    this.infinity = new ECPointFp(this, null, null); // 无穷远点
+  }
+
+  /**
+   * 判断两个椭圆曲线是否相等
+   */
+  equals(other) {
+    if (other === this) return true
+    return (this.q.equals(other.q) && this.a.equals(other.a) && this.b.equals(other.b))
+  }
+
+  /**
+   * 生成椭圆曲线域元素
+   */
+  fromBigInteger(x) {
+    return new ECFieldElementFp(this.q, x)
+  }
+
+  /**
+   * 解析 16 进制串为椭圆曲线点
+   */
+  decodePointHex(s) {
+    switch (parseInt(s.substr(0, 2), 16)) {
+      // 第一个字节
+      case 0:
+        return this.infinity
+      case 2:
+      case 3:
+        // 压缩
+        const x = this.fromBigInteger(new BigInteger$2(s.substr(2), 16));
+        // 对 p ≡ 3 (mod4)，即存在正整数 u，使得 p = 4u + 3
+        // 计算 y = (√ (x^3 + ax + b) % p)^(u + 1) modp
+        let y = this.fromBigInteger(x.multiply(x.square()).add(
+          x.multiply(this.a)
+        ).add(this.b).toBigInteger()
+          .modPow(
+            this.q.divide(new BigInteger$2('4')).add(BigInteger$2.ONE), this.q
+          ));
+        // 算出结果 2 进制最后 1 位不等于第 1 个字节减 2 则取反
+        if (!y.toBigInteger().mod(TWO).equals(new BigInteger$2(s.substr(0, 2), 16).subtract(TWO))) {
+          y = y.negate();
+        }
+        return new ECPointFp(this, x, y)
+      case 4:
+      case 6:
+      case 7:
+        const len = (s.length - 2) / 2;
+        const xHex = s.substr(2, len);
+        const yHex = s.substr(len + 2, len);
+
+        return new ECPointFp(this, this.fromBigInteger(new BigInteger$2(xHex, 16)), this.fromBigInteger(new BigInteger$2(yHex, 16)))
+      default:
+        // 不支持
+        return null
+    }
+  }
+};
+
+var ec = {
+  ECPointFp,
+  ECCurveFp: ECCurveFp$1,
+};
+
+/* eslint-disable no-bitwise, no-mixed-operators, no-use-before-define, max-len */
+
+const {BigInteger: BigInteger$1, SecureRandom} = jsbnExports;
+const {ECCurveFp} = ec;
+
+const rng = new SecureRandom();
+const {curve: curve$1, G: G$1, n: n$1} = generateEcparam();
+
+/**
+ * 获取公共椭圆曲线
+ */
+function getGlobalCurve() {
+  return curve$1
+}
+
+/**
+ * 生成ecparam
+ */
+function generateEcparam() {
+  // 椭圆曲线
+  const p = new BigInteger$1('FFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000FFFFFFFFFFFFFFFF', 16);
+  const a = new BigInteger$1('FFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000FFFFFFFFFFFFFFFC', 16);
+  const b = new BigInteger$1('28E9FA9E9D9F5E344D5A9E4BCF6509A7F39789F515AB8F92DDBCBD414D940E93', 16);
+  const curve = new ECCurveFp(p, a, b);
+
+  // 基点
+  const gxHex = '32C4AE2C1F1981195F9904466A39C9948FE30BBFF2660BE1715A4589334C74C7';
+  const gyHex = 'BC3736A2F4F6779C59BDCEE36B692153D0A9877CC62A474002DF32E52139F0A0';
+  const G = curve.decodePointHex('04' + gxHex + gyHex);
+
+  const n = new BigInteger$1('FFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFF7203DF6B21C6052B53BBF40939D54123', 16);
+
+  return {curve, G, n}
+}
+
+/**
+ * 生成密钥对：publicKey = privateKey * G
+ */
+function generateKeyPairHex(a, b, c) {
+  const random = a ? new BigInteger$1(a, b, c) : new BigInteger$1(n$1.bitLength(), rng);
+  const d = random.mod(n$1.subtract(BigInteger$1.ONE)).add(BigInteger$1.ONE); // 随机数
+  const privateKey = leftPad$1(d.toString(16), 64);
+
+  const P = G$1.multiply(d); // P = dG，p 为公钥，d 为私钥
+  const Px = leftPad$1(P.getX().toBigInteger().toString(16), 64);
+  const Py = leftPad$1(P.getY().toBigInteger().toString(16), 64);
+  const publicKey = '04' + Px + Py;
+
+  return {privateKey, publicKey}
+}
+
+/**
+ * 生成压缩公钥
+ */
+function compressPublicKeyHex(s) {
+  if (s.length !== 130) throw new Error('Invalid public key to compress')
+
+  const len = (s.length - 2) / 2;
+  const xHex = s.substr(2, len);
+  const y = new BigInteger$1(s.substr(len + 2, len), 16);
+
+  let prefix = '03';
+  if (y.mod(new BigInteger$1('2')).equals(BigInteger$1.ZERO)) prefix = '02';
+
+  return prefix + xHex
+}
+
+/**
+ * utf8串转16进制串
+ */
+function utf8ToHex(input) {
+  input = unescape(encodeURIComponent(input));
+
+  const length = input.length;
+
+  // 转换到字数组
+  const words = [];
+  for (let i = 0; i < length; i++) {
+    words[i >>> 2] |= (input.charCodeAt(i) & 0xff) << (24 - (i % 4) * 8);
+  }
+
+  // 转换到16进制
+  const hexChars = [];
+  for (let i = 0; i < length; i++) {
+    const bite = (words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff;
+    hexChars.push((bite >>> 4).toString(16));
+    hexChars.push((bite & 0x0f).toString(16));
+  }
+
+  return hexChars.join('')
+}
+
+/**
+ * 补全16进制字符串
+ */
+function leftPad$1(input, num) {
+  if (input.length >= num) return input
+
+  return (new Array(num - input.length + 1)).join('0') + input
+}
+
+/**
+ * 转成16进制串
+ */
+function arrayToHex(arr) {
+  return arr.map(item => {
+    item = item.toString(16);
+    return item.length === 1 ? '0' + item : item
+  }).join('')
+}
+
+/**
+ * 转成utf8串
+ */
+function arrayToUtf8$1(arr) {
+  const words = [];
+  let j = 0;
+  for (let i = 0; i < arr.length * 2; i += 2) {
+    words[i >>> 3] |= parseInt(arr[j], 10) << (24 - (i % 8) * 4);
+    j++;
+  }
+
+  try {
+    const latin1Chars = [];
+
+    for (let i = 0; i < arr.length; i++) {
+      const bite = (words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff;
+      latin1Chars.push(String.fromCharCode(bite));
+    }
+
+    return decodeURIComponent(escape(latin1Chars.join('')))
+  } catch (e) {
+    throw new Error('Malformed UTF-8 data')
+  }
+}
+
+/**
+ * 转成字节数组
+ */
+function hexToArray$2(hexStr) {
+  const words = [];
+  let hexStrLength = hexStr.length;
+
+  if (hexStrLength % 2 !== 0) {
+    hexStr = leftPad$1(hexStr, hexStrLength + 1);
+  }
+
+  hexStrLength = hexStr.length;
+
+  for (let i = 0; i < hexStrLength; i += 2) {
+    words.push(parseInt(hexStr.substr(i, 2), 16));
+  }
+  return words
+}
+
+/**
+ * 验证公钥是否为椭圆曲线上的点
+ */
+function verifyPublicKey(publicKey) {
+  const point = curve$1.decodePointHex(publicKey);
+  if (!point) return false
+
+  const x = point.getX();
+  const y = point.getY();
+
+  // 验证 y^2 是否等于 x^3 + ax + b
+  return y.square().equals(x.multiply(x.square()).add(x.multiply(curve$1.a)).add(curve$1.b))
+}
+
+/**
+ * 验证公钥是否等价，等价返回true
+ */
+function comparePublicKeyHex(publicKey1, publicKey2) {
+  const point1 = curve$1.decodePointHex(publicKey1);
+  if (!point1) return false
+
+  const point2 = curve$1.decodePointHex(publicKey2);
+  if (!point2) return false
+
+  return point1.equals(point2)
+}
+
+var utils = {
+  getGlobalCurve,
+  generateEcparam,
+  generateKeyPairHex,
+  compressPublicKeyHex,
+  utf8ToHex,
+  leftPad: leftPad$1,
+  arrayToHex,
+  arrayToUtf8: arrayToUtf8$1,
+  hexToArray: hexToArray$2,
+  verifyPublicKey,
+  comparePublicKeyHex,
+};
+
+// 消息扩展
+const W = new Uint32Array(68);
+const M = new Uint32Array(64); // W'
+
+/**
+ * 循环左移
+ */
+function rotl$1(x, n) {
+  const s = n & 31;
+  return (x << s) | (x >>> (32 - s))
+}
+
+/**
+ * 二进制异或运算
+ */
+function xor(x, y) {
+  const result = [];
+  for (let i = x.length - 1; i >= 0; i--) result[i] = (x[i] ^ y[i]) & 0xff;
+  return result
+}
+
+/**
+ * 压缩函数中的置换函数 P0(X) = X xor (X <<< 9) xor (X <<< 17)
+ */
+function P0(X) {
+  return (X ^ rotl$1(X, 9)) ^ rotl$1(X, 17)
+}
+
+/**
+ * 消息扩展中的置换函数 P1(X) = X xor (X <<< 15) xor (X <<< 23)
+ */
+function P1(X) {
+  return (X ^ rotl$1(X, 15)) ^ rotl$1(X, 23)
+}
+
+/**
+ * sm3 本体
+ */
+function sm3$2(array) {
+  let len = array.length * 8;
+
+  // k 是满足 len + 1 + k = 448mod512 的最小的非负整数
+  let k = len % 512;
+  // 如果 448 <= (512 % len) < 512，需要多补充 (len % 448) 比特'0'以满足总比特长度为512的倍数
+  k = k >= 448 ? 512 - (k % 448) - 1 : 448 - k - 1;
+
+  // 填充
+  const kArr = new Array((k - 7) / 8);
+  const lenArr = new Array(8);
+  for (let i = 0, len = kArr.length; i < len; i++) kArr[i] = 0;
+  for (let i = 0, len = lenArr.length; i < len; i++) lenArr[i] = 0;
+  len = len.toString(2);
+  for (let i = 7; i >= 0; i--) {
+    if (len.length > 8) {
+      const start = len.length - 8;
+      lenArr[i] = parseInt(len.substr(start), 2);
+      len = len.substr(0, start);
+    } else if (len.length > 0) {
+      lenArr[i] = parseInt(len, 2);
+      len = '';
+    }
+  }
+  const m = new Uint8Array([...array, 0x80, ...kArr, ...lenArr]);
+  const dataView = new DataView(m.buffer, 0);
+
+  // 迭代压缩
+  const n = m.length / 64;
+  const V = new Uint32Array([0x7380166f, 0x4914b2b9, 0x172442d7, 0xda8a0600, 0xa96f30bc, 0x163138aa, 0xe38dee4d, 0xb0fb0e4e]);
+  for (let i = 0; i < n; i++) {
+    W.fill(0);
+    M.fill(0);
+
+    // 将消息分组B划分为 16 个字 W0， W1，……，W15
+    const start = 16 * i;
+    for (let j = 0; j < 16; j++) {
+      W[j] = dataView.getUint32((start + j) * 4, false);
+    }
+
+    // W16 ～ W67：W[j] <- P1(W[j−16] xor W[j−9] xor (W[j−3] <<< 15)) xor (W[j−13] <<< 7) xor W[j−6]
+    for (let j = 16; j < 68; j++) {
+      W[j] = (P1((W[j - 16] ^ W[j - 9]) ^ rotl$1(W[j - 3], 15)) ^ rotl$1(W[j - 13], 7)) ^ W[j - 6];
+    }
+
+    // W′0 ～ W′63：W′[j] = W[j] xor W[j+4]
+    for (let j = 0; j < 64; j++) {
+      M[j] = W[j] ^ W[j + 4];
+    }
+
+    // 压缩
+    const T1 = 0x79cc4519;
+    const T2 = 0x7a879d8a;
+    // 字寄存器
+    let A = V[0];
+    let B = V[1];
+    let C = V[2];
+    let D = V[3];
+    let E = V[4];
+    let F = V[5];
+    let G = V[6];
+    let H = V[7];
+    // 中间变量
+    let SS1;
+    let SS2;
+    let TT1;
+    let TT2;
+    let T;
+    for (let j = 0; j < 64; j++) {
+      T = j >= 0 && j <= 15 ? T1 : T2;
+      SS1 = rotl$1(rotl$1(A, 12) + E + rotl$1(T, j), 7);
+      SS2 = SS1 ^ rotl$1(A, 12);
+
+      TT1 = (j >= 0 && j <= 15 ? ((A ^ B) ^ C) : (((A & B) | (A & C)) | (B & C))) + D + SS2 + M[j];
+      TT2 = (j >= 0 && j <= 15 ? ((E ^ F) ^ G) : ((E & F) | ((~E) & G))) + H + SS1 + W[j];
+
+      D = C;
+      C = rotl$1(B, 9);
+      B = A;
+      A = TT1;
+      H = G;
+      G = rotl$1(F, 19);
+      F = E;
+      E = P0(TT2);
+    }
+
+    V[0] ^= A;
+    V[1] ^= B;
+    V[2] ^= C;
+    V[3] ^= D;
+    V[4] ^= E;
+    V[5] ^= F;
+    V[6] ^= G;
+    V[7] ^= H;
+  }
+
+  // 转回 uint8
+  const result = [];
+  for (let i = 0, len = V.length; i < len; i++) {
+    const word = V[i];
+    result.push((word & 0xff000000) >>> 24, (word & 0xff0000) >>> 16, (word & 0xff00) >>> 8, word & 0xff);
+  }
+
+  return result
+}
+
+/**
+ * hmac 实现
+ */
+const blockLen = 64;
+const iPad = new Uint8Array(blockLen);
+const oPad = new Uint8Array(blockLen);
+for (let i = 0; i < blockLen; i++) {
+  iPad[i] = 0x36;
+  oPad[i] = 0x5c;
+}
+function hmac$1(input, key) {
+  // 密钥填充
+  if (key.length > blockLen) key = sm3$2(key);
+  while (key.length < blockLen) key.push(0);
+
+  const iPadKey = xor(key, iPad);
+  const oPadKey = xor(key, oPad);
+
+  const hash = sm3$2([...iPadKey, ...input]);
+  return sm3$2([...oPadKey, ...hash])
+}
+
+var sm3_1$1 = {
+  sm3: sm3$2,
+  hmac: hmac$1,
+};
+
+/* eslint-disable no-use-before-define */
+
+const {BigInteger} = jsbnExports;
+const {encodeDer, decodeDer} = asn1;
+const _ = utils;
+const sm3$1 = sm3_1$1.sm3;
+
+const {G, curve, n} = _.generateEcparam();
+const C1C2C3 = 0;
+
+/**
+ * 加密
+ */
+function doEncrypt(msg, publicKey, cipherMode = 1) {
+  msg = typeof msg === 'string' ? _.hexToArray(_.utf8ToHex(msg)) : Array.prototype.slice.call(msg);
+  publicKey = _.getGlobalCurve().decodePointHex(publicKey); // 先将公钥转成点
+
+  const keypair = _.generateKeyPairHex();
+  const k = new BigInteger(keypair.privateKey, 16); // 随机数 k
+
+  // c1 = k * G
+  let c1 = keypair.publicKey;
+  if (c1.length > 128) c1 = c1.substr(c1.length - 128);
+
+  // (x2, y2) = k * publicKey
+  const p = publicKey.multiply(k);
+  const x2 = _.hexToArray(_.leftPad(p.getX().toBigInteger().toRadix(16), 64));
+  const y2 = _.hexToArray(_.leftPad(p.getY().toBigInteger().toRadix(16), 64));
+
+  // c3 = hash(x2 || msg || y2)
+  const c3 = _.arrayToHex(sm3$1([].concat(x2, msg, y2)));
+
+  let ct = 1;
+  let offset = 0;
+  let t = []; // 256 位
+  const z = [].concat(x2, y2);
+  const nextT = () => {
+    // (1) Hai = hash(z || ct)
+    // (2) ct++
+    t = sm3$1([...z, ct >> 24 & 0x00ff, ct >> 16 & 0x00ff, ct >> 8 & 0x00ff, ct & 0x00ff]);
+    ct++;
+    offset = 0;
+  };
+  nextT(); // 先生成 Ha1
+
+  for (let i = 0, len = msg.length; i < len; i++) {
+    // t = Ha1 || Ha2 || Ha3 || Ha4
+    if (offset === t.length) nextT();
+
+    // c2 = msg ^ t
+    msg[i] ^= t[offset++] & 0xff;
+  }
+  const c2 = _.arrayToHex(msg);
+
+  return cipherMode === C1C2C3 ? c1 + c2 + c3 : c1 + c3 + c2
+}
+
+/**
+ * 解密
+ */
+function doDecrypt(encryptData, privateKey, cipherMode = 1, {
+  output = 'string',
+} = {}) {
+  privateKey = new BigInteger(privateKey, 16);
+
+  let c3 = encryptData.substr(128, 64);
+  let c2 = encryptData.substr(128 + 64);
+
+  if (cipherMode === C1C2C3) {
+    c3 = encryptData.substr(encryptData.length - 64);
+    c2 = encryptData.substr(128, encryptData.length - 128 - 64);
+  }
+
+  const msg = _.hexToArray(c2);
+  const c1 = _.getGlobalCurve().decodePointHex('04' + encryptData.substr(0, 128));
+
+  const p = c1.multiply(privateKey);
+  const x2 = _.hexToArray(_.leftPad(p.getX().toBigInteger().toRadix(16), 64));
+  const y2 = _.hexToArray(_.leftPad(p.getY().toBigInteger().toRadix(16), 64));
+
+  let ct = 1;
+  let offset = 0;
+  let t = []; // 256 位
+  const z = [].concat(x2, y2);
+  const nextT = () => {
+    // (1) Hai = hash(z || ct)
+    // (2) ct++
+    t = sm3$1([...z, ct >> 24 & 0x00ff, ct >> 16 & 0x00ff, ct >> 8 & 0x00ff, ct & 0x00ff]);
+    ct++;
+    offset = 0;
+  };
+  nextT(); // 先生成 Ha1
+
+  for (let i = 0, len = msg.length; i < len; i++) {
+    // t = Ha1 || Ha2 || Ha3 || Ha4
+    if (offset === t.length) nextT();
+
+    // c2 = msg ^ t
+    msg[i] ^= t[offset++] & 0xff;
+  }
+
+  // c3 = hash(x2 || msg || y2)
+  const checkC3 = _.arrayToHex(sm3$1([].concat(x2, msg, y2)));
+
+  if (checkC3 === c3.toLowerCase()) {
+    return output === 'array' ? msg : _.arrayToUtf8(msg)
+  } else {
+    return output === 'array' ? [] : ''
+  }
+}
+
+/**
+ * 签名
+ */
+function doSignature(msg, privateKey, {
+  pointPool, der, hash, publicKey, userId
+} = {}) {
+  let hashHex = typeof msg === 'string' ? _.utf8ToHex(msg) : _.arrayToHex(msg);
+
+  if (hash) {
+    // sm3杂凑
+    publicKey = publicKey || getPublicKeyFromPrivateKey(privateKey);
+    hashHex = getHash(hashHex, publicKey, userId);
+  }
+
+  const dA = new BigInteger(privateKey, 16);
+  const e = new BigInteger(hashHex, 16);
+
+  // k
+  let k = null;
+  let r = null;
+  let s = null;
+
+  do {
+    do {
+      let point;
+      if (pointPool && pointPool.length) {
+        point = pointPool.pop();
+      } else {
+        point = getPoint();
+      }
+      k = point.k;
+
+      // r = (e + x1) mod n
+      r = e.add(point.x1).mod(n);
+    } while (r.equals(BigInteger.ZERO) || r.add(k).equals(n))
+
+    // s = ((1 + dA)^-1 * (k - r * dA)) mod n
+    s = dA.add(BigInteger.ONE).modInverse(n).multiply(k.subtract(r.multiply(dA))).mod(n);
+  } while (s.equals(BigInteger.ZERO))
+
+  if (der) return encodeDer(r, s) // asn.1 der 编码
+
+  return _.leftPad(r.toString(16), 64) + _.leftPad(s.toString(16), 64)
+}
+
+/**
+ * 验签
+ */
+function doVerifySignature(msg, signHex, publicKey, {der, hash, userId} = {}) {
+  let hashHex = typeof msg === 'string' ? _.utf8ToHex(msg) : _.arrayToHex(msg);
+
+  if (hash) {
+    // sm3杂凑
+    hashHex = getHash(hashHex, publicKey, userId);
+  }
+
+  let r; let
+    s;
+  if (der) {
+    const decodeDerObj = decodeDer(signHex); // asn.1 der 解码
+    r = decodeDerObj.r;
+    s = decodeDerObj.s;
+  } else {
+    r = new BigInteger(signHex.substring(0, 64), 16);
+    s = new BigInteger(signHex.substring(64), 16);
+  }
+
+  const PA = curve.decodePointHex(publicKey);
+  const e = new BigInteger(hashHex, 16);
+
+  // t = (r + s) mod n
+  const t = r.add(s).mod(n);
+
+  if (t.equals(BigInteger.ZERO)) return false
+
+  // x1y1 = s * G + t * PA
+  const x1y1 = G.multiply(s).add(PA.multiply(t));
+
+  // R = (e + x1) mod n
+  const R = e.add(x1y1.getX().toBigInteger()).mod(n);
+
+  return r.equals(R)
+}
+
+/**
+ * sm3杂凑算法
+ */
+function getHash(hashHex, publicKey, userId = '1234567812345678') {
+  // z = hash(entl || userId || a || b || gx || gy || px || py)
+  userId = _.utf8ToHex(userId);
+  const a = _.leftPad(G.curve.a.toBigInteger().toRadix(16), 64);
+  const b = _.leftPad(G.curve.b.toBigInteger().toRadix(16), 64);
+  const gx = _.leftPad(G.getX().toBigInteger().toRadix(16), 64);
+  const gy = _.leftPad(G.getY().toBigInteger().toRadix(16), 64);
+  let px;
+  let py;
+  if (publicKey.length === 128) {
+    px = publicKey.substr(0, 64);
+    py = publicKey.substr(64, 64);
+  } else {
+    const point = G.curve.decodePointHex(publicKey);
+    px = _.leftPad(point.getX().toBigInteger().toRadix(16), 64);
+    py = _.leftPad(point.getY().toBigInteger().toRadix(16), 64);
+  }
+  const data = _.hexToArray(userId + a + b + gx + gy + px + py);
+
+  const entl = userId.length * 4;
+  data.unshift(entl & 0x00ff);
+  data.unshift(entl >> 8 & 0x00ff);
+
+  const z = sm3$1(data);
+
+  // e = hash(z || msg)
+  return _.arrayToHex(sm3$1(z.concat(_.hexToArray(hashHex))))
+}
+
+/**
+ * 计算公钥
+ */
+function getPublicKeyFromPrivateKey(privateKey) {
+  const PA = G.multiply(new BigInteger(privateKey, 16));
+  const x = _.leftPad(PA.getX().toBigInteger().toString(16), 64);
+  const y = _.leftPad(PA.getY().toBigInteger().toString(16), 64);
+  return '04' + x + y
+}
+
+/**
+ * 获取椭圆曲线点
+ */
+function getPoint() {
+  const keypair = _.generateKeyPairHex();
+  const PA = curve.decodePointHex(keypair.publicKey);
+
+  keypair.k = new BigInteger(keypair.privateKey, 16);
+  keypair.x1 = PA.getX().toBigInteger();
+
+  return keypair
+}
+
+var sm2 = {
+  generateKeyPairHex: _.generateKeyPairHex,
+  compressPublicKeyHex: _.compressPublicKeyHex,
+  comparePublicKeyHex: _.comparePublicKeyHex,
+  doEncrypt,
+  doDecrypt,
+  doSignature,
+  doVerifySignature,
+  getPublicKeyFromPrivateKey,
+  getPoint,
+  verifyPublicKey: _.verifyPublicKey,
+};
+
+const {sm3, hmac} = sm3_1$1;
+
+/**
+ * 补全16进制字符串
+ */
+function leftPad(input, num) {
+  if (input.length >= num) return input
+
+  return (new Array(num - input.length + 1)).join('0') + input
+}
+
+/**
+ * 字节数组转 16 进制串
+ */
+function ArrayToHex$1(arr) {
+  return arr.map(item => {
+    item = item.toString(16);
+    return item.length === 1 ? '0' + item : item
+  }).join('')
+}
+
+/**
+ * 转成字节数组
+ */
+function hexToArray$1(hexStr) {
+  const words = [];
+  let hexStrLength = hexStr.length;
+
+  if (hexStrLength % 2 !== 0) {
+    hexStr = leftPad(hexStr, hexStrLength + 1);
+  }
+
+  hexStrLength = hexStr.length;
+
+  for (let i = 0; i < hexStrLength; i += 2) {
+    words.push(parseInt(hexStr.substr(i, 2), 16));
+  }
+  return words
+}
+
+/**
+ * utf8 串转字节数组
+ */
+function utf8ToArray$1(str) {
+  const arr = [];
+
+  for (let i = 0, len = str.length; i < len; i++) {
+    const point = str.codePointAt(i);
+
+    if (point <= 0x007f) {
+      // 单字节，标量值：00000000 00000000 0zzzzzzz
+      arr.push(point);
+    } else if (point <= 0x07ff) {
+      // 双字节，标量值：00000000 00000yyy yyzzzzzz
+      arr.push(0xc0 | (point >>> 6)); // 110yyyyy（0xc0-0xdf）
+      arr.push(0x80 | (point & 0x3f)); // 10zzzzzz（0x80-0xbf）
+    } else if (point <= 0xD7FF || (point >= 0xE000 && point <= 0xFFFF)) {
+      // 三字节：标量值：00000000 xxxxyyyy yyzzzzzz
+      arr.push(0xe0 | (point >>> 12)); // 1110xxxx（0xe0-0xef）
+      arr.push(0x80 | ((point >>> 6) & 0x3f)); // 10yyyyyy（0x80-0xbf）
+      arr.push(0x80 | (point & 0x3f)); // 10zzzzzz（0x80-0xbf）
+    } else if (point >= 0x010000 && point <= 0x10FFFF) {
+      // 四字节：标量值：000wwwxx xxxxyyyy yyzzzzzz
+      i++;
+      arr.push((0xf0 | (point >>> 18) & 0x1c)); // 11110www（0xf0-0xf7）
+      arr.push((0x80 | ((point >>> 12) & 0x3f))); // 10xxxxxx（0x80-0xbf）
+      arr.push((0x80 | ((point >>> 6) & 0x3f))); // 10yyyyyy（0x80-0xbf）
+      arr.push((0x80 | (point & 0x3f))); // 10zzzzzz（0x80-0xbf）
+    } else {
+      // 五、六字节，暂时不支持
+      arr.push(point);
+      throw new Error('input is not supported')
+    }
+  }
+
+  return arr
+}
+
+var sm3_1 = function (input, options) {
+  input = typeof input === 'string' ? utf8ToArray$1(input) : Array.prototype.slice.call(input);
+
+  if (options) {
+    const mode = options.mode || 'hmac';
+    if (mode !== 'hmac') throw new Error('invalid mode')
+
+    let key = options.key;
+    if (!key) throw new Error('invalid key')
+
+    key = typeof key === 'string' ? hexToArray$1(key) : Array.prototype.slice.call(key);
+    return ArrayToHex$1(hmac(input, key))
+  }
+
+  return ArrayToHex$1(sm3(input))
+};
+
+/* eslint-disable no-bitwise, no-mixed-operators, complexity */
+
+const DECRYPT = 0;
+const ROUND = 32;
+const BLOCK = 16;
+
+const Sbox = [
+  0xd6, 0x90, 0xe9, 0xfe, 0xcc, 0xe1, 0x3d, 0xb7, 0x16, 0xb6, 0x14, 0xc2, 0x28, 0xfb, 0x2c, 0x05,
+  0x2b, 0x67, 0x9a, 0x76, 0x2a, 0xbe, 0x04, 0xc3, 0xaa, 0x44, 0x13, 0x26, 0x49, 0x86, 0x06, 0x99,
+  0x9c, 0x42, 0x50, 0xf4, 0x91, 0xef, 0x98, 0x7a, 0x33, 0x54, 0x0b, 0x43, 0xed, 0xcf, 0xac, 0x62,
+  0xe4, 0xb3, 0x1c, 0xa9, 0xc9, 0x08, 0xe8, 0x95, 0x80, 0xdf, 0x94, 0xfa, 0x75, 0x8f, 0x3f, 0xa6,
+  0x47, 0x07, 0xa7, 0xfc, 0xf3, 0x73, 0x17, 0xba, 0x83, 0x59, 0x3c, 0x19, 0xe6, 0x85, 0x4f, 0xa8,
+  0x68, 0x6b, 0x81, 0xb2, 0x71, 0x64, 0xda, 0x8b, 0xf8, 0xeb, 0x0f, 0x4b, 0x70, 0x56, 0x9d, 0x35,
+  0x1e, 0x24, 0x0e, 0x5e, 0x63, 0x58, 0xd1, 0xa2, 0x25, 0x22, 0x7c, 0x3b, 0x01, 0x21, 0x78, 0x87,
+  0xd4, 0x00, 0x46, 0x57, 0x9f, 0xd3, 0x27, 0x52, 0x4c, 0x36, 0x02, 0xe7, 0xa0, 0xc4, 0xc8, 0x9e,
+  0xea, 0xbf, 0x8a, 0xd2, 0x40, 0xc7, 0x38, 0xb5, 0xa3, 0xf7, 0xf2, 0xce, 0xf9, 0x61, 0x15, 0xa1,
+  0xe0, 0xae, 0x5d, 0xa4, 0x9b, 0x34, 0x1a, 0x55, 0xad, 0x93, 0x32, 0x30, 0xf5, 0x8c, 0xb1, 0xe3,
+  0x1d, 0xf6, 0xe2, 0x2e, 0x82, 0x66, 0xca, 0x60, 0xc0, 0x29, 0x23, 0xab, 0x0d, 0x53, 0x4e, 0x6f,
+  0xd5, 0xdb, 0x37, 0x45, 0xde, 0xfd, 0x8e, 0x2f, 0x03, 0xff, 0x6a, 0x72, 0x6d, 0x6c, 0x5b, 0x51,
+  0x8d, 0x1b, 0xaf, 0x92, 0xbb, 0xdd, 0xbc, 0x7f, 0x11, 0xd9, 0x5c, 0x41, 0x1f, 0x10, 0x5a, 0xd8,
+  0x0a, 0xc1, 0x31, 0x88, 0xa5, 0xcd, 0x7b, 0xbd, 0x2d, 0x74, 0xd0, 0x12, 0xb8, 0xe5, 0xb4, 0xb0,
+  0x89, 0x69, 0x97, 0x4a, 0x0c, 0x96, 0x77, 0x7e, 0x65, 0xb9, 0xf1, 0x09, 0xc5, 0x6e, 0xc6, 0x84,
+  0x18, 0xf0, 0x7d, 0xec, 0x3a, 0xdc, 0x4d, 0x20, 0x79, 0xee, 0x5f, 0x3e, 0xd7, 0xcb, 0x39, 0x48
+];
+
+const CK = [
+  0x00070e15, 0x1c232a31, 0x383f464d, 0x545b6269,
+  0x70777e85, 0x8c939aa1, 0xa8afb6bd, 0xc4cbd2d9,
+  0xe0e7eef5, 0xfc030a11, 0x181f262d, 0x343b4249,
+  0x50575e65, 0x6c737a81, 0x888f969d, 0xa4abb2b9,
+  0xc0c7ced5, 0xdce3eaf1, 0xf8ff060d, 0x141b2229,
+  0x30373e45, 0x4c535a61, 0x686f767d, 0x848b9299,
+  0xa0a7aeb5, 0xbcc3cad1, 0xd8dfe6ed, 0xf4fb0209,
+  0x10171e25, 0x2c333a41, 0x484f565d, 0x646b7279
+];
+
+/**
+ * 16 进制串转字节数组
+ */
+function hexToArray(str) {
+  const arr = [];
+  for (let i = 0, len = str.length; i < len; i += 2) {
+    arr.push(parseInt(str.substr(i, 2), 16));
+  }
+  return arr
+}
+
+/**
+ * 字节数组转 16 进制串
+ */
+function ArrayToHex(arr) {
+  return arr.map(item => {
+    item = item.toString(16);
+    return item.length === 1 ? '0' + item : item
+  }).join('')
+}
+
+/**
+ * utf8 串转字节数组
+ */
+function utf8ToArray(str) {
+  const arr = [];
+
+  for (let i = 0, len = str.length; i < len; i++) {
+    const point = str.codePointAt(i);
+
+    if (point <= 0x007f) {
+      // 单字节，标量值：00000000 00000000 0zzzzzzz
+      arr.push(point);
+    } else if (point <= 0x07ff) {
+      // 双字节，标量值：00000000 00000yyy yyzzzzzz
+      arr.push(0xc0 | (point >>> 6)); // 110yyyyy（0xc0-0xdf）
+      arr.push(0x80 | (point & 0x3f)); // 10zzzzzz（0x80-0xbf）
+    } else if (point <= 0xD7FF || (point >= 0xE000 && point <= 0xFFFF)) {
+      // 三字节：标量值：00000000 xxxxyyyy yyzzzzzz
+      arr.push(0xe0 | (point >>> 12)); // 1110xxxx（0xe0-0xef）
+      arr.push(0x80 | ((point >>> 6) & 0x3f)); // 10yyyyyy（0x80-0xbf）
+      arr.push(0x80 | (point & 0x3f)); // 10zzzzzz（0x80-0xbf）
+    } else if (point >= 0x010000 && point <= 0x10FFFF) {
+      // 四字节：标量值：000wwwxx xxxxyyyy yyzzzzzz
+      i++;
+      arr.push((0xf0 | (point >>> 18) & 0x1c)); // 11110www（0xf0-0xf7）
+      arr.push((0x80 | ((point >>> 12) & 0x3f))); // 10xxxxxx（0x80-0xbf）
+      arr.push((0x80 | ((point >>> 6) & 0x3f))); // 10yyyyyy（0x80-0xbf）
+      arr.push((0x80 | (point & 0x3f))); // 10zzzzzz（0x80-0xbf）
+    } else {
+      // 五、六字节，暂时不支持
+      arr.push(point);
+      throw new Error('input is not supported')
+    }
+  }
+
+  return arr
+}
+
+/**
+ * 字节数组转 utf8 串
+ */
+function arrayToUtf8(arr) {
+  const str = [];
+  for (let i = 0, len = arr.length; i < len; i++) {
+    if (arr[i] >= 0xf0 && arr[i] <= 0xf7) {
+      // 四字节
+      str.push(String.fromCodePoint(((arr[i] & 0x07) << 18) + ((arr[i + 1] & 0x3f) << 12) + ((arr[i + 2] & 0x3f) << 6) + (arr[i + 3] & 0x3f)));
+      i += 3;
+    } else if (arr[i] >= 0xe0 && arr[i] <= 0xef) {
+      // 三字节
+      str.push(String.fromCodePoint(((arr[i] & 0x0f) << 12) + ((arr[i + 1] & 0x3f) << 6) + (arr[i + 2] & 0x3f)));
+      i += 2;
+    } else if (arr[i] >= 0xc0 && arr[i] <= 0xdf) {
+      // 双字节
+      str.push(String.fromCodePoint(((arr[i] & 0x1f) << 6) + (arr[i + 1] & 0x3f)));
+      i++;
+    } else {
+      // 单字节
+      str.push(String.fromCodePoint(arr[i]));
+    }
+  }
+
+  return str.join('')
+}
+
+/**
+ * 32 比特循环左移
+ */
+function rotl(x, n) {
+  const s = n & 31;
+  return (x << s) | (x >>> (32 - s))
+}
+
+/**
+ * 非线性变换
+ */
+function byteSub(a) {
+  return (Sbox[a >>> 24 & 0xFF] & 0xFF) << 24 |
+    (Sbox[a >>> 16 & 0xFF] & 0xFF) << 16 |
+    (Sbox[a >>> 8 & 0xFF] & 0xFF) << 8 |
+    (Sbox[a & 0xFF] & 0xFF)
+}
+
+/**
+ * 线性变换，加密/解密用
+ */
+function l1(b) {
+  return b ^ rotl(b, 2) ^ rotl(b, 10) ^ rotl(b, 18) ^ rotl(b, 24)
+}
+
+/**
+ * 线性变换，生成轮密钥用
+ */
+function l2(b) {
+  return b ^ rotl(b, 13) ^ rotl(b, 23)
+}
+
+/**
+ * 以一组 128 比特进行加密/解密操作
+ */
+function sms4Crypt(input, output, roundKey) {
+  const x = new Array(4);
+
+  // 字节数组转成字数组（此处 1 字 = 32 比特）
+  const tmp = new Array(4);
+  for (let i = 0; i < 4; i++) {
+    tmp[0] = input[4 * i] & 0xff;
+    tmp[1] = input[4 * i + 1] & 0xff;
+    tmp[2] = input[4 * i + 2] & 0xff;
+    tmp[3] = input[4 * i + 3] & 0xff;
+    x[i] = tmp[0] << 24 | tmp[1] << 16 | tmp[2] << 8 | tmp[3];
+  }
+
+  // x[i + 4] = x[i] ^ l1(byteSub(x[i + 1] ^ x[i + 2] ^ x[i + 3] ^ roundKey[i]))
+  for (let r = 0, mid; r < 32; r += 4) {
+    mid = x[1] ^ x[2] ^ x[3] ^ roundKey[r + 0];
+    x[0] ^= l1(byteSub(mid)); // x[4]
+
+    mid = x[2] ^ x[3] ^ x[0] ^ roundKey[r + 1];
+    x[1] ^= l1(byteSub(mid)); // x[5]
+
+    mid = x[3] ^ x[0] ^ x[1] ^ roundKey[r + 2];
+    x[2] ^= l1(byteSub(mid)); // x[6]
+
+    mid = x[0] ^ x[1] ^ x[2] ^ roundKey[r + 3];
+    x[3] ^= l1(byteSub(mid)); // x[7]
+  }
+
+  // 反序变换
+  for (let j = 0; j < 16; j += 4) {
+    output[j] = x[3 - j / 4] >>> 24 & 0xff;
+    output[j + 1] = x[3 - j / 4] >>> 16 & 0xff;
+    output[j + 2] = x[3 - j / 4] >>> 8 & 0xff;
+    output[j + 3] = x[3 - j / 4] & 0xff;
+  }
+}
+
+/**
+ * 密钥扩展算法
+ */
+function sms4KeyExt(key, roundKey, cryptFlag) {
+  const x = new Array(4);
+
+  // 字节数组转成字数组（此处 1 字 = 32 比特）
+  const tmp = new Array(4);
+  for (let i = 0; i < 4; i++) {
+    tmp[0] = key[0 + 4 * i] & 0xff;
+    tmp[1] = key[1 + 4 * i] & 0xff;
+    tmp[2] = key[2 + 4 * i] & 0xff;
+    tmp[3] = key[3 + 4 * i] & 0xff;
+    x[i] = tmp[0] << 24 | tmp[1] << 16 | tmp[2] << 8 | tmp[3];
+  }
+
+  // 与系统参数做异或
+  x[0] ^= 0xa3b1bac6;
+  x[1] ^= 0x56aa3350;
+  x[2] ^= 0x677d9197;
+  x[3] ^= 0xb27022dc;
+
+  // roundKey[i] = x[i + 4] = x[i] ^ l2(byteSub(x[i + 1] ^ x[i + 2] ^ x[i + 3] ^ CK[i]))
+  for (let r = 0, mid; r < 32; r += 4) {
+    mid = x[1] ^ x[2] ^ x[3] ^ CK[r + 0];
+    roundKey[r + 0] = x[0] ^= l2(byteSub(mid)); // x[4]
+
+    mid = x[2] ^ x[3] ^ x[0] ^ CK[r + 1];
+    roundKey[r + 1] = x[1] ^= l2(byteSub(mid)); // x[5]
+
+    mid = x[3] ^ x[0] ^ x[1] ^ CK[r + 2];
+    roundKey[r + 2] = x[2] ^= l2(byteSub(mid)); // x[6]
+
+    mid = x[0] ^ x[1] ^ x[2] ^ CK[r + 3];
+    roundKey[r + 3] = x[3] ^= l2(byteSub(mid)); // x[7]
+  }
+
+  // 解密时使用反序的轮密钥
+  if (cryptFlag === DECRYPT) {
+    for (let r = 0, mid; r < 16; r++) {
+      mid = roundKey[r];
+      roundKey[r] = roundKey[31 - r];
+      roundKey[31 - r] = mid;
+    }
+  }
+}
+
+function sm4(inArray, key, cryptFlag, {
+  padding = 'pkcs#7', mode, iv = [], output = 'string'
+} = {}) {
+  if (mode === 'cbc') {
+    // CBC 模式，默认走 ECB 模式
+    if (typeof iv === 'string') iv = hexToArray(iv);
+    if (iv.length !== (128 / 8)) {
+      // iv 不是 128 比特
+      throw new Error('iv is invalid')
+    }
+  }
+
+  // 检查 key
+  if (typeof key === 'string') key = hexToArray(key);
+  if (key.length !== (128 / 8)) {
+    // key 不是 128 比特
+    throw new Error('key is invalid')
+  }
+
+  // 检查输入
+  if (typeof inArray === 'string') {
+    if (cryptFlag !== DECRYPT) {
+      // 加密，输入为 utf8 串
+      inArray = utf8ToArray(inArray);
+    } else {
+      // 解密，输入为 16 进制串
+      inArray = hexToArray(inArray);
+    }
+  } else {
+    inArray = [...inArray];
+  }
+
+  // 新增填充，sm4 是 16 个字节一个分组，所以统一走到 pkcs#7
+  if ((padding === 'pkcs#5' || padding === 'pkcs#7') && cryptFlag !== DECRYPT) {
+    const paddingCount = BLOCK - inArray.length % BLOCK;
+    for (let i = 0; i < paddingCount; i++) inArray.push(paddingCount);
+  }
+
+  // 生成轮密钥
+  const roundKey = new Array(ROUND);
+  sms4KeyExt(key, roundKey, cryptFlag);
+
+  const outArray = [];
+  let lastVector = iv;
+  let restLen = inArray.length;
+  let point = 0;
+  while (restLen >= BLOCK) {
+    const input = inArray.slice(point, point + 16);
+    const output = new Array(16);
+
+    if (mode === 'cbc') {
+      for (let i = 0; i < BLOCK; i++) {
+        if (cryptFlag !== DECRYPT) {
+          // 加密过程在组加密前进行异或
+          input[i] ^= lastVector[i];
+        }
+      }
+    }
+
+    sms4Crypt(input, output, roundKey);
+
+
+    for (let i = 0; i < BLOCK; i++) {
+      if (mode === 'cbc') {
+        if (cryptFlag === DECRYPT) {
+          // 解密过程在组解密后进行异或
+          output[i] ^= lastVector[i];
+        }
+      }
+
+      outArray[point + i] = output[i];
+    }
+
+    if (mode === 'cbc') {
+      if (cryptFlag !== DECRYPT) {
+        // 使用上一次输出作为加密向量
+        lastVector = output;
+      } else {
+        // 使用上一次输入作为解密向量
+        lastVector = input;
+      }
+    }
+
+    restLen -= BLOCK;
+    point += BLOCK;
+  }
+
+  // 去除填充，sm4 是 16 个字节一个分组，所以统一走到 pkcs#7
+  if ((padding === 'pkcs#5' || padding === 'pkcs#7') && cryptFlag === DECRYPT) {
+    const len = outArray.length;
+    const paddingCount = outArray[len - 1];
+    for (let i = 1; i <= paddingCount; i++) {
+      if (outArray[len - i] !== paddingCount) throw new Error('padding is invalid')
+    }
+    outArray.splice(len - paddingCount, paddingCount);
+  }
+
+  // 调整输出
+  if (output !== 'array') {
+    if (cryptFlag !== DECRYPT) {
+      // 加密，输出转 16 进制串
+      return ArrayToHex(outArray)
+    } else {
+      // 解密，输出转 utf8 串
+      return arrayToUtf8(outArray)
+    }
+  } else {
+    return outArray
+  }
+}
+
+var sm4_1 = {
+  encrypt(inArray, key, options) {
+    return sm4(inArray, key, 1, options)
+  },
+  decrypt(inArray, key, options) {
+    return sm4(inArray, key, 0, options)
+  }
+};
+
+var src = {
+  sm2: sm2,
+  sm3: sm3_1,
+  sm4: sm4_1,
+};
+
+const sm4EncryptConfig = getSm4EncryptConfig();
+const Buffer = buffer.Buffer;
+const createEncryptFn = function (__store, asymmetricKey, mapStore, requestKey) {
+    return (data, headers) => {
+        try {
+            if (headers.closeCrypto) {
+                return data;
+            }
+            __store.info = getCryptoInfo();
+            __store.publicKey = [...Buffer.from(__store.info.key)];
+            const encryptInfo = src.sm2.doEncrypt(JSON.stringify(__store.info), asymmetricKey, 1);
+            mapStore.set(requestKey, deepClone(encryptInfo));
+            setRequestCryptoHeader(headers, '04' + encryptInfo);
+            if (data) {
+                if (typeof data !== 'string') {
+                    data = JSON.stringify(data);
+                }
+                const array = src.sm4.encrypt(data, __store.publicKey, sm4EncryptConfig);
+                data = Buffer.from(array);
+                return data;
+            }
+            else {
+                return data;
+            }
+        }
+        catch (e) {
+            console.error('encrypt error', e, data, headers);
+        }
+    };
+};
+const createDecryptFn = function (__store) {
+    return (data, headers) => {
+        try {
+            if (isEncryptResponse(headers)) {
+                const arrayData = Buffer.from(data);
+                const decryptData = src.sm4.decrypt(arrayData, __store.publicKey, {
+                    mode: 'ecb',
+                    padding: 'pkcs#5',
+                });
+                return transformStringToJsonData(decryptData);
+            }
+            else {
+                // 非加密数据不处理
+                return data;
+            }
+        }
+        catch (e) {
+            console.error('decrypt error', e, data, headers);
+        }
+    };
+};
+// function isSameObject(obj1: object | undefined, obj2: object) {
+//   if (obj1 === undefined) {
+//     return false
+//   }
+//   const ret = JSON.stringify(obj1) === JSON.stringify(obj2)
+//   console.log('is same object ', ret, { obj1, obj2 })
+//   return ret
+// }
+function deepClone(obj) {
+    if (typeof obj === 'string') {
+        return String(obj);
+    }
+    return JSON.parse(JSON.stringify(obj));
+}
+
+var md5$1 = {exports: {}};
+
+var crypt = {exports: {}};
+
+(function() {
+  var base64map
+      = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
+
+  crypt$1 = {
+    // Bit-wise rotation left
+    rotl: function(n, b) {
+      return (n << b) | (n >>> (32 - b));
+    },
+
+    // Bit-wise rotation right
+    rotr: function(n, b) {
+      return (n << (32 - b)) | (n >>> b);
+    },
+
+    // Swap big-endian to little-endian and vice versa
+    endian: function(n) {
+      // If number given, swap endian
+      if (n.constructor == Number) {
+        return crypt$1.rotl(n, 8) & 0x00FF00FF | crypt$1.rotl(n, 24) & 0xFF00FF00;
+      }
+
+      // Else, assume array and swap all items
+      for (var i = 0; i < n.length; i++)
+        n[i] = crypt$1.endian(n[i]);
+      return n;
+    },
+
+    // Generate an array of any length of random bytes
+    randomBytes: function(n) {
+      for (var bytes = []; n > 0; n--)
+        bytes.push(Math.floor(Math.random() * 256));
+      return bytes;
+    },
+
+    // Convert a byte array to big-endian 32-bit words
+    bytesToWords: function(bytes) {
+      for (var words = [], i = 0, b = 0; i < bytes.length; i++, b += 8)
+        words[b >>> 5] |= bytes[i] << (24 - b % 32);
+      return words;
+    },
+
+    // Convert big-endian 32-bit words to a byte array
+    wordsToBytes: function(words) {
+      for (var bytes = [], b = 0; b < words.length * 32; b += 8)
+        bytes.push((words[b >>> 5] >>> (24 - b % 32)) & 0xFF);
+      return bytes;
+    },
+
+    // Convert a byte array to a hex string
+    bytesToHex: function(bytes) {
+      for (var hex = [], i = 0; i < bytes.length; i++) {
+        hex.push((bytes[i] >>> 4).toString(16));
+        hex.push((bytes[i] & 0xF).toString(16));
+      }
+      return hex.join('');
+    },
+
+    // Convert a hex string to a byte array
+    hexToBytes: function(hex) {
+      for (var bytes = [], c = 0; c < hex.length; c += 2)
+        bytes.push(parseInt(hex.substr(c, 2), 16));
+      return bytes;
+    },
+
+    // Convert a byte array to a base-64 string
+    bytesToBase64: function(bytes) {
+      for (var base64 = [], i = 0; i < bytes.length; i += 3) {
+        var triplet = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2];
+        for (var j = 0; j < 4; j++)
+          if (i * 8 + j * 6 <= bytes.length * 8)
+            base64.push(base64map.charAt((triplet >>> 6 * (3 - j)) & 0x3F));
+          else
+            base64.push('=');
+      }
+      return base64.join('');
+    },
+
+    // Convert a base-64 string to a byte array
+    base64ToBytes: function(base64) {
+      // Remove non-base-64 characters
+      base64 = base64.replace(/[^A-Z0-9+\/]/ig, '');
+
+      for (var bytes = [], i = 0, imod4 = 0; i < base64.length;
+          imod4 = ++i % 4) {
+        if (imod4 == 0) continue;
+        bytes.push(((base64map.indexOf(base64.charAt(i - 1))
+            & (Math.pow(2, -2 * imod4 + 8) - 1)) << (imod4 * 2))
+            | (base64map.indexOf(base64.charAt(i)) >>> (6 - imod4 * 2)));
+      }
+      return bytes;
+    }
+  };
+
+  crypt.exports = crypt$1;
+})();
+
+var cryptExports = crypt.exports;
+
+var charenc = {
+  // UTF-8 encoding
+  utf8: {
+    // Convert a string to a byte array
+    stringToBytes: function(str) {
+      return charenc.bin.stringToBytes(unescape(encodeURIComponent(str)));
+    },
+
+    // Convert a byte array to a string
+    bytesToString: function(bytes) {
+      return decodeURIComponent(escape(charenc.bin.bytesToString(bytes)));
+    }
+  },
+
+  // Binary encoding
+  bin: {
+    // Convert a string to a byte array
+    stringToBytes: function(str) {
+      for (var bytes = [], i = 0; i < str.length; i++)
+        bytes.push(str.charCodeAt(i) & 0xFF);
+      return bytes;
+    },
+
+    // Convert a byte array to a string
+    bytesToString: function(bytes) {
+      for (var str = [], i = 0; i < bytes.length; i++)
+        str.push(String.fromCharCode(bytes[i]));
+      return str.join('');
+    }
+  }
+};
+
+var charenc_1 = charenc;
+
+/*!
+ * Determine if an object is a Buffer
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+// The _isBuffer check is for Safari 5-7 support, because it's missing
+// Object.prototype.constructor. Remove this eventually
+var isBuffer_1 = function (obj) {
+  return obj != null && (isBuffer(obj) || isSlowBuffer(obj) || !!obj._isBuffer)
+};
+
+function isBuffer (obj) {
+  return !!obj.constructor && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
+}
+
+// For Node v0.10 support. Remove this eventually.
+function isSlowBuffer (obj) {
+  return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
+}
+
+(function(){
+  var crypt = cryptExports,
+      utf8 = charenc_1.utf8,
+      isBuffer = isBuffer_1,
+      bin = charenc_1.bin,
+
+  // The core
+  md5 = function (message, options) {
+    // Convert to byte array
+    if (message.constructor == String)
+      if (options && options.encoding === 'binary')
+        message = bin.stringToBytes(message);
+      else
+        message = utf8.stringToBytes(message);
+    else if (isBuffer(message))
+      message = Array.prototype.slice.call(message, 0);
+    else if (!Array.isArray(message) && message.constructor !== Uint8Array)
+      message = message.toString();
+    // else, assume byte array already
+
+    var m = crypt.bytesToWords(message),
+        l = message.length * 8,
+        a =  1732584193,
+        b = -271733879,
+        c = -1732584194,
+        d =  271733878;
+
+    // Swap endian
+    for (var i = 0; i < m.length; i++) {
+      m[i] = ((m[i] <<  8) | (m[i] >>> 24)) & 0x00FF00FF |
+             ((m[i] << 24) | (m[i] >>>  8)) & 0xFF00FF00;
+    }
+
+    // Padding
+    m[l >>> 5] |= 0x80 << (l % 32);
+    m[(((l + 64) >>> 9) << 4) + 14] = l;
+
+    // Method shortcuts
+    var FF = md5._ff,
+        GG = md5._gg,
+        HH = md5._hh,
+        II = md5._ii;
+
+    for (var i = 0; i < m.length; i += 16) {
+
+      var aa = a,
+          bb = b,
+          cc = c,
+          dd = d;
+
+      a = FF(a, b, c, d, m[i+ 0],  7, -680876936);
+      d = FF(d, a, b, c, m[i+ 1], 12, -389564586);
+      c = FF(c, d, a, b, m[i+ 2], 17,  606105819);
+      b = FF(b, c, d, a, m[i+ 3], 22, -1044525330);
+      a = FF(a, b, c, d, m[i+ 4],  7, -176418897);
+      d = FF(d, a, b, c, m[i+ 5], 12,  1200080426);
+      c = FF(c, d, a, b, m[i+ 6], 17, -1473231341);
+      b = FF(b, c, d, a, m[i+ 7], 22, -45705983);
+      a = FF(a, b, c, d, m[i+ 8],  7,  1770035416);
+      d = FF(d, a, b, c, m[i+ 9], 12, -1958414417);
+      c = FF(c, d, a, b, m[i+10], 17, -42063);
+      b = FF(b, c, d, a, m[i+11], 22, -1990404162);
+      a = FF(a, b, c, d, m[i+12],  7,  1804603682);
+      d = FF(d, a, b, c, m[i+13], 12, -40341101);
+      c = FF(c, d, a, b, m[i+14], 17, -1502002290);
+      b = FF(b, c, d, a, m[i+15], 22,  1236535329);
+
+      a = GG(a, b, c, d, m[i+ 1],  5, -165796510);
+      d = GG(d, a, b, c, m[i+ 6],  9, -1069501632);
+      c = GG(c, d, a, b, m[i+11], 14,  643717713);
+      b = GG(b, c, d, a, m[i+ 0], 20, -373897302);
+      a = GG(a, b, c, d, m[i+ 5],  5, -701558691);
+      d = GG(d, a, b, c, m[i+10],  9,  38016083);
+      c = GG(c, d, a, b, m[i+15], 14, -660478335);
+      b = GG(b, c, d, a, m[i+ 4], 20, -405537848);
+      a = GG(a, b, c, d, m[i+ 9],  5,  568446438);
+      d = GG(d, a, b, c, m[i+14],  9, -1019803690);
+      c = GG(c, d, a, b, m[i+ 3], 14, -187363961);
+      b = GG(b, c, d, a, m[i+ 8], 20,  1163531501);
+      a = GG(a, b, c, d, m[i+13],  5, -1444681467);
+      d = GG(d, a, b, c, m[i+ 2],  9, -51403784);
+      c = GG(c, d, a, b, m[i+ 7], 14,  1735328473);
+      b = GG(b, c, d, a, m[i+12], 20, -1926607734);
+
+      a = HH(a, b, c, d, m[i+ 5],  4, -378558);
+      d = HH(d, a, b, c, m[i+ 8], 11, -2022574463);
+      c = HH(c, d, a, b, m[i+11], 16,  1839030562);
+      b = HH(b, c, d, a, m[i+14], 23, -35309556);
+      a = HH(a, b, c, d, m[i+ 1],  4, -1530992060);
+      d = HH(d, a, b, c, m[i+ 4], 11,  1272893353);
+      c = HH(c, d, a, b, m[i+ 7], 16, -155497632);
+      b = HH(b, c, d, a, m[i+10], 23, -1094730640);
+      a = HH(a, b, c, d, m[i+13],  4,  681279174);
+      d = HH(d, a, b, c, m[i+ 0], 11, -358537222);
+      c = HH(c, d, a, b, m[i+ 3], 16, -722521979);
+      b = HH(b, c, d, a, m[i+ 6], 23,  76029189);
+      a = HH(a, b, c, d, m[i+ 9],  4, -640364487);
+      d = HH(d, a, b, c, m[i+12], 11, -421815835);
+      c = HH(c, d, a, b, m[i+15], 16,  530742520);
+      b = HH(b, c, d, a, m[i+ 2], 23, -995338651);
+
+      a = II(a, b, c, d, m[i+ 0],  6, -198630844);
+      d = II(d, a, b, c, m[i+ 7], 10,  1126891415);
+      c = II(c, d, a, b, m[i+14], 15, -1416354905);
+      b = II(b, c, d, a, m[i+ 5], 21, -57434055);
+      a = II(a, b, c, d, m[i+12],  6,  1700485571);
+      d = II(d, a, b, c, m[i+ 3], 10, -1894986606);
+      c = II(c, d, a, b, m[i+10], 15, -1051523);
+      b = II(b, c, d, a, m[i+ 1], 21, -2054922799);
+      a = II(a, b, c, d, m[i+ 8],  6,  1873313359);
+      d = II(d, a, b, c, m[i+15], 10, -30611744);
+      c = II(c, d, a, b, m[i+ 6], 15, -1560198380);
+      b = II(b, c, d, a, m[i+13], 21,  1309151649);
+      a = II(a, b, c, d, m[i+ 4],  6, -145523070);
+      d = II(d, a, b, c, m[i+11], 10, -1120210379);
+      c = II(c, d, a, b, m[i+ 2], 15,  718787259);
+      b = II(b, c, d, a, m[i+ 9], 21, -343485551);
+
+      a = (a + aa) >>> 0;
+      b = (b + bb) >>> 0;
+      c = (c + cc) >>> 0;
+      d = (d + dd) >>> 0;
+    }
+
+    return crypt.endian([a, b, c, d]);
+  };
+
+  // Auxiliary functions
+  md5._ff  = function (a, b, c, d, x, s, t) {
+    var n = a + (b & c | ~b & d) + (x >>> 0) + t;
+    return ((n << s) | (n >>> (32 - s))) + b;
+  };
+  md5._gg  = function (a, b, c, d, x, s, t) {
+    var n = a + (b & d | c & ~d) + (x >>> 0) + t;
+    return ((n << s) | (n >>> (32 - s))) + b;
+  };
+  md5._hh  = function (a, b, c, d, x, s, t) {
+    var n = a + (b ^ c ^ d) + (x >>> 0) + t;
+    return ((n << s) | (n >>> (32 - s))) + b;
+  };
+  md5._ii  = function (a, b, c, d, x, s, t) {
+    var n = a + (c ^ (b | ~d)) + (x >>> 0) + t;
+    return ((n << s) | (n >>> (32 - s))) + b;
+  };
+
+  // Package private blocksize
+  md5._blocksize = 16;
+  md5._digestsize = 16;
+
+  md5$1.exports = function (message, options) {
+    if (message === undefined || message === null)
+      throw new Error('Illegal argument ' + message);
+
+    var digestbytes = crypt.wordsToBytes(md5(message, options));
+    return options && options.asBytes ? digestbytes :
+        options && options.asString ? bin.bytesToString(digestbytes) :
+        crypt.bytesToHex(digestbytes);
+  };
+
+})();
+
+var md5Exports = md5$1.exports;
+var md5 = /*@__PURE__*/getDefaultExportFromCjs(md5Exports);
+
+const transformParamsToString = (url, params) => {
+    try {
+        // params order -> string
+        const origin = window.location.origin;
+        const _url = new URL(origin + url);
+        let paramsStr = '?';
+        for (const key in params) {
+            paramsStr += `${key}=${params[key]}&`;
+        }
+        let ret = _url.toString();
+        if (paramsStr !== '?') {
+            ret = ret + paramsStr;
+        }
+        return ret;
+    }
+    catch (e) {
+        console.log('url', params);
+    }
+};
+const createMapStore = function () {
+    // 基于axios请求，存储加密信息
+    const mapStore = new Map();
+    function get(key) {
+        return mapStore.get(key);
+    }
+    function hashUrlValue(url, params, token) {
+        try {
+            const SALT = 'e0c7ff';
+            const fetchUrl = transformParamsToString(url, params ?? {});
+            const str = `${fetchUrl}-${SALT}-${token ?? ''}`;
+            const _key = md5(str);
+            console.log('fetchUrl', {
+                fetchUrl,
+                _key,
+            });
+            // console.log('_key', {
+            //   fetchUrl,
+            //   str,
+            //   _key,
+            // })
+            return `${_key}`;
+        }
+        catch (e) {
+            // if (true) {
+            //   console.error('error', e)
+            // }
+            const random = randomPassword(10);
+            return `${random}`;
+        }
+    }
+    function set(key, value) {
+        mapStore.set(key, value);
+    }
+    function clear(key) {
+        mapStore.delete(key);
+    }
+    return {
+        get,
+        generateKey: hashUrlValue,
+        set,
+        clear,
+    };
+};
+
+const storageLangKey = 'cps_lang';
+const mapStore = createMapStore();
+// window.__map_store__ = mapStore
+function addEncryptFnToTransformRequest(instance, asymmetricKey) {
+    if (!asymmetricKey || typeof asymmetricKey !== 'string') {
+        throw new Error(`publicKey is required and must be a string ${asymmetricKey}`);
+    }
+    /**
+     * 请求数据处理
+     */
+    // 5. 加密，解密添加 数据
+    instance.interceptors.request.use((value) => {
+        const transformRequest = value.transformRequest;
+        const requestKey = value?.headers?.__requestKey;
+        const __store = {
+            info: null,
+            publicKey: [],
+        };
+        if (!transformRequest) {
+            throw new Error(`request ${value} has no transformRequest`);
+        }
+        if (Array.isArray(transformRequest)) {
+            transformRequest.push(createEncryptFn(__store, asymmetricKey, mapStore, requestKey));
+        }
+        else {
+            throw new Error(`transformRequest ${transformRequest} is not an array`);
+        }
+        const decryptFn = createDecryptFn(__store);
+        if (!decryptFn) {
+            return value;
+        }
+        const transformResponse = value.transformResponse;
+        if (!transformResponse) {
+            throw new Error(`request ${value} has no transformResponse`);
+        }
+        if (typeof decryptFn !== 'function') {
+            throw new Error(`decryptFn ${decryptFn} is not a function`);
+        }
+        if (Array.isArray(transformResponse)) {
+            transformResponse.unshift(decryptFn);
+        }
+        else {
+            throw new Error(`transformResponse ${transformResponse} is not an array`);
+        }
+        return value;
+    });
+    // 4. 加密
+    instance.interceptors.request.use((config) => {
+        try {
+            const url = encodeURI(config?.url ?? '');
+            const headers = config.headers;
+            if (!url) {
+                return config;
+            }
+            headers.__requestKey = mapStore.generateKey(url, config?.params, headers?.get('Authorization'));
+            return config;
+        }
+        catch (e) {
+            console.error('error', e);
+            return config;
+        }
+    });
+    // 3. 非过滤数据返回类型声明
+    instance.interceptors.request.use((config) => {
+        const headers = config.headers;
+        if (!headers.closeCrypto) {
+            config.responseType = 'arraybuffer';
+        }
+        return config;
+    });
+    // 2. 过滤formData类型数据
+    instance.interceptors.request.use((config) => {
+        const data = config.data;
+        const headers = config.headers;
+        if (!data) {
+            return config;
+        }
+        if (data instanceof FormData || data instanceof File) {
+            headers.closeCrypto = true;
+        }
+        return config;
+    });
+    // 1. 通过url过滤
+    instance.interceptors.request.use((config) => {
+        const url = config.url;
+        const headers = config.headers;
+        if (!url) {
+            throw new Error('url is required');
+        }
+        if ({}.hasOwnProperty.call(headers, 'closeCrypto')) {
+            return config;
+        }
+        const encrypt = shouldEncrypt(url);
+        if (!encrypt) {
+            headers.closeCrypto = true;
+        }
+        return config;
+    });
+    /**
+     * 返回数据处理
+     */
+    instance.interceptors.response.use((response) => {
+        const { request, headers } = response;
+        // 加密过的数据已经被处理了
+        if (headers && headers.get(HEADER_ENCRYPT_WITH)) {
+            return response;
+        }
+        if (request?.responseType?.toLowerCase() === 'arraybuffer' ||
+            request?.responseType?.toLowerCase() === 'blob') ;
+        else {
+            response.data = transformStringToJsonData(response.data);
+        }
+        return response;
+    }, (error) => {
+        const response = error.response;
+        if (response?.data) {
+            response.data = transformResponseData(response.data);
+        }
+        throw error;
+    });
+}
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+window.__buffer = buffer;
+const createCryptoAxiosInstance = (options, asymmetricKey, isCloseDecrypt) => {
+    const instance = axios.create(options);
+    instance.interceptors.request.use((config) => {
+        const langKey = localStorage.getItem(storageLangKey);
+        const langMap = {
+            en: 'en-US',
+            ko: 'ko-KR',
+            zh: 'zh-CN',
+        };
+        if (langKey && Object.prototype.hasOwnProperty.call(langMap, langKey)) {
+            const langValue = langMap[langKey];
+            // "accept-language": "",
+            config.headers.set({
+                'Accept-Language': `${langValue},zh;q=0.9,en;q=0.8`,
+            });
+        }
+        return config;
+    });
+    if (isCloseDecrypt) {
+        return instance;
+    }
+    addEncryptFnToTransformRequest(instance, asymmetricKey);
+    return instance;
+};
+
+const decryptHeadersInfo = src.sm2.doDecrypt;
+
+export { createCryptoAxiosInstance, createRequestInstance, decryptHeadersInfo, getCryptoInfo, getSm4EncryptConfig, randomPassword, shouldEncrypt };

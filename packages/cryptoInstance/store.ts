@@ -11,10 +11,15 @@ const transformParamsToString = (
     const origin = window.location.origin
     const _url = new URL(origin + url)
 
-    // for (const key in params) {
-    //   _url.searchParams.append(key, params[key])
-    // }
-    return _url.toString()
+    let paramsStr = '?'
+    for (const key in params) {
+      paramsStr += `${key}=${params[key]}&`
+    }
+    let ret = _url.toString()
+    if (paramsStr !== '?') {
+      ret = ret + paramsStr
+    }
+    return ret
   } catch (e) {
     console.log('url', params)
   }
@@ -38,6 +43,10 @@ export const createMapStore: createMapStoreType<storeType> = function <T>() {
       const fetchUrl = transformParamsToString(url, params ?? {})
       const str = `${fetchUrl}-${SALT}-${token ?? ''}`
       const _key = md5(str)
+      console.log('fetchUrl', {
+        fetchUrl,
+        _key,
+      })
       // console.log('_key', {
       //   fetchUrl,
       //   str,
