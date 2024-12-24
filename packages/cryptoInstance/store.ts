@@ -6,13 +6,18 @@ const transformParamsToString = (
   url: string,
   params: Record<string, string>,
 ) => {
-  // params order -> string
-  const origin = window.location.origin
-  const _url = new URL(origin + url)
-  for (const key in params) {
-    _url.searchParams.append(key, params[key])
+  try {
+    // params order -> string
+    const origin = window.location.origin
+    const _url = new URL(origin + url)
+
+    // for (const key in params) {
+    //   _url.searchParams.append(key, params[key])
+    // }
+    return _url.toString()
+  } catch (e) {
+    console.log('url', params)
   }
-  return _url.toString()
 }
 
 export const createMapStore: createMapStoreType<storeType> = function <T>() {
@@ -38,13 +43,13 @@ export const createMapStore: createMapStoreType<storeType> = function <T>() {
       //   str,
       //   _key,
       // })
-      return `${_key}-/${url}`
+      return `${_key}`
     } catch (e) {
       // if (__DEV__) {
       //   console.error('error', e)
       // }
       const random = randomPassword(10)
-      return `${random}-/${url}`
+      return `${random}`
     }
   }
 
