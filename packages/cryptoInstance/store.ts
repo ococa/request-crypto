@@ -10,16 +10,10 @@ const transformParamsToString = (
     // params order -> string
     const origin = window.location.origin
     const _url = new URL(origin + url)
-
-    let paramsStr = '?'
     for (const key in params) {
-      paramsStr += `${key}=${params[key]}&`
+      _url.searchParams.append(key, params[key])
     }
-    let ret = _url.toString()
-    if (paramsStr !== '?') {
-      ret = ret + paramsStr
-    }
-    return ret
+    return _url.toString()
   } catch (e) {
     console.log('url', params)
   }
