@@ -1,6 +1,6 @@
 {
   "name": "request-crypto",
-  "version": "1.7.13",
+  "version": "1.7.15",
   "description": "axios with crypto callback",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -53,6 +53,6 @@
     "sm-crypto": "^0.3.13"
   },
   "peerDependencies": {
-    "axios": "~1.7.0"
+    "axios": "^1.7.0"
   }
 }

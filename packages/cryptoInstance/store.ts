@@ -17,7 +17,7 @@ const transformParamsToString = (
     }
     return _url.toString()
   } catch (e) {
-    console.log('url', params)
+    // console.log('url', params)
   }
 }
 
@@ -39,10 +39,10 @@ export const createMapStore: createMapStoreType<storeType> = function <T>() {
       const fetchUrl = transformParamsToString(url, params ?? {})
       const str = `${fetchUrl}-${SALT}-${token ?? ''}`
       const _key = md5(str)
-      console.log('fetchUrl', {
-        fetchUrl,
-        _key,
-      })
+      // console.log('fetchUrl', {
+      //   fetchUrl,
+      //   _key,
+      // })
       // console.log('_key', {
       //   fetchUrl,
       //   str,
