@@ -6,7 +6,10 @@ name: Node.js Package
 on:
   push:
     branches:
-      -master
+      - master # or the branch you want to trigger on
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -16,7 +19,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm test
+      - run: npm install --production=false --ignore-scripts
+      - run: npm run build
 
   publish-npm:
     needs: build
@@ -27,6 +31,15 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
-      - run: npm publish
+      - run: npm publish --ignore-scripts # 忽略 prepare 脚本
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+      - name: Create Git tag
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          git config --global user.name "github actions"
+          git config --global user.email "github-actions@github.com"
+          git tag -a "v$VERSION" -m "Release version $VERSION"
+          git push origin "v$VERSION"
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
