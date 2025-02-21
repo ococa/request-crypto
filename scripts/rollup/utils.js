@@ -45,13 +45,15 @@ function getBaseRollupPlugins({
     generatePackageJson({
       inputFolder: projectRootPath,
       outputFolder: distPath,
-      baseContents: ({ name, description, version, dependencies = {} }) => ({
-        name,
-        description,
-        version,
-        main: cjsInputFile,
-        module: esmInputFile,
-        dependencies,
+      baseContents: (props) => ({
+        ...props,
+        // name,
+        // description,
+        // version,
+        // main: cjsInputFile,
+        // module: esmInputFile,
+        scripts: {},
+        // dependencies,
       }),
     }),
   ]

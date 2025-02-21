@@ -1,6 +1,6 @@
 {
   "name": "request-crypto",
-  "version": "1.7.18",
+  "version": "1.7.19",
   "description": "axios with crypto callback",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -9,7 +9,7 @@
     "test": "node src/test/index.js",
     "lint": "eslint --ext .ts,.js,.tsx,.jsx ./packages",
     "fix": "eslint --ext .ts,.js,.tsx,.jsx --fix ./packages",
-    "build": "rimraf ./dist && rollup --bundleConfigAsCjs --config ./scripts/rollup/rollup.config.js",
+    "build:prod": "rimraf ./dist && rollup --bundleConfigAsCjs --config ./scripts/rollup/rollup.config.js && mv dist/package.json ./package.json",
     "build:dev": "npm run build -- --environment NODE_ENV:development",
     "preinstall": "husky"
   },
