@@ -31,6 +31,7 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
+      - run: git status
       - run: npm publish --ignore-scripts # 忽略 prepare 脚本
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}

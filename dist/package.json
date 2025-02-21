@@ -1,18 +1,11 @@
 {
   "name": "request-crypto",
-  "version": "1.7.21",
+  "version": "1.7.20",
   "description": "axios with crypto callback",
-  "main": "dist",
-  "module": "dist",
-  "types": "dist",
-  "scripts": {
-    "test": "node src/test/index.js",
-    "lint": "eslint --ext .ts,.js,.tsx,.jsx ./packages",
-    "fix": "eslint --ext .ts,.js,.tsx,.jsx --fix ./packages",
-    "build:prod": "rimraf ./dist && rollup --bundleConfigAsCjs --config ./scripts/rollup/rollup.config.js",
-    "build:dev": "npm run build -- --environment NODE_ENV:development",
-    "preinstall": "husky"
-  },
+  "main": "index.cjs.js",
+  "module": "index.esm.js",
+  "types": "types.d.ts",
+  "scripts": {},
   "files": [
     "package.json",
     "dist/*"
@@ -47,10 +40,7 @@
     "rollup-plugin-typescript2": "^0.36.0"
   },
   "dependencies": {
-    "@types/md5": "^2.3.5",
-    "buffer": "^6.0.3",
-    "md5": "^2.3.0",
-    "sm-crypto": "^0.3.13"
+    "buffer": "^6.0.3"
   },
   "peerDependencies": {
     "axios": "^1.7.0"
